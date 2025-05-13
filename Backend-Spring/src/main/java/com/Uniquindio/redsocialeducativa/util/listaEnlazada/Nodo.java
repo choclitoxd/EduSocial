@@ -1,4 +1,4 @@
-package com.Uniquindio.redsocialeducativa.util.ListaEnlazada;
+package com.Uniquindio.redsocialeducativa.util.listaEnlazada;
 
 public class Nodo<T> {
     T elemento;

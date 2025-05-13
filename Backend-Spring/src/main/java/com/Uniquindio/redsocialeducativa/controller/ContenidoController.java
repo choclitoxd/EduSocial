@@ -14,8 +14,8 @@ public class ContenidoController {
 
     private final ContenidoService contenidoService = new ContenidoService();
 
-    @PostMapping("/registrar")
-    public ResponseEntity<String> registrar(@RequestBody Contenido contenido) {
+    @PostMapping("/guardar")
+    public ResponseEntity<String> guardarContenido(@RequestBody Contenido contenido) {
         contenidoService.registrarContenido(contenido);
         return ResponseEntity.status(201).body("Contenido registrado");
     }
@@ -25,7 +25,7 @@ public class ContenidoController {
         return ResponseEntity.ok(contenidoService.listarContenidos());
     }
 
-    @GetMapping("/buscar")
+    @GetMapping("/buscarPorTitulo")
     public ResponseEntity<?> buscarPorTitulo(@RequestParam String titulo) {
         Contenido resultado = contenidoService.buscarPorTitulo(titulo);
         if (resultado != null) {
@@ -35,7 +35,7 @@ public class ContenidoController {
         }
     }
 
-    @GetMapping("/filtrar")
+    @GetMapping("/filtrarPorAutor")
     public ResponseEntity<List<Contenido>> filtrarPorAutor(@RequestParam String autor) {
         return ResponseEntity.ok(contenidoService.filtrarPorAutor(autor));
     }

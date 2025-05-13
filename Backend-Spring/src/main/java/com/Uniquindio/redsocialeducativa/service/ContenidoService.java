@@ -1,7 +1,7 @@
 package com.Uniquindio.redsocialeducativa.service;
 
 import com.Uniquindio.redsocialeducativa.model.Contenido;
-import com.Uniquindio.redsocialeducativa.util.Grafo.ArbolBinario;
+import com.Uniquindio.redsocialeducativa.util.arbol.ArbolBinario;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -9,11 +9,15 @@ import java.util.List;
 
 public class ContenidoService {
 
-    private final ArbolBinario<Contenido> arbolContenidos = new ArbolBinario<>();
+    private ArbolBinario<Contenido> arbolContenidos;
+
+    public ContenidoService() {
+        arbolContenidos = new ArbolBinario<>();
+        cargarContenidosDeArranque();
+    }
 
     public void registrarContenido(Contenido contenido) {
         arbolContenidos.agregarDato(contenido);
-        cargarContenidosDeArranque();
     }
 
     private void cargarContenidosDeArranque() {
@@ -25,11 +29,18 @@ public class ContenidoService {
     }
 
     public List<Contenido> listarContenidos() {
-        return arbolContenidos.enListaInorden(); // Deberás implementar este metodo si no existe aún
+        return arbolContenidos.listarArbolInorden();
     }
 
     public Contenido buscarPorTitulo(String titulo) {
-        return arbolContenidos.buscar(new Contenido(titulo, "", "", LocalDate.of(2025,05,31),0));
+        List<Contenido> todos = listarContenidos();
+
+        for (Contenido c : todos) {
+            if (c.getAutor().equalsIgnoreCase(titulo)) {
+                return c;
+            }
+        }
+        return null;
     }
 
     public List<Contenido> filtrarPorAutor(String autor) {

@@ -1,4 +1,4 @@
-package com.Uniquindio.redsocialeducativa.util.Grafo;
+package com.Uniquindio.redsocialeducativa.util.arbol;
 
 public class Nodo<T> {
 

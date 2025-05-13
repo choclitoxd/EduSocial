@@ -1,4 +1,4 @@
-package com.Uniquindio.redsocialeducativa.util.Grafo;
+package com.Uniquindio.redsocialeducativa.util.arbol;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -241,7 +241,7 @@ public class ArbolBinario<T extends Comparable<T>> {
         System.out.println();
     }
 
-    public List<T> enListaInorden() {
+    public List<T> listarArbolInorden() {
         List<T> lista = new ArrayList<>();
         llenarListaInorden(raiz, lista);
         return lista;
@@ -254,28 +254,6 @@ public class ArbolBinario<T extends Comparable<T>> {
             llenarListaInorden(nodo.derecha, lista);
         }
     }
-
-    public T buscar(T dato) {
-        return buscarRecursivo(raiz, dato);
-    }
-
-    private T buscarRecursivo(Nodo<T> actual, T dato) {
-        if (actual == null) {
-            return null;
-        }
-
-        int comparacion = dato.compareTo(actual.dato);
-
-        if (comparacion == 0) {
-            return actual.dato;
-        } else if (comparacion < 0) {
-            return buscarRecursivo(actual.izquierda, dato);
-        } else {
-            return buscarRecursivo(actual.derecha, dato);
-        }
-    }
-
-
 
     public void borrarArbol() {
         raiz = null;

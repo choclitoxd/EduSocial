@@ -1,4 +1,4 @@
-package com.Uniquindio.redsocialeducativa.util.ListaEnlazada;
+package com.Uniquindio.redsocialeducativa.util.listaEnlazada;
 
 import com.Uniquindio.redsocialeducativa.model.Usuario;
 
@@ -40,5 +40,16 @@ public class ListaUsuarios extends ListaEnlazada<Usuario> {
             actual = actual.siguiente;
         }
         return null;
+    }
+
+    public boolean contieneUsuario(Usuario usuario) {
+        Nodo<Usuario> actual = cabeza;
+        while (actual != null) {
+            if (actual.elemento.equals(usuario)) {
+                return true;
+            }
+            actual = actual.siguiente;
+        }
+        return false;
     }
 }
