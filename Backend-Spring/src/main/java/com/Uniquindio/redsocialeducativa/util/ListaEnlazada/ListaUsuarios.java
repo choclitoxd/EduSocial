@@ -1,4 +1,4 @@
-package com.Uniquindio.redsocialeducativa.util;
+package com.Uniquindio.redsocialeducativa.util.ListaEnlazada;
 
 import com.Uniquindio.redsocialeducativa.model.Usuario;
 
