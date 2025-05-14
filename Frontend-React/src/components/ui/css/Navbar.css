@@ -1,120 +1,119 @@
-.container{
-    padding-top: 10px;
-    align-items: flex-end;
-    width: 275px;
-    margin-left: 240px;
-    position: fixed;
-    flex-grow: 1;
-    z-index: 3;
-}
-.space{
-    justify-content: space-between;
-}
-
-.style-box{
-    background: transparent;
-    border: 2px solid rgba(255,255,255,.2);
-    backdrop-filter: blur(30px);
-    box-shadow: 0 0 10px rgb(0, 0, 0,.2);
+/* === Layout Principal === */
+.container {
+  padding-top: 10px;
+  width: 275px;
+  margin-left: 240px;
+  position: fixed;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
-.trasiotion-action{
-    transition-duration: 0.2s;
+.space {
+  justify-content: space-between;
 }
 
-.navbar{
-    width: 275px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    list-style: none;
-    padding: 15px 7%;
-    border-radius: 16px;
-    color: #fff;
+/* === Estilo de cajas translúcidas === */
+.style-box,
+.search-box {
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(30px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-.subcontainer-nav{
-    max-width: fit-content;
-    display: flex;
-    align-items: center;
-    padding: 12px;
+.search-box {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 50px;
 }
 
-.subcontainer-nav:hover{
-    background: rgba(255, 255, 255, 0.2);
+.search-box input {
+  padding: 6px;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  color: #fff;
+  font-size: 18px;
+  max-width: 200px;
 }
 
-
-
-.important-tittle{
-    font-weight: 600;
+/* === Navegación Lateral === */
+.navbar {
+  width: 275px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 15px 7%;
+  color: #fff;
+  border-radius: 16px;
 }
 
-.logo{
-    cursor: pointer;
+.navbar nav {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  list-style: none;
 }
 
-.align-itemsAll{
-    align-items: flex-start;
+.navbar nav a {
+  width: 100%;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
 }
 
-.navbar nav{
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    list-style: none;
+/* === Ítems de navegación === */
+.nav-direction {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-.navbar nav a{
-    width: 100%;
-    cursor: pointer;
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  max-width: fit-content;
+  transition: background-color 0.2s;
 }
 
-.nav-text{
-    max-width: 100%;
-    font-size: 20px;
-    line-height: 24px;
-    margin-left: 10px;
-    margin-right: 10px;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
-.icon{
-    width: 50px;
-    cursor: pointer;
+.nav-icon {
+  font-size: 22px;
 }
 
-.search-box{
-    display: flex;
-    align-items: center;
-    background: transparent;
-    backdrop-filter: blur(30px);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-    border: 2px solid rgba(255,255,255,.2);
-    padding: 10px 20px;
-    border-radius: 50px;
+.nav-text {
+  margin-left: 10px;
+  font-size: 20px;
+  line-height: 24px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-.search-box input{
-    padding: 6px;
-    background: transparent;
-    border: 0;
-    outline: 0;
-    color: #fff;
-    font-size: 18px;
-    max-width: 200px;
+.important-title {
+  font-weight: 600;
 }
 
+/* === Transiciones === */
+.transition-action {
+  transition-duration: 0.2s;
+}
+
+/* === Perfil de Usuario === */
 .div-user {
   width: 100%;
   max-width: 280px;
 }
 
 .btn {
-  display: flex;
+ display: flex;
   align-items: center;
   width: 100%;
   background-color: transparent;
@@ -124,13 +123,14 @@
   cursor: pointer;
   text-align: left;
   transition: background-color 0.2s;
+  text-decoration: none;
+  color: inherit;
 }
 
-.div-user .btn:hover {
+.btn:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Profile Image */
 .profile-image {
   width: 40px;
   height: 40px;
@@ -141,7 +141,7 @@
   overflow: hidden;
   margin-right: 12px;
   flex-shrink: 0;
-  background-color: rebeccapurple; /* Twitter blue for icon background */
+  background-color: rebeccapurple;
 }
 
 .user-icon {
@@ -149,7 +149,7 @@
   font-size: 24px;
 }
 
-/* Profile Info */
+/* === Info textual del perfil === */
 .profile-info {
   flex-grow: 1;
   display: flex;
@@ -175,7 +175,7 @@
   text-overflow: ellipsis;
 }
 
-/* More Options Icon */
+/* === Icono de opciones (tres puntos) === */
 .more-options {
   flex-shrink: 0;
   margin-left: 12px;
@@ -183,4 +183,15 @@
   font-size: 16px;
   display: flex;
   align-items: center;
+}
+
+.content-layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.content-layout > *:first-child {
+  flex: 1;
+  margin-right: 20px;
 }

@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { FaFileAlt, FaLink, FaVideo, FaPlay,FaImage, FaHandsHelping } from 'react-icons/fa';
+import { FaFileAlt, FaLink, FaVideo, FaPlay, FaImage, FaHandsHelping, FaSignInAlt } from 'react-icons/fa';
 import { StarRating } from './StarRating';
-import ReactStars from 'react-rating-stars-component';
 import './css/ResourceComponents.css';
 
-// Componente para la tarjeta de compartir recursos
-export const ShareResourceCard = () => {
+// Componente para la tarjeta de compartir recursos (solo visible para usuarios autenticados)
+export const ShareResourceCard = ({ isAuthenticated }) => {
+  if (!isAuthenticated) {
+    return null; // No renderizar este componente si el usuario no está autenticado
+  }
+
   return (
     <div className="resource-card">
       <div className="card-header">
@@ -35,14 +38,23 @@ export const ShareResourceCard = () => {
 };
 
 // Componente para mostrar publicaciones educativas
-export const EducationalPost = ({ post}) => {
+export const EducationalPost = ({ post, isAuthenticated }) => {
   const handleRatingChange = (newRating) => {
-    alert(`Has calificado con ${newRating} estrellas`);
+    if (isAuthenticated) {
+      alert(`Has calificado con ${newRating} estrellas`);
+    } else {
+      alert('Necesitas iniciar sesión para calificar un recurso');
+    }
   };
   
   const handleHelpRequest = () => {
-    alert(`Has solicitado ayuda a ${post.userName}`);
+    if (isAuthenticated) {
+      alert(`Has solicitado ayuda a ${post.userName}`);
+    } else {
+      alert('Necesitas iniciar sesión para solicitar ayuda');
+    }
   };
+
   return (
     <div className="post-card">
       <div className="post-header">
@@ -66,38 +78,88 @@ export const EducationalPost = ({ post}) => {
         <div className="rating-container">
           <p>¿Qué tan útil fue este recurso?</p>
           <StarRating 
-          initialValue={0}
-          onChange={handleRatingChange}
+            initialValue={0}
+            onChange={handleRatingChange}
           />
+          {!isAuthenticated && <small className="login-required">Inicia sesión para calificar</small>}
         </div>
-      {/* 🎯 Botón para solicitar ayuda */}
-       <div className="help-button-container">
-          <button className="resource-button" onClick={handleHelpRequest}><FaHandsHelping className='button-icon'/>
+        {/* 🎯 Botón para solicitar ayuda */}
+        <div className="help-button-container">
+          <button 
+            className="resource-button" 
+            onClick={handleHelpRequest}
+          >
+            <FaHandsHelping className='button-icon'/>
             Solicitar ayuda al estudiante
           </button>
+          {!isAuthenticated && <small className="login-required">Inicia sesión para solicitar ayuda</small>}
         </div>
       </div>
     </div>
   );
 };
 
-// Componente principal que combina ambos componentes
-export const EducationalFeed = () => {
-  const samplePost = {
-    avatarText: 'L',
-    avatarColor: 'purple',
-    userName: 'Leo Gallego',
-    time: 'Hace 2 horas',
-    title: 'Tutorial sobre ecuaciones diferenciales',
-    content: 'Este video explica cómo resolver ecuaciones diferenciales de primer orden.',
-    type: 'video'
-  };
-
+// Mensaje para usuarios no autenticados
+export const LoginPrompt = () => {
   return (
-    <div className="container-user">
-      <ShareResourceCard />
-      <EducationalPost post={samplePost} />
+    <div className="login-prompt">
+      <h3>Inicia sesión para compartir recursos educativos</h3>
+      <p>Puedes ver los recursos compartidos, pero necesitas una cuenta para publicar los tuyos.</p>
+      <button className="login-button">
+        <FaSignInAlt className="button-icon" /> Iniciar Sesión
+      </button>
     </div>
   );
 };
 
+// Componente principal que gestiona la autenticación y combina los componentes
+export const EducationalFeed = ({isAuthenticatedBoolean, samplePosts}) => {
+  // Estado para controlar si el usuario está autenticado
+  const [isAuthenticated, setIsAuthenticated] = useState(isAuthenticatedBoolean);
+
+  // Simulación de posts de ejemplo
+
+  // Función para cambiar el estado de autenticación (para demostración)
+  const toggleAuth = () => {
+    setIsAuthenticated(!isAuthenticated);
+  };
+
+  return (
+    <div className="container-user">
+      <ShareResourceCard isAuthenticated={isAuthenticated} />
+      
+      {/* Mostrar un mensaje para iniciar sesión si no está autenticado */}
+      {!isAuthenticated && <LoginPrompt />}
+      
+      {/* Lista de publicaciones (visible para todos) */}
+      <div className="posts-container">
+        {samplePosts.map((post, index) => (
+          <EducationalPost 
+            key={index} 
+            post={post} 
+            isAuthenticated={isAuthenticated}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export const EducationalUserPanel = ({isAuthenticatedBoolean, samplePosts}) => {
+  // Estado para controlar si el usuario está autenticado
+  const [isAuthenticated, setIsAuthenticated] = useState(isAuthenticatedBoolean);
+
+  return (
+    <div className="container-user">
+      <div className="posts-container">
+        {samplePosts.map((post, index) => (
+          <EducationalPost 
+            key={index} 
+            post={post} 
+            isAuthenticated={isAuthenticated}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};

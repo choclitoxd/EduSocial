@@ -1,0 +1,91 @@
+/* Estilos para la sección de grupos */
+.suggested-groups-container {
+  max-width: 600px;
+  display: flex;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #4a00e0;
+  color: white;
+  padding: 30px 20px;
+}
+
+.groups-main-content {
+  flex: 1;
+  padding: 40px;
+  padding-top: 40px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.group-subCountent{
+  background: transparent;
+  border: 2px solid rgba(255,255,255,.2);
+  backdrop-filter: blur(30px);
+  box-shadow: 0 0 10px rgb(0, 0, 0,.2);
+  color: white;
+  padding: 20px;
+  border-radius: 20px;
+}
+/* Contenedor principal */
+.groups-container {
+  padding: 20px;
+}
+
+/* Texto descriptivo */
+.description {
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+/* Cuadrícula de grupos */
+.group-list {
+  display: grid;
+  padding-top: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+/* Tarjeta de grupo individual */
+.group-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+}
+
+/* Título de la tarjeta */
+.group-card h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+/* Botón para unirse */
+.join-btn {
+  background-color: #4a00e0;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.join-btn:hover {
+  background-color: #3d00b3;
+}
+
+/* Diseño responsivo */
+@media (max-width: 600px) {
+  .group-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .groups-container {
+    padding: 15px;
+  }
+}

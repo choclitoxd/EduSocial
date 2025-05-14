@@ -1,10 +1,10 @@
 import React from "react";
 import { Navbar } from "../ui/Navbar";
 import "../ui/css/Navbar.css"
-export const Header = () =>{
+export const Header = ({ user }) =>{
     return(
         <header className="container space">
-            <Navbar/>
+            <Navbar  user={user} />
         </header>
     );
 };
