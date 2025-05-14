@@ -3,7 +3,9 @@ package com.Uniquindio.redsocialeducativa.service;
 import com.Uniquindio.redsocialeducativa.model.Usuario;
 import com.Uniquindio.redsocialeducativa.util.grafo.GrafoAfinidad;
 import com.Uniquindio.redsocialeducativa.util.listaEnlazada.ListaUsuarios;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UsuarioService {
     private ListaUsuarios listaUsuarios;
     private final GrafoAfinidad grafoAfinidad;
@@ -47,6 +49,11 @@ public class UsuarioService {
         grafoAfinidad.agregarRelacion(juan, ana);
 
     }
+
+    public Usuario obtenerUsuario(String correo){
+        return listaUsuarios.buscarPorCorreo(correo);
+    }
+
 
     public boolean validarCorreo(String correo){
         return listaUsuarios.buscarPorCorreo(correo) == null;
