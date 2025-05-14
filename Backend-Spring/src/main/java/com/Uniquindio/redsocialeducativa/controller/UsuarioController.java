@@ -17,15 +17,12 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
+    String token = "abc123xyz";
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Usuario usuario) {
-
-        System.out.println("Comparando con: " + usuario.getCorreo() + " / " + usuario.getContrasena());
-
         if (usuarioService.verificarCredenciales(usuario.getCorreo(), usuario.getContrasena())) {
-            String token = "abc123xyz"; // Temporal, puedes usar JWT después
             Usuario user = usuarioService.obtenerUsuario(usuario.getCorreo());
-
             return ResponseEntity.ok()
                     .header("Authorization", "Bearer " + token)
                     .body(Map.of(
@@ -39,12 +36,14 @@ public class UsuarioController {
     }
 
     @PostMapping("/registrar")
-    public ResponseEntity<String> registrar(@RequestBody Usuario nuevo) {
+    public ResponseEntity<?> registrar(@RequestBody Usuario nuevo) {
+        System.out.println(nuevo.getCorreo() + " / " + nuevo.getContrasena());
+
         if (usuarioService.validarCorreo(nuevo.getCorreo())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Correo ya registrado");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Correo ya registrado"));
         } else {
             usuarioService.agregar(nuevo);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Registro exitoso");
+            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message","Registro exitoso"));
         }
     }
 }

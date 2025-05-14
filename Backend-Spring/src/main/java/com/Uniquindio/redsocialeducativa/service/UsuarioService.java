@@ -56,7 +56,7 @@ public class UsuarioService {
 
 
     public boolean validarCorreo(String correo){
-        return listaUsuarios.buscarPorCorreo(correo) == null;
+        return listaUsuarios.buscarPorCorreo(correo) != null;
     }
 
     public boolean agregar(Usuario usuario){
