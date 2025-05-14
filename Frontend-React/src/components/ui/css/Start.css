@@ -1,0 +1,32 @@
+.star-rating {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.star-container {
+  margin: 0 2px;
+  cursor: pointer;
+}
+
+.star-icon {
+  color: #ddd;
+  transition: color 0.2s;
+}
+
+.star-icon.active {
+  color: #ffd700;
+}
+
+.star-rating:hover .star-icon {
+  color: #ddd;
+}
+
+.star-container:hover ~ .star-container .star-icon {
+  color: #ddd;
+}
+
+.star-container:hover .star-icon,
+.star-container:hover ~ .star-container .star-icon {
+  color: #ffd700;
+}

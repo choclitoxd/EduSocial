@@ -1,0 +1,186 @@
+.container{
+    padding-top: 10px;
+    align-items: flex-end;
+    width: 275px;
+    margin-left: 240px;
+    position: fixed;
+    flex-grow: 1;
+    z-index: 3;
+}
+.space{
+    justify-content: space-between;
+}
+
+.style-box{
+    background: transparent;
+    border: 2px solid rgba(255,255,255,.2);
+    backdrop-filter: blur(30px);
+    box-shadow: 0 0 10px rgb(0, 0, 0,.2);
+}
+
+.trasiotion-action{
+    transition-duration: 0.2s;
+}
+
+.navbar{
+    width: 275px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    padding: 15px 7%;
+    border-radius: 16px;
+    color: #fff;
+}
+
+.subcontainer-nav{
+    max-width: fit-content;
+    display: flex;
+    align-items: center;
+    padding: 12px;
+}
+
+.subcontainer-nav:hover{
+    background: rgba(255, 255, 255, 0.2);
+}
+
+
+
+.important-tittle{
+    font-weight: 600;
+}
+
+.logo{
+    cursor: pointer;
+}
+
+.align-itemsAll{
+    align-items: flex-start;
+}
+
+.navbar nav{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    list-style: none;
+}
+
+.navbar nav a{
+    width: 100%;
+    cursor: pointer;
+}
+
+.nav-text{
+    max-width: 100%;
+    font-size: 20px;
+    line-height: 24px;
+    margin-left: 10px;
+    margin-right: 10px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.icon{
+    width: 50px;
+    cursor: pointer;
+}
+
+.search-box{
+    display: flex;
+    align-items: center;
+    background: transparent;
+    backdrop-filter: blur(30px);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255,255,255,.2);
+    padding: 10px 20px;
+    border-radius: 50px;
+}
+
+.search-box input{
+    padding: 6px;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    color: #fff;
+    font-size: 18px;
+    max-width: 200px;
+}
+
+.div-user {
+  width: 100%;
+  max-width: 280px;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  border-radius: 9999px;
+  padding: 10px 16px;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.2s;
+}
+
+.div-user .btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Profile Image */
+.profile-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  margin-right: 12px;
+  flex-shrink: 0;
+  background-color: rebeccapurple; /* Twitter blue for icon background */
+}
+
+.user-icon {
+  color: #ffffff;
+  font-size: 24px;
+}
+
+/* Profile Info */
+.profile-info {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.display-name {
+  font-weight: bold;
+  font-size: 15px;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+
+.username {
+  font-size: 14px;
+  color: #8899a6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* More Options Icon */
+.more-options {
+  flex-shrink: 0;
+  margin-left: 12px;
+  color: #8899a6;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}

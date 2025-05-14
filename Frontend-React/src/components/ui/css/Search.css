@@ -1,0 +1,56 @@
+.search-card {
+    position: fixed;
+    right: 300px;
+    top: 50px;
+    width: 260px;
+    background: transparent;
+    border: 2px solid rgba(255,255,255,.2);
+    backdrop-filter: blur(30px);
+    box-shadow: 0 0 10px rgb(0, 0, 0,.2);
+    color: white;
+    padding: 20px;
+    border-radius: 20px;
+    z-index: 1000;
+}
+
+.search-card h2 {
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.filter-group {
+  margin-bottom: 16px;
+}
+
+.filter-select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+}
+
+.search-button {
+  background-color: #fff;
+  color: #9c27b0;
+  font-weight: bold;
+  padding: 10px;
+  border: none;
+  border-radius: 12px;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.search-button:hover {
+  background-color: #f0f0f0;
+}
