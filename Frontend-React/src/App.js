@@ -14,7 +14,10 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<User />} />
-            <Route
+            <Route path="/" element={<Form />} />
+            <Route path="/" element={<UserPanel />} />
+            <Route path="/" element={<UserGroup />} />
+            {/* <Route
               path="/user"
               element={
                 <PrivateRoute>
@@ -37,7 +40,7 @@ function App() {
                   <UserGroup />
                 </PrivateRoute>
               }
-            />
+            /> */}
           </Routes>
         </BrowserRouter>
       </div>
