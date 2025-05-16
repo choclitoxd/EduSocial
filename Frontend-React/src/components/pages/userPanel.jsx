@@ -32,7 +32,7 @@ export const UserPanel = () =>{
     return(
         <div className="main-div">
             <Header user={user} />
-            <EducationalUserPanel samplePosts={samplePosts} isAuthenticatedBoolean={user.isLoggedIn} />
+            <EducationalUserPanel samplePosts={samplePosts} isAuthenticatedBoolean={user} />
             <StudentPanel contents={samplePosts.length} rating={0}/>
         </div>
     );

@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
-import { FaFileAlt, FaLink, FaVideo, FaPlay, FaImage, FaHandsHelping, FaSignInAlt } from 'react-icons/fa';
-import { StarRating } from './StarRating';
+import { FaFileAlt, FaLink, FaVideo, FaPlay, FaImage, FaHandsHelping, FaSignInAlt, FaThumbsUp, FaYoutube   } from 'react-icons/fa';
 import './css/ResourceComponents.css';
 
 // Componente para la tarjeta de compartir recursos (solo visible para usuarios autenticados)
-export const ShareResourceCard = ({ isAuthenticated }) => {
+export const ShareResourceCard = ({ isAuthenticated, user }) => {
   if (!isAuthenticated) {
     return null; // No renderizar este componente si el usuario no está autenticado
   }
-
   return (
     <div className="resource-card">
       <div className="card-header">
-        <div className="avatar purple">M</div>
+        <div className="avatar purple">{user.name.charAt(0)}</div>
         <h3>¿Qué recurso educativo quieres compartir hoy?</h3>
       </div>
       <textarea 
@@ -39,9 +37,11 @@ export const ShareResourceCard = ({ isAuthenticated }) => {
 
 // Componente para mostrar publicaciones educativas
 export const EducationalPost = ({ post, isAuthenticated }) => {
-  const handleRatingChange = (newRating) => {
+  const [showVideo, setShowVideo] = useState(false);
+  
+  const handleLike = () => {
     if (isAuthenticated) {
-      alert(`Has calificado con ${newRating} estrellas`);
+      alert(`¡Gracias por tu "Me gusta"!`);
     } else {
       alert('Necesitas iniciar sesión para calificar un recurso');
     }
@@ -55,6 +55,34 @@ export const EducationalPost = ({ post, isAuthenticated }) => {
     }
   };
 
+  const handlePlayVideo = () => {
+    setShowVideo(true);
+  };
+
+  // Función para extraer el ID del video de YouTube de diferentes formatos de URL
+  const getYoutubeVideoId = (url) => {
+    if (!url) return null;
+    
+    // Patrones comunes de URLs de YouTube
+    const patterns = [
+      /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&]+)/i,
+      /(?:https?:\/\/)?(?:www\.)?youtu\.be\/([^?]+)/i,
+      /(?:https?:\/\/)?(?:www\.)?youtube\.com\/embed\/([^?]+)/i
+    ];
+    
+    for (const pattern of patterns) {
+      const match = url.match(pattern);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+    
+    return null;
+  };
+
+  // Verificar si el post tiene un enlace de YouTube
+  const youtubeVideoId = post.type === 'video' ? getYoutubeVideoId(post.videoUrl) : null;
+  
   return (
     <div className="post-card">
       <div className="post-header">
@@ -66,28 +94,80 @@ export const EducationalPost = ({ post, isAuthenticated }) => {
       </div>
       <div className="post-title">{post.title}</div>
       <div className="post-content">{post.content}</div>
+      
       {post.type === 'video' && (
         <div className="video-container">
-          <div className="play-button">
-            <FaPlay className="play-icon" />
-          </div>
+          {!showVideo ? (
+            <>
+              <div className="video-thumbnail" onClick={handlePlayVideo}>
+                {youtubeVideoId ? (
+                  <img 
+                    src={`https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg`} 
+                    alt="Miniatura del video" 
+                    className="youtube-thumbnail"
+                  />
+                ) : (
+                  <div className="default-thumbnail">
+                    <FaYoutube className="youtube-icon" />
+                  </div>
+                )}
+                <div className="play-button">
+                  <FaPlay className="play-icon" />
+                </div>
+              </div>
+              {post.videoUrl && (
+                <div className="video-source">
+                  <a href={post.videoUrl} target="_blank" rel="noopener noreferrer" className="video-link">
+                    Ver en YouTube <FaYoutube />
+                  </a>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="youtube-embed">
+              {youtubeVideoId ? (
+                <iframe
+                  width="100%"
+                  height="315"
+                  src={`https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1`}
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              ) : (
+                <div className="video-error">
+                  <p>Lo sentimos, no se pudo cargar el video.</p>
+                  {post.videoUrl && (
+                    <a href={post.videoUrl} target="_blank" rel="noopener noreferrer">
+                      Ver en YouTube
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
+      
       <div className="container-reaction">
-        {/* ⭐ Valoración con estrellas */}
-        <div className="rating-container">
-          <p>¿Qué tan útil fue este recurso?</p>
-          <StarRating 
-            initialValue={0}
-            onChange={handleRatingChange}
-          />
-          {!isAuthenticated && <small className="login-required">Inicia sesión para calificar</small>}
+        <div className="like-container">
+          <p>¿Te gustó este recurso?</p>
+          <button 
+            onClick={handleLike}
+            className="like-button"
+            disabled={!isAuthenticated}
+          >
+            <FaThumbsUp />
+          </button>
+          {!isAuthenticated && <small className="login-required">Inicia sesión para dar me gusta</small>}
         </div>
         {/* 🎯 Botón para solicitar ayuda */}
         <div className="help-button-container">
           <button 
-            className="resource-button" 
+            className="resource-button"
             onClick={handleHelpRequest}
+            disabled={!isAuthenticated}
           >
             <FaHandsHelping className='button-icon'/>
             Solicitar ayuda al estudiante
@@ -113,20 +193,20 @@ export const LoginPrompt = () => {
 };
 
 // Componente principal que gestiona la autenticación y combina los componentes
-export const EducationalFeed = ({isAuthenticatedBoolean, samplePosts}) => {
+export const EducationalFeed = ({samplePosts, user}) => {
   // Estado para controlar si el usuario está autenticado
-  const [isAuthenticated, setIsAuthenticated] = useState(isAuthenticatedBoolean);
+  const [isAuthenticated, setIsAuthenticated] = useState(user.isLoggedIn);
 
   // Simulación de posts de ejemplo
 
   // Función para cambiar el estado de autenticación (para demostración)
-  const toggleAuth = () => {
-    setIsAuthenticated(!isAuthenticated);
-  };
+  // const toggleAuth = () => {
+  //   setIsAuthenticated(!isAuthenticated);
+  // };
 
   return (
     <div className="container-user">
-      <ShareResourceCard isAuthenticated={isAuthenticated} />
+      <ShareResourceCard isAuthenticated={isAuthenticated} user={user} />
       
       {/* Mostrar un mensaje para iniciar sesión si no está autenticado */}
       {!isAuthenticated && <LoginPrompt />}
@@ -145,9 +225,9 @@ export const EducationalFeed = ({isAuthenticatedBoolean, samplePosts}) => {
   );
 };
 
-export const EducationalUserPanel = ({isAuthenticatedBoolean, samplePosts}) => {
+export const EducationalUserPanel = ({user, samplePosts}) => {
   // Estado para controlar si el usuario está autenticado
-  const [isAuthenticated, setIsAuthenticated] = useState(isAuthenticatedBoolean);
+  const [isAuthenticated, setIsAuthenticated] = useState(user.isLoggedIn);
 
   return (
     <div className="container-user">
@@ -155,7 +235,8 @@ export const EducationalUserPanel = ({isAuthenticatedBoolean, samplePosts}) => {
         {samplePosts.map((post, index) => (
           <EducationalPost 
             key={index} 
-            post={post} 
+            post={post}
+            user={user}
             isAuthenticated={isAuthenticated}
           />
         ))}

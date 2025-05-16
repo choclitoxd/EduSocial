@@ -100,7 +100,7 @@
   cursor: pointer;
   flex-grow: 1;
   font-size: 14px;
-  color: #9c27b0;
+  color: #FFA500;
   transition: background-color 0.2s;
 }
 
@@ -162,12 +162,47 @@
   line-height: 1.5;
 }
 
+/* Estilos para el contenedor de video */
 .video-container {
+  width: 100%;
+  margin: 15px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.video-thumbnail {
   position: relative;
   width: 100%;
-  padding-bottom: 56.25%; /* Proporción 16:9 */
+  padding-top: 56.25%; /* Relación de aspecto 16:9 */
+  cursor: pointer;
   background-color: #000;
-  margin-bottom: 16px;
+}
+
+.youtube-thumbnail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.default-thumbnail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1c1c1c 0%, #323232 100%);
+}
+
+.youtube-icon {
+  font-size: 50px;
+  color: #ff0000;
 }
 
 .play-button {
@@ -175,19 +210,62 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 70px;
-  height: 70px;
-  background-color: rgba(33, 150, 243, 0.9);
+  width: 60px;
+  height: 60px;
+  background-color: rgba(255, 0, 0, 0.8);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.play-button:hover {
+  background-color: rgba(255, 0, 0, 1);
 }
 
 .play-icon {
   color: white;
-  font-size: 28px;
+  font-size: 24px;
+}
+
+.youtube-embed {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* Mantiene la relación de aspecto 16:9 */
+}
+
+.youtube-embed iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video-source {
+  padding: 10px;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.video-link {
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.video-link:hover {
+  text-decoration: underline;
+}
+
+.video-error {
+  padding: 20px;
+  text-align: center;
 }
 
 .container-reaction{
@@ -195,7 +273,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
   padding-top: 12px;
 }
 
@@ -257,7 +335,7 @@
 
 .login-button {
   background-color: #fff;
-  color: #9c27b0;
+  color: #FFA500;
   border: none;
   border-radius: 8px;
   padding: 10px 20px;
@@ -300,4 +378,31 @@
 
 .demo-auth-toggle:hover {
   background: rgba(255, 255, 255, 0.2);
+}
+
+.like-container{
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 25px;
+}
+
+.like-container p{
+  color: #fff;
+}
+
+.like-button {
+  display: flex;
+  width: 50px;
+  background-color: #fff;
+  color: #FFA500;
+  border: none;
+  padding: 0.5em 1em;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.like-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }

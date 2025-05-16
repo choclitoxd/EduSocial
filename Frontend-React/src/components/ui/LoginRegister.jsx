@@ -16,10 +16,10 @@ const LoginRegister = () =>{
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-        await loginUser(loginEmail, loginPassword);
-        navigate("/home"); // Redirige al home si login es exitoso
+            await loginUser(loginEmail, loginPassword);
+            navigate("/home"); // Redirige al home si login es exitoso
         } catch (error) {
-        alert("Error al iniciar sesión: " + error.message);
+            alert("Error al iniciar sesión: " + error.message);
         }
     };
 

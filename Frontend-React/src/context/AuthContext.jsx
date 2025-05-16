@@ -23,11 +23,11 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // Función para login
-  const loginUser = async (email, password) => {
-    const res = await fetch("/api/login", {
+  const loginUser = async (correo, contrasenea) => {
+    const res = await fetch("http://localhost:8080/api/usuarios/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ correo, contrasenea })
     });
     const data = await res.json();
 

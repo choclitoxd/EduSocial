@@ -2,6 +2,7 @@ import React from "react";
 import { Header } from "./header";
 import { EducationalFeed } from "../ui/ResourceComponents";
 import { Search } from "../ui/Search";
+
 import "../ui/css/Navbar.css";
 
 export const User = () => {
@@ -19,7 +20,8 @@ export const User = () => {
         time: 'Hace 2 horas',
         title: 'Tutorial sobre ecuaciones diferenciales',
         content: 'Este video explica cómo resolver ecuaciones diferenciales de primer orden.',
-        type: 'video'
+        type: 'video',
+        videoUrl:'https://www.youtube.com/watch?v=PMQPya2ofyU',
       },
       {
         avatarText: 'A',
@@ -31,11 +33,13 @@ export const User = () => {
         type: 'document'
       }
     ];
+    
   return (
     <div className="main-div">
       <Header user={user} />
-      <EducationalFeed samplePosts={samplePosts}  isAuthenticatedBoolean={user.isLoggedIn}/>
+      <EducationalFeed samplePosts={samplePosts}  user={user}/>
       <Search />
+      
     </div>
   );
 };

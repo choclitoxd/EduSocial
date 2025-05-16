@@ -167,19 +167,11 @@
   margin-bottom: 2px;
 }
 
-.username {
-  font-size: 14px;
-  color: #8899a6;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 
 /* === Icono de opciones (tres puntos) === */
 .more-options {
   flex-shrink: 0;
   margin-left: 12px;
-  color: #8899a6;
   font-size: 16px;
   display: flex;
   align-items: center;
