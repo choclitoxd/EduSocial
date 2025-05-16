@@ -14,7 +14,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<User />} />
-            <Route path="/form" element={<Form />} />
+            <Route path="/login" element={<Form />} />
             <Route path="/user" element={<UserPanel />} />
             <Route path="/group" element={<UserGroup />} />
             {/* <Route

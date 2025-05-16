@@ -23,19 +23,25 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // Función para login
-  const loginUser = async (correo, contrasenea) => {
+  const loginUser = async (correo, contrasena) => {
     const res = await fetch("http://localhost:8080/api/usuarios/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ correo, contrasenea })
+      body: JSON.stringify({ correo, contrasena }) 
     });
-    const data = await res.json();
-
+  
+    let data;
+    try {
+      data = await res.json();
+    } catch (e) {
+      throw new Error("Error al procesar la respuesta del servidor");
+    }
+  
     if (res.ok) {
       localStorage.setItem("token", data.token);
-      setUser(data.user); // guardar usuario en el contexto
+      setUser(data.user);
     } else {
-      throw new Error(data.message);
+      throw new Error(data.message || "Credenciales incorrectas");
     }
   };
 
