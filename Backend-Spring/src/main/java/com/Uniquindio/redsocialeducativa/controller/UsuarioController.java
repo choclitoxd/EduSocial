@@ -48,7 +48,7 @@ public class UsuarioController {
         }
     }
 
-    @PostMapping("/listarUsuarios")
+    @GetMapping("/listarUsuarios")
     public ResponseEntity<?> listarUsuarios() {
         return ResponseEntity.ok(usuarioService.obtenerTodosLosUsuarios());
     }
@@ -64,10 +64,6 @@ public class UsuarioController {
         return ResponseEntity.ok(sugerencias);
     }
 
- /*   @GetMapping("/grafo")
-    public ResponseEntity<?> obtenerGrafo(@RequestBody Usuario usuario) {
-
-    }*/
 
 
 

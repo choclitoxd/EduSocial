@@ -2,6 +2,7 @@ package com.Uniquindio.redsocialeducativa.controller;
 
 import com.Uniquindio.redsocialeducativa.model.Contenido;
 import com.Uniquindio.redsocialeducativa.service.ContenidoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +13,8 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:5173")
 public class ContenidoController {
 
-    private final ContenidoService contenidoService = new ContenidoService();
+    @Autowired
+    private ContenidoService contenidoService;
 
     @PostMapping("/guardar")
     public ResponseEntity<String> guardarContenido(@RequestBody Contenido contenido) {
