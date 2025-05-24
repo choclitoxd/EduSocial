@@ -5,6 +5,9 @@ import com.Uniquindio.redsocialeducativa.util.grafo.GrafoAfinidad;
 import com.Uniquindio.redsocialeducativa.util.listaEnlazada.ListaUsuarios;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class UsuarioService {
     private ListaUsuarios listaUsuarios;
@@ -54,9 +57,12 @@ public class UsuarioService {
         return listaUsuarios.buscarPorCorreo(correo);
     }
 
-
     public boolean validarCorreo(String correo){
         return listaUsuarios.buscarPorCorreo(correo) != null;
+    }
+
+    public List<Usuario> obtenerTodosLosUsuarios() {
+        return listaUsuarios.listarUsuarios();
     }
 
     public boolean agregar(Usuario usuario){
@@ -67,4 +73,19 @@ public class UsuarioService {
     public boolean verificarCredenciales(String correo, String contrasena){
         return listaUsuarios.verificarCredenciales(correo, contrasena);
     }
+
+    public List<Usuario> obtenerSugerencias(Usuario usuario) {
+        //Se obtiene el usuario real a partir del correo enviado por el usuario
+        //ya que con el usuario nuevo no encuentra nada. Por el metodo de comparacion cuando se hace el get en el grafo.
+        Usuario usuarioReal = listaUsuarios.buscarPorCorreo(usuario.getCorreo());
+
+        if (usuarioReal == null) {
+            return new ArrayList<>();
+        }
+
+        ListaUsuarios conexiones = grafoAfinidad.obtenerConexiones(usuarioReal);
+        return conexiones != null ? conexiones.listarUsuarios() : new ArrayList<>();
+    }
+
+
 }

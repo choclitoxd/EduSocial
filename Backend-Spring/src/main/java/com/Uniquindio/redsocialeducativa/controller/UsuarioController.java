@@ -2,11 +2,13 @@ package com.Uniquindio.redsocialeducativa.controller;
 
 import com.Uniquindio.redsocialeducativa.model.Usuario;
 import com.Uniquindio.redsocialeducativa.service.UsuarioService;
+import com.Uniquindio.redsocialeducativa.util.listaEnlazada.ListaUsuarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -37,7 +39,6 @@ public class UsuarioController {
 
     @PostMapping("/registrar")
     public ResponseEntity<?> registrar(@RequestBody Usuario nuevo) {
-        System.out.println(nuevo.getCorreo() + " / " + nuevo.getContrasena());
 
         if (usuarioService.validarCorreo(nuevo.getCorreo())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Correo ya registrado"));
@@ -46,4 +47,29 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message","Registro exitoso"));
         }
     }
+
+    @PostMapping("/listarUsuarios")
+    public ResponseEntity<?> listarUsuarios() {
+        return ResponseEntity.ok(usuarioService.obtenerTodosLosUsuarios());
+    }
+
+    @GetMapping("/sugerencias")
+    public ResponseEntity<?> obtenerSugerencias(@RequestBody Usuario usuario) {
+        List<Usuario> sugerencias = usuarioService.obtenerSugerencias(usuario);
+
+        if (sugerencias.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontraron sugerencias para este usuario");
+        }
+
+        return ResponseEntity.ok(sugerencias);
+    }
+
+ /*   @GetMapping("/grafo")
+    public ResponseEntity<?> obtenerGrafo(@RequestBody Usuario usuario) {
+
+    }*/
+
+
+
+
 }

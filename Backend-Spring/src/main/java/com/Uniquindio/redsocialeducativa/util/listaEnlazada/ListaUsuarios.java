@@ -2,6 +2,9 @@ package com.Uniquindio.redsocialeducativa.util.listaEnlazada;
 
 import com.Uniquindio.redsocialeducativa.model.Usuario;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ListaUsuarios extends ListaEnlazada<Usuario> {
 
     public void registrarUsuario(Usuario usuario) {
@@ -52,4 +55,15 @@ public class ListaUsuarios extends ListaEnlazada<Usuario> {
         }
         return false;
     }
+
+    public List<Usuario> listarUsuarios() {
+        List<Usuario> lista = new ArrayList<>();
+        Nodo<Usuario> actual = cabeza;
+        while (actual != null) {
+            lista.add(actual.elemento);
+            actual = actual.siguiente;
+        }
+        return lista;
+    }
+
 }
