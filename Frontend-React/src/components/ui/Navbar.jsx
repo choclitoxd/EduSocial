@@ -22,9 +22,9 @@ export const Navbar = ({ user }) => {
         <NavItem icon={<FaHome />} label="Home" to="/home" />
        {user.isLoggedIn ? (
             <>
-                <NavItem icon={<FaChalkboard />} label="Panel de Estudiantes" to="/panel-estudiantes" />
-                <NavItem icon={<FaUserFriends />} label="Grupo de estudio sugerido" to="/grupos" />
-                <NavItem icon={<FaArchive />} label="Mensajes" to="/mensajes" />
+                <NavItem icon={<FaChalkboard />} label="Panel de Estudiantes" to="/user" />
+                <NavItem icon={<FaUserFriends />} label="Grupo de estudio sugerido" to="/group" />
+                <NavItem icon={<FaArchive />} label="Mensajes" to="/message" />
             </>
         ) : null}
        

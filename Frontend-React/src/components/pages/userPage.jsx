@@ -1,6 +1,6 @@
 import React from "react";
 import { Header } from "./header";
-import { EducationalFeed } from "../ui/ResourceComponents";
+import { EducationalFeed } from "../ui/EducationalFeed";
 import { Search } from "../ui/Search";
 
 import "../ui/css/Navbar.css";
@@ -39,7 +39,6 @@ export const User = () => {
       <Header user={user} />
       <EducationalFeed samplePosts={samplePosts}  user={user}/>
       <Search />
-      
     </div>
   );
 };

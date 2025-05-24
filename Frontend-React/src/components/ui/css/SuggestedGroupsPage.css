@@ -1,122 +1,220 @@
-/* Estilos para la sección de grupos */
-.suggested-groups-container {
-  max-width: 600px;
-  display: flex;
-  margin: 0 auto;
-  min-height: 100vh;
-}
-
-.sidebar {
-  width: 250px;
-  background-color: #4a00e0;
-  color: white;
-  padding: 30px 20px;
-}
-
-.groups-main-content {
-  flex: 1;
-  padding: 40px;
-  padding-top: 12px;
+.study-groups-manager {
   max-width: 800px;
   margin: 0 auto;
+  min-height: 100vh;
+  padding: 20px;
 }
 
-.group-subCountent{
+.tabs-container {
   background: transparent;
-  border: 2px solid rgba(255,255,255,.2);
   backdrop-filter: blur(30px);
-  box-shadow: 0 0 10px rgb(0, 0, 0,.2);
-  color: white;
-  padding: 20px;
   border-radius: 20px;
-}
-/* Contenedor principal */
-.groups-container {
   padding: 20px;
-}
-
-/* Texto descriptivo */
-.description {
-  color: #fff;
   margin-bottom: 20px;
 }
 
-/* Cuadrícula de grupos */
+.tabs-header {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tab-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.tab-button.active {
+  background: #FFA500;
+  color: white;
+}
+
+.tab-content {
+  color: white;
+}
+
+.section-header {
+  margin-bottom: 20px;
+}
+
+.section-title {
+  margin: 0 0 10px 0;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-description {
+  margin: 0;
+  opacity: 0.9;
+}
+
+.search-container {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px px 12px 45px;
+  border: 2px solid rgba(255, 255, 255, .3);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 1rem;
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.7);
+}
+
 .group-list {
+  margin-top: 20px;
   display: grid;
-  padding-top: 20px;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
 }
 
-/* Tarjeta de grupo individual */
 .group-card {
-    background: transparent;
-    border: 2px solid rgba(255,255,255,.2);
-    backdrop-filter: blur(30px);
-    box-shadow: 0 0 10px rgb(0, 0, 0,.2);
-    border-radius: 12px;
-    padding: 16px;
-    color: #fff;
-    position: relative;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, .2);
+  box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+  border-radius: 12px;
+  padding: 20px;
+  color: white;
+  position: relative;
+  transition: transform 0.2s ease;
 }
 
-/* Título de la tarjeta */
+.group-card:hover {
+  transform: translateY(-2px);
+}
+
+.my-group-card {
+  border-color: rgba(255, 165, 0, 0.4);
+}
+
 .group-card h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
+  margin: 0 0 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-/* Botón para unirse */
-.join-btn {
-  margin-left: 10px;
-  background-color: #fff;
-  color: #FFA500;
+.group-card p {
+  margin: 0 0 15px 0;
+  opacity: 0.9;
+}
+
+.group-status {
+  margin-bottom: 15px;
+}
+
+.status-badge {
+  background: #FFA500;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.last-activity {
+  display: block;
+  font-size: 0.85rem;
+  opacity: 0.7;
+  margin-top: 5px;
+}
+
+.group-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.group-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.join-btn,
+.view-btn,
+.leave-btn {
+  padding: 8px 12px;
   border: none;
   border-radius: 6px;
-  padding: 8px 12px;
-  margin-top: 10px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
-.join-btn:hover {
+.join-btn,
+.view-btn {
+  background-color: #FFA500;
+  color: white;
+}
+
+.join-btn:hover,
+.view-btn:hover {
+  background-color: #e8940a;
+}
+
+.leave-btn {
   background-color: rgba(255, 255, 255, 0.1);
+  color: white;
 }
 
-/* Diseño responsivo */
-@media (max-width: 600px) {
-  .group-list {
-    grid-template-columns: 1fr;
-  }
-  
-  .groups-container {
-    padding: 15px;
-  }
+.leave-btn:hover {
+  background-color: #dc3545;
 }
 
-/* Modal a la derecha */
 .modal-container {
   position: absolute;
   top: 0;
-  left: 600px; /* Posiciona el contenedor justo al final del card */
+  left: 100%;
   z-index: 1000;
+  margin-left: 20px;
 }
 
-.right-positioned {
+.modal {
   background: white;
   padding: 24px;
   border-radius: 12px;
   width: 280px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
-  text-align: left;
-  margin-left: 10px; /* Espacio entre la tarjeta y el modal */
-  color: #333; /* Color de texto para contraste sobre fondo blanco */
+  
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  color: #333;
 }
 
-.right-positioned h2 {
+.modal h2 {
   font-size: 1.2rem;
-  margin-top: 0;
+  margin: 0 0 15px 0;
   text-align: center;
   color: #FFA500;
   border-bottom: 1px solid #eee;
@@ -125,12 +223,9 @@
 
 .modal-description {
   font-size: 0.9rem;
-  margin: 10px 0;
+  margin: 10px 0 15px 0;
   color: #555;
-}
-
-.modal-members {
-  margin: 15px 0;
+  line-height: 1.4;
 }
 
 .modal-members h3 {
@@ -141,13 +236,13 @@
 
 .members-list {
   list-style: none;
-  padding: 0;
+  padding: 8px;
   margin: 0;
   max-height: 120px;
   overflow-y: auto;
   border: 1px solid #eee;
   border-radius: 6px;
-  padding: 5px;
+  background: #f9f9f9;
 }
 
 .member-item {
@@ -158,21 +253,23 @@
 }
 
 .member-icon {
-  margin-right: 5px;
+  margin-right: 8px;
 }
 
 .modal-actions {
   margin-top: 20px;
   display: flex;
   justify-content: space-between;
+  gap: 10px;
 }
 
 .modal-actions button {
-  padding: 8px 16px;
+  padding: 10px 16px;
   border: none;
   cursor: pointer;
   border-radius: 8px;
   font-size: 0.9rem;
+  flex: 1;
 }
 
 .modal-actions button:first-child {
@@ -185,9 +282,46 @@
   color: white;
 }
 
+.danger-btn {
+  background-color: #dc3545;
+  color: white;
+}
 
-/* Manejo de responsividad para el modal */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  opacity: 0.7;
+}
+
+.empty-state h3 {
+  margin-bottom: 10px;
+}
+
+.header-card{
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, .2);
+  backdrop-filter: blur(30px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+  border-radius: 12px;
+  padding: 10px;
+  color: white;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
 @media (max-width: 768px) {
+  .study-groups-manager {
+    padding: 15px;
+  }
+
+  .group-list {
+    grid-template-columns: 1fr;
+  }
+
+  .tabs-header {
+    flex-direction: column;
+  }
+
   .modal-container {
     position: fixed;
     top: 0;
@@ -197,17 +331,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0,0,0,0.6);
-  }
-  
-  .right-positioned {
+    background: rgba(0, 0, 0, 0.6);
     margin-left: 0;
+  }
+
+  .modal {
     width: 90%;
     max-width: 400px;
-    text-align: left;
-  }
-  
-  .members-list {
-    max-height: 150px;
   }
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { Header } from "./header";
 import { StudentPanel } from "../ui/StudentPanel";
-import { EducationalUserPanel, } from "../ui/ResourceComponents";
+import { EducationalUserPanel, } from "../ui/EducationalUserPanel";
 import "../ui/css/Navbar.css"
 export const UserPanel = () =>{
     const user = {
@@ -32,7 +32,7 @@ export const UserPanel = () =>{
     return(
         <div className="main-div">
             <Header user={user} />
-            <EducationalUserPanel samplePosts={samplePosts} isAuthenticatedBoolean={user} />
+            <EducationalUserPanel userPosts={samplePosts} user={user} />
             <StudentPanel contents={samplePosts.length} rating={0}/>
         </div>
     );

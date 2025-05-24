@@ -1,41 +1,6 @@
-import React, { useState } from 'react';
-import { FaFileAlt, FaLink, FaVideo, FaPlay, FaImage, FaHandsHelping, FaSignInAlt, FaThumbsUp, FaYoutube   } from 'react-icons/fa';
-import './css/ResourceComponents.css';
+import React, {useState} from 'react'; 
+import {FaPlay, FaHandsHelping,FaThumbsUp, FaYoutube   } from 'react-icons/fa';
 
-// Componente para la tarjeta de compartir recursos (solo visible para usuarios autenticados)
-export const ShareResourceCard = ({ isAuthenticated, user }) => {
-  if (!isAuthenticated) {
-    return null; // No renderizar este componente si el usuario no está autenticado
-  }
-  return (
-    <div className="resource-card">
-      <div className="card-header">
-        <div className="avatar purple">{user.name.charAt(0)}</div>
-        <h3>¿Qué recurso educativo quieres compartir hoy?</h3>
-      </div>
-      <textarea 
-        className="input-area" 
-        placeholder="Describe tu recurso educativo..."
-      />
-      <div className="resource-buttons">
-        <button className="resource-button">
-          <FaFileAlt className="button-icon" /> Documento
-        </button>
-        <button className="resource-button">
-          <FaLink className="button-icon" /> Enlace
-        </button>
-        <button className="resource-button">
-          <FaVideo className="button-icon" /> Video
-        </button>
-        <button className="resource-button">
-          <FaImage className="button-icon" /> Imagen
-        </button>
-      </div>
-    </div>
-  );
-};
-
-// Componente para mostrar publicaciones educativas
 export const EducationalPost = ({ post, isAuthenticated }) => {
   const [showVideo, setShowVideo] = useState(false);
   
@@ -174,72 +139,6 @@ export const EducationalPost = ({ post, isAuthenticated }) => {
           </button>
           {!isAuthenticated && <small className="login-required">Inicia sesión para solicitar ayuda</small>}
         </div>
-      </div>
-    </div>
-  );
-};
-
-// Mensaje para usuarios no autenticados
-export const LoginPrompt = () => {
-  return (
-    <div className="login-prompt">
-      <h3>Inicia sesión para compartir recursos educativos</h3>
-      <p>Puedes ver los recursos compartidos, pero necesitas una cuenta para publicar los tuyos.</p>
-      <button className="login-button">
-        <FaSignInAlt className="button-icon" /> Iniciar Sesión
-      </button>
-    </div>
-  );
-};
-
-// Componente principal que gestiona la autenticación y combina los componentes
-export const EducationalFeed = ({samplePosts, user}) => {
-  // Estado para controlar si el usuario está autenticado
-  const [isAuthenticated, setIsAuthenticated] = useState(user.isLoggedIn);
-
-  // Simulación de posts de ejemplo
-
-  // Función para cambiar el estado de autenticación (para demostración)
-  // const toggleAuth = () => {
-  //   setIsAuthenticated(!isAuthenticated);
-  // };
-
-  return (
-    <div className="container-user">
-      <ShareResourceCard isAuthenticated={isAuthenticated} user={user} />
-      
-      {/* Mostrar un mensaje para iniciar sesión si no está autenticado */}
-      {!isAuthenticated && <LoginPrompt />}
-      
-      {/* Lista de publicaciones (visible para todos) */}
-      <div className="posts-container">
-        {samplePosts.map((post, index) => (
-          <EducationalPost 
-            key={index} 
-            post={post} 
-            isAuthenticated={isAuthenticated}
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export const EducationalUserPanel = ({user, samplePosts}) => {
-  // Estado para controlar si el usuario está autenticado
-  const [isAuthenticated, setIsAuthenticated] = useState(user.isLoggedIn);
-
-  return (
-    <div className="container-user">
-      <div className="posts-container">
-        {samplePosts.map((post, index) => (
-          <EducationalPost 
-            key={index} 
-            post={post}
-            user={user}
-            isAuthenticated={isAuthenticated}
-          />
-        ))}
       </div>
     </div>
   );

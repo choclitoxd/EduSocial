@@ -4,6 +4,7 @@ import { User } from "./components/pages/userPage";
 import { UserPanel } from "./components/pages/userPanel";
 import { UserGroup } from "./components/pages/userGroup";
 import { AuthProvider } from "./context/AuthContext";
+import { UserMessage } from "./components/pages/userMessage";
 import { PrivateRoute } from "./components/routes/PrivateRoute";
 import './App.css';
 
@@ -17,6 +18,7 @@ function App() {
             <Route path="/login" element={<Form />} />
             <Route path="/user" element={<UserPanel />} />
             <Route path="/group" element={<UserGroup />} />
+            <Route path="/message" element={<UserMessage />} />
             {/* <Route
               path="/user"
               element={

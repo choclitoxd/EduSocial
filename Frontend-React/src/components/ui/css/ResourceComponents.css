@@ -1,408 +1,549 @@
-/* Estilos para los componentes de recursos educativos */
+  /* Estilos para los componentes de recursos educativos */
 
-/* Contenedor principal */
-.container-user{
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 10px 16px;
+  /* Contenedor principal */
+  .container-user{
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 10px 16px;
+  }
+
+  /* Tarjeta de publicación de recursos */
+  .resource-card {
+    background: transparent;
+    border: 2px solid rgba(255,255,255,.2);
+    backdrop-filter: blur(30px);
+    box-shadow: 0 0 10px rgb(0, 0, 0,.2);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+
+  /* Encabezado con avatar y pregunta */
+  .card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    margin-right: 14px;
+    flex-shrink: 0;
+  }
+
+  .avatar.purple {
+    background-color: #9c27b0;
+  }
+
+  .avatar.blue {
+    background-color: #3498db;
+  }
+
+  .avatar.green {
+    background-color: #2ecc71;
+  }
+
+  .card-header h3 {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  /* Área de texto para publicar */
+  .input-area {
+    background-color: #f0f2f5;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    border: none;
+    width: 100%;
+    min-height: 80px;
+    resize: none;
+    font-size: 16px;
+    color: #333;
+    font-family: inherit;
+  }
+
+  .input-area::placeholder {
+    color: #777;
+  }
+
+  .input-area:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+  }
+
+  /* Botones de recursos */
+  .resource-buttons {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .resource-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f2f5;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    cursor: pointer;
+    flex-grow: 1;
+    font-size: 14px;
+    color: #FFA500;
+    transition: background-color 0.2s;
+  }
+
+  .resource-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .button-icon {
+    margin-right: 8px;
+    font-size: 16px;
+  }
+
+  /* Tarjeta de publicación compartida */
+  .post-card {
+    background: transparent;
+    border: 2px solid rgba(255,255,255,.2);
+    backdrop-filter: blur(30px);
+    box-shadow: 0 0 10px rgb(0, 0, 0,.2);
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-header {
+    display: flex;
+    padding: 16px;
+  }
+
+  .user-info {
+    margin-left: 14px;
+  }
+
+  .user-name {
+    font-weight: 600;
+    color: #fff;
+    font-size: 16px;
+  }
+
+  .post-time {
+    color: #777;
+    font-size: 14px;
+    margin-top: 2px;
+  }
+
+  .post-title {
+    padding: 0 16px;
+    margin-bottom: 16px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .post-content {
+    padding: 0 16px 16px 16px;
+    color: #fff;
+    line-height: 1.5;
+  }
+
+  /* Estilos para el contenedor de video */
+  .video-container {
+    width: 100%;
+    margin: 15px 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .video-thumbnail {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* Relación de aspecto 16:9 */
+    cursor: pointer;
+    background-color: #000;
+  }
+
+  .youtube-thumbnail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .default-thumbnail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1c1c1c 0%, #323232 100%);
+  }
+
+  .youtube-icon {
+    font-size: 50px;
+    color: #ff0000;
+  }
+
+  .play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background-color: rgba(255, 0, 0, 0.8);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .play-button:hover {
+    background-color: rgba(255, 0, 0, 1);
+  }
+
+  .play-icon {
+    color: white;
+    font-size: 24px;
+  }
+
+  .youtube-embed {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* Mantiene la relación de aspecto 16:9 */
+  }
+
+  .youtube-embed iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .video-source {
+    padding: 10px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  .video-link {
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .video-link:hover {
+    text-decoration: underline;
+  }
+
+  .video-error {
+    padding: 20px;
+    text-align: center;
+  }
+
+  .container-reaction{
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    padding-top: 12px;
+  }
+
+  .rating-container {
+    text-align: center;
+    font-size: 14px;
+    color: #444;
+    margin-top: 8px;
+    color: #fff;
+  }
+
+  .help-button-container {
+    display: flex;
+    justify-content: center;
+    padding: 12px 16px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .resource-buttons {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    
+    .resource-button {
+      flex-basis: calc(50% - 4px);
+      margin-bottom: 8px;
+    }
+    
+    .card-header h3 {
+      font-size: 16px;
+    }
+  }
+
+  /* Nuevos estilos para la funcionalidad de autenticación */
+  .login-prompt {
+    background: transparent;
+    border: 2px solid rgba(255,255,255,.2);
+    backdrop-filter: blur(30px);
+    box-shadow: 0 0 10px rgb(0, 0, 0,.2);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .login-prompt h3 {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .login-prompt p {
+    color: #ddd;
+    margin-bottom: 15px;
+  }
+
+  .login-button {
+    background-color: #fff;
+    color: #FFA500;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px auto 0;
+    transition: background-color 0.2s;
+  }
+
+  .login-button:hover {
+      background: rgba(255, 255, 255, 0.2);
+  }
+
+  .login-required {
+    color: #ff5252;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+  }
+
+  .posts-container {
+    margin-top: 20px;
+  }
+
+  .demo-auth-toggle {
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: block;
+    margin: 0 auto 20px;
+    font-size: 16px;
+  }
+
+  .demo-auth-toggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .like-container{
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 25px;
+  }
+
+  .like-container p{
+    color: #fff;
+  }
+
+  .like-button {
+    display: flex;
+    width: 50px;
+    background-color: #fff;
+    color: #FFA500;
+    border: none;
+    padding: 0.5em 1em;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .like-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
+  .empty-posts {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Tarjeta de publicación de recursos */
-.resource-card {
-  background: transparent;
-  border: 2px solid rgba(255,255,255,.2);
-  backdrop-filter: blur(30px);
-  box-shadow: 0 0 10px rgb(0, 0, 0,.2);
-  border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 20px;
-}
-
-/* Encabezado con avatar y pregunta */
-.card-header {
+.container-user h2 {
   display: flex;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  font-size: 24px;
-  font-weight: bold;
-  color: white;
-  margin-right: 14px;
-  flex-shrink: 0;
-}
-
-.avatar.purple {
-  background-color: #9c27b0;
-}
-
-.avatar.blue {
-  background-color: #3498db;
-}
-
-.avatar.green {
-  background-color: #2ecc71;
-}
-
-.card-header h3 {
-  color: #fff;
-  font-size: 18px;
-  font-weight: 500;
-}
-
-/* Área de texto para publicar */
-.input-area {
-  background-color: #f0f2f5;
-  border-radius: 12px;
-  padding: 16px;
+  font-size: 1.8rem;
   margin-bottom: 16px;
+  color: #fff;
+  border-bottom: 2px solid #e1e1e1;
+  padding-bottom: 8px;
+}
+
+/* Estilos para los botones de edición y eliminación */
+.post-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 8px;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 4px;
   border: none;
+  font-size: 0.8rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+/* Estilos para la confirmación de eliminación */
+.delete-confirmation {
+  padding: 16px;
+  background-color: #ffebee;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #ffcdd2;
+}
+
+.confirmation-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.confirm-button {
+  padding: 8px 16px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.confirm-button:hover {
+  background-color: #c0392b;
+}
+
+.cancel-button {
+  padding: 8px 16px;
+  background-color: #95a5a6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Estilos para el formulario de edición */
+.edit-post-form {
+  padding: 16px;
+  color:#fff;
+  border-radius: 8px;
+}
+
+.form-group {
+  margin-bottom: 12px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+
+.edit-input, .edit-textarea {
   width: 100%;
-  min-height: 80px;
-  resize: none;
-  font-size: 16px;
-  color: #333;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
   font-family: inherit;
 }
 
-.input-area::placeholder {
-  color: #777;
+.edit-textarea {
+  min-height: 120px;
+  resize: vertical;
 }
 
-.input-area:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
-}
-
-/* Botones de recursos */
-.resource-buttons {
+.edit-actions {
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 8px;
+  margin-top: 16px;
 }
 
-.resource-button {
+.save-button, .cancel-button {
   display: flex;
   align-items: center;
-  justify-content: center;
-  background-color: #f0f2f5;
+  gap: 4px;
+  padding: 8px 16px;
+  border-radius: 4px;
   border: none;
-  border-radius: 8px;
-  padding: 10px 16px;
+  font-weight: bold;
   cursor: pointer;
-  flex-grow: 1;
-  font-size: 14px;
-  color: #FFA500;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
 }
 
-.resource-button:hover {
-   background: rgba(255, 255, 255, 0.2);
-}
 
-.button-icon {
-  margin-right: 8px;
-  font-size: 16px;
-}
-
-/* Tarjeta de publicación compartida */
-.post-card {
-  background: transparent;
-  border: 2px solid rgba(255,255,255,.2);
-  backdrop-filter: blur(30px);
-  box-shadow: 0 0 10px rgb(0, 0, 0,.2);
-  border-radius: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.post-header {
-  display: flex;
-  padding: 16px;
-}
-
-.user-info {
-  margin-left: 14px;
-}
-
-.user-name {
-  font-weight: 600;
-  color: #fff;
-  font-size: 16px;
-}
-
-.post-time {
-  color: #777;
-  font-size: 14px;
-  margin-top: 2px;
-}
-
-.post-title {
-  padding: 0 16px;
-  margin-bottom: 16px;
-  font-size: 18px;
-  font-weight: 600;
-  color: #fff;
-}
-
-.post-content {
-  padding: 0 16px 16px 16px;
-  color: #fff;
-  line-height: 1.5;
-}
-
-/* Estilos para el contenedor de video */
-.video-container {
-  width: 100%;
-  margin: 15px 0;
-  border-radius: 8px;
-  overflow: hidden;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.video-thumbnail {
-  position: relative;
-  width: 100%;
-  padding-top: 56.25%; /* Relación de aspecto 16:9 */
-  cursor: pointer;
-  background-color: #000;
-}
-
-.youtube-thumbnail {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.default-thumbnail {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #1c1c1c 0%, #323232 100%);
-}
-
-.youtube-icon {
-  font-size: 50px;
-  color: #ff0000;
-}
-
-.play-button {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 60px;
-  height: 60px;
-  background-color: rgba(255, 0, 0, 0.8);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.play-button:hover {
-  background-color: rgba(255, 0, 0, 1);
-}
-
-.play-icon {
+.cancel-button {
+  background-color: #95a5a6;
   color: white;
-  font-size: 24px;
 }
 
-.youtube-embed {
-  position: relative;
-  width: 100%;
-  padding-top: 56.25%; /* Mantiene la relación de aspecto 16:9 */
-}
-
-.youtube-embed iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.video-source {
-  padding: 10px;
-  text-align: center;
-  background-color: rgba(0, 0, 0, 0.3);
-}
-
-.video-link {
-  color: #fff;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-}
-
-.video-link:hover {
-  text-decoration: underline;
-}
-
-.video-error {
-  padding: 20px;
-  text-align: center;
-}
-
-.container-reaction{
-  border-top: 1px solid #eee;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  padding-top: 12px;
-}
-
-.rating-container {
-  text-align: center;
-  font-size: 14px;
-  color: #444;
-  margin-top: 8px;
-  color: #fff;
-}
-
-.help-button-container {
-  display: flex;
-  justify-content: center;
-  padding: 12px 16px;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* Responsive */
-@media (max-width: 480px) {
-  .resource-buttons {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-  
-  .resource-button {
-    flex-basis: calc(50% - 4px);
-    margin-bottom: 8px;
-  }
-  
-  .card-header h3 {
-    font-size: 16px;
-  }
-}
-
-/* Nuevos estilos para la funcionalidad de autenticación */
-.login-prompt {
-  background: transparent;
-  border: 2px solid rgba(255,255,255,.2);
-  backdrop-filter: blur(30px);
-  box-shadow: 0 0 10px rgb(0, 0, 0,.2);
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.login-prompt h3 {
-  color: #fff;
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-.login-prompt p {
-  color: #ddd;
-  margin-bottom: 15px;
-}
-
-.login-button {
-  background-color: #fff;
-  color: #FFA500;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 10px auto 0;
-  transition: background-color 0.2s;
-}
-
-.login-button:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.login-required {
-  color: #ff5252;
-  font-size: 12px;
-  margin-top: 5px;
-  display: block;
-}
-
-.posts-container {
-  margin-top: 20px;
-}
-
-.demo-auth-toggle {
-  background-color: #2196f3;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  display: block;
-  margin: 0 auto 20px;
-  font-size: 16px;
-}
-
-.demo-auth-toggle:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.like-container{
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 25px;
-}
-
-.like-container p{
-  color: #fff;
-}
-
-.like-button {
-  display: flex;
-  width: 50px;
-  background-color: #fff;
-  color: #FFA500;
-  border: none;
-  padding: 0.5em 1em;
-  font-size: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.like-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+.cancel-button:hover {
+  background-color: #7f8c8d;
 }
