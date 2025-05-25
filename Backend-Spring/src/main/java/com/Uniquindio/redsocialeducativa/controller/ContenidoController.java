@@ -16,10 +16,23 @@ public class ContenidoController {
     @Autowired
     private ContenidoService contenidoService;
 
+    @PostMapping("/cargarDatosPrueba")
+    public ResponseEntity<?> cargarDatosPrueba() {
+        contenidoService.cargarContenidosDeArranque();
+        return ResponseEntity.ok("Contenidos de prueba cargados.");
+    }
+
     @PostMapping("/guardar")
     public ResponseEntity<String> guardarContenido(@RequestBody Contenido contenido) {
         contenidoService.registrarContenido(contenido);
         return ResponseEntity.status(201).body("Contenido registrado");
+    }
+
+    @PostMapping("/eliminar")
+    public ResponseEntity<String> eliminarContenido(@RequestParam String id) {
+        //System.out.println(id);
+        contenidoService.eliminarContenido(id);
+        return ResponseEntity.status(201).body("Contenido eliminado");
     }
 
     @GetMapping("/listar")
@@ -27,9 +40,9 @@ public class ContenidoController {
         return ResponseEntity.ok(contenidoService.listarContenidos());
     }
 
-    @GetMapping("/buscarPorTitulo")
-    public ResponseEntity<?> buscarPorTitulo(@RequestParam String titulo) {
-        Contenido resultado = contenidoService.buscarPorTitulo(titulo);
+    @GetMapping("/filtrarPorTopic")
+    public ResponseEntity<?> filtrarPorTopic(@RequestParam String topic) {
+        List<Contenido> resultado = contenidoService.buscarPorTopic(topic);
         if (resultado != null) {
             return ResponseEntity.ok(resultado);
         } else {
@@ -37,8 +50,4 @@ public class ContenidoController {
         }
     }
 
-    @GetMapping("/filtrarPorAutor")
-    public ResponseEntity<List<Contenido>> filtrarPorAutor(@RequestParam String autor) {
-        return ResponseEntity.ok(contenidoService.filtrarPorAutor(autor));
-    }
 }

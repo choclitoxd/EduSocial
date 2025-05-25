@@ -1,18 +1,20 @@
 package com.Uniquindio.redsocialeducativa.model;
 
-import java.time.LocalDate;
 import java.util.Random;
 
-public class Contenido implements Comparable<Contenido> {
+public class Contenido {
+    private String id;
     private String topic;
     private String titulo;
     private String descripcion;
     private String autor;
-    private String avatarText;
     private String avatarColor;
-    private Integer valoracion;
+    private String avatarText;
+    private String type;
+    private String Url;
 
-    public Contenido(String titulo, String descripcion, String autor, Integer valoracion, String topic) {
+    public Contenido(String id, String titulo, String descripcion, String autor, String topic, String type, String Url) {
+        this.id = id;
         this.topic = topic;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -23,11 +25,18 @@ public class Contenido implements Comparable<Contenido> {
         String[] colores = {"blue", "purple", "green"};
         this.avatarColor = colores[new Random().nextInt(colores.length)];
 
-        this.valoracion = valoracion;
+        this.type = type;
+        this.Url = Url;
     }
 
     // Getters y setters
+    public String getId() {
+        return id;
+    }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getTitulo() {
         return titulo;
@@ -69,14 +78,6 @@ public class Contenido implements Comparable<Contenido> {
         this.avatarColor = avatarColor;
     }
 
-    public Integer getValoracion() {
-        return valoracion;
-    }
-
-    public void setValoracion(Integer valoracion) {
-        this.valoracion = valoracion;
-    }
-
     public String getTopic() {
         return topic;
     }
@@ -85,20 +86,34 @@ public class Contenido implements Comparable<Contenido> {
         this.topic = topic;
     }
 
-    @Override
-    public int compareTo(Contenido otro) {
-        return this.titulo.compareToIgnoreCase(otro.getTitulo()); // Comparación por título
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getUrl() {
+        return Url;
+    }
+
+    public void setUrl(String Url) {
+        this.Url = Url;
     }
 
     @Override
     public String toString() {
         return "Contenido{" +
-                "titulo='" + titulo + '\'' +
+                "id='" + id + '\'' +
+                ", topic='" + topic + '\'' +
+                ", titulo='" + titulo + '\'' +
                 ", descripcion='" + descripcion + '\'' +
                 ", autor='" + autor + '\'' +
                 ", avatarText='" + avatarText + '\'' +
                 ", avatarColor='" + avatarColor + '\'' +
-                ", valoracion=" + valoracion +
+                ", type='" + type + '\'' +
+                ", Url='" + Url + '\'' +
                 '}';
     }
 }

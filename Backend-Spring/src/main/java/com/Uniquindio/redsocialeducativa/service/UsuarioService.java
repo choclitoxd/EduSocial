@@ -16,9 +16,10 @@ public class UsuarioService {
     public UsuarioService(){
         listaUsuarios = new ListaUsuarios();
         grafoAfinidad = new GrafoAfinidad();
-        cargarContenidosDeArranque();
     }
-    private void cargarContenidosDeArranque() {
+
+    public void cargarUsuariosDePrueba() {
+
         Usuario admin = new Usuario("admin@uq.com", "admin@uq.com", "Admin");
         Usuario test = new Usuario("test@uq.com", "1234", "Test");
         Usuario ana = new Usuario("ana@uq.com", "ana123", "Ana");
@@ -86,6 +87,7 @@ public class UsuarioService {
         ListaUsuarios conexiones = grafoAfinidad.obtenerConexiones(usuarioReal);
         return conexiones != null ? conexiones.listarUsuarios() : new ArrayList<>();
     }
+
 
 
 }
