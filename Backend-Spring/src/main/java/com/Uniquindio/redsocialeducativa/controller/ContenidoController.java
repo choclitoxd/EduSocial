@@ -30,7 +30,6 @@ public class ContenidoController {
 
     @PostMapping("/eliminar")
     public ResponseEntity<String> eliminarContenido(@RequestParam String id) {
-        //System.out.println(id);
         contenidoService.eliminarContenido(id);
         return ResponseEntity.status(201).body("Contenido eliminado");
     }
@@ -48,6 +47,12 @@ public class ContenidoController {
         } else {
             return ResponseEntity.status(404).body("Contenido no encontrado");
         }
+    }
+
+    @PostMapping("/darLike")
+    public ResponseEntity<?> like(@RequestParam String id, @RequestParam String correo) {
+        contenidoService.like(id, correo);
+        return ResponseEntity.ok("Like registrado");
     }
 
 }

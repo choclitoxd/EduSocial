@@ -84,6 +84,28 @@ public class ArbolBinario {
         eliminarContenidoRecursivo(raiz.derecha, id);
     }
 
+    public Contenido buscarContenidoPorId(String id) {
+        return buscarContenidoPorIdRecursivo(raiz, id);
+    }
+
+    private Contenido buscarContenidoPorIdRecursivo(Nodo nodo, String id) {
+        if (nodo == null) return null;
+
+        // Buscar en la lista de contenidos de este nodo
+        for (Contenido contenido : nodo.getContenidos()) {
+            if (contenido.getId().equals(id)) {
+                return contenido;
+            }
+        }
+
+        // Buscar en subárbol izquierdo
+        Contenido encontrado = buscarContenidoPorIdRecursivo(nodo.izquierda, id);
+        if (encontrado != null) return encontrado;
+
+        // Buscar en subárbol derecho
+        return buscarContenidoPorIdRecursivo(nodo.derecha, id);
+    }
+
 
 
 }

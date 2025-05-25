@@ -1,5 +1,7 @@
 package com.Uniquindio.redsocialeducativa.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Contenido {
@@ -12,6 +14,7 @@ public class Contenido {
     private String avatarText;
     private String type;
     private String Url;
+    private List<String> likes;
 
     public Contenido(String id, String titulo, String descripcion, String autor, String topic, String type, String Url) {
         this.id = id;
@@ -27,6 +30,8 @@ public class Contenido {
 
         this.type = type;
         this.Url = Url;
+
+        this.likes = new ArrayList<>();
     }
 
     // Getters y setters
@@ -102,6 +107,14 @@ public class Contenido {
         this.Url = Url;
     }
 
+    public void setLikes(List<String> likes) {
+        this.likes = likes;
+    }
+
+    public List<String> getLikes() {
+        return likes;
+    }
+
     @Override
     public String toString() {
         return "Contenido{" +
@@ -116,4 +129,29 @@ public class Contenido {
                 ", Url='" + Url + '\'' +
                 '}';
     }
+
+    //Metodos para los likes
+    public void like(String correo) {
+        if (!correo.equalsIgnoreCase(autor)) {
+            if (likes.contains(correo)) {
+                likes.remove(correo);
+            } else {
+                likes.add(correo);
+            }
+        }
+    }
+
+    public void quitarLike(String correo) {
+        likes.remove(correo);
+    }
+
+    public boolean listarLikes(String correo) {
+        return likes.contains(correo);
+    }
+
+    public int totalLikes() {
+        return likes.size();
+    }
+
+
 }

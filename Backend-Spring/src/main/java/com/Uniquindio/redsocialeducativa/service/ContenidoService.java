@@ -2,11 +2,8 @@ package com.Uniquindio.redsocialeducativa.service;
 
 import com.Uniquindio.redsocialeducativa.model.Contenido;
 import com.Uniquindio.redsocialeducativa.util.arbol.ArbolBinario;
-import com.Uniquindio.redsocialeducativa.util.arbol.Nodo;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,5 +34,12 @@ public class ContenidoService {
 
     public void eliminarContenido(String id) {
         arbolContenidos.eliminarContenido(id);
+    }
+
+    public void like(String id, String correo) {
+        Contenido contenido = arbolContenidos.buscarContenidoPorId(id);
+        if (contenido != null) {
+            contenido.like(correo);
+        }
     }
 }
