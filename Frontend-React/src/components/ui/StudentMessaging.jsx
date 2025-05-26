@@ -63,7 +63,8 @@ export const StudentMessaging = ({friends, myConversation}) => {
                         💬 Mensajes
                     </h2>
                     <div className="search-container">
-                        <span className="search-icon">🔍</span>
+                        <div className="search-icon-container">
+                            <span className="search-icon-message">🔍</span>
                         <input
                             type="text"
                             className="search-input"
@@ -71,6 +72,7 @@ export const StudentMessaging = ({friends, myConversation}) => {
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
+                        </div>
                     </div>
                 </div>
 

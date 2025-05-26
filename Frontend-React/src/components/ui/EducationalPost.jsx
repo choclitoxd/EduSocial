@@ -54,7 +54,7 @@ export const EducationalPost = ({ post, isAuthenticated }) => {
         <div className={`avatar ${post.avatarColor}`}>{post.avatarText}</div>
         <div className="user-info">
           <div className="user-name">{post.userName}</div>
-          <div className="post-time">{post.time}</div>
+          <div className="post-time">{post.topic}</div>
         </div>
       </div>
       <div className="post-title">{post.title}</div>

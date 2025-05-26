@@ -11,7 +11,7 @@ export const UserCard = ({ hasProfile, name, username }) => {
   const Container = hasProfile ? 'button' : Link;
   const containerProps = hasProfile
     ? { type: 'button', role: 'button', className: 'transition-action btn' }
-    : { to: '/crear-perfil', role: 'button', className: 'transition-action btn' };
+    : { to: '/login', role: 'button', className: 'transition-action btn' };
 
   return (
     <div className="div-user">

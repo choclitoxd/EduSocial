@@ -1,4 +1,4 @@
-import React from "react";
+import React  from "react";
 import "./css/Navbar.css";
 import { NavItem } from "./NavItem";
 import { UserCard } from "./UserCard";
@@ -19,7 +19,7 @@ export const Navbar = ({ user }) => {
       </h1>
 
       <nav className="align-itemsAll nav-direction">
-        <NavItem icon={<FaHome />} label="Home" to="/home" />
+        <NavItem icon={<FaHome />} label="Home" to="/" />
        {user.isLoggedIn ? (
             <>
                 <NavItem icon={<FaChalkboard />} label="Panel de Estudiantes" to="/user" />

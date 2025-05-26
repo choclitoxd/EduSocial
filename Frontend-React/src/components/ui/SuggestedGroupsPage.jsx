@@ -162,7 +162,7 @@ export const StudyGroupsManager = ({ user, dataSuggestedGroups, dataMyGroups }) 
                 <div className="search-container">
                   <input
                     type="text"
-                    className="search-input"
+                    className="search-input-group"
                     placeholder="🔍 Buscar por nombre o tema..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}

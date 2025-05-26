@@ -68,9 +68,9 @@
   position: relative;
 }
 
-.search-input {
+.search-input-group {
   width: 100%;
-  padding: 12px px 12px 45px;
+  padding: 12px 12px 12px 5px;
   border: 2px solid rgba(255, 255, 255, .3);
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.1);
@@ -207,7 +207,7 @@
   padding: 24px;
   border-radius: 12px;
   width: 280px;
-  
+
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   color: #333;
 }
@@ -297,7 +297,7 @@
   margin-bottom: 10px;
 }
 
-.header-card{
+.header-card {
   background: transparent;
   border: 2px solid rgba(255, 255, 255, .2);
   backdrop-filter: blur(30px);
@@ -330,7 +330,7 @@
     height: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center;  
     background: rgba(0, 0, 0, 0.6);
     margin-left: 0;
   }
