@@ -14,16 +14,17 @@ export const UserPanel = () =>{
         avatarText: 'L',
         avatarColor: 'purple',
         userName: 'Leo Gallego',
-        time: 'Hace 2 horas',
+        topic: 'Ecuaciones Diferenciales',
         title: 'Tutorial sobre ecuaciones diferenciales',
         content: 'Este video explica cómo resolver ecuaciones diferenciales de primer orden.',
-        type: 'video'
+        type: 'video',
+        videoUrl:'https://www.youtube.com/watch?v=PMQPya2ofyU',
       },
       {
         avatarText: 'A',
         avatarColor: 'blue',
         userName: 'Ana Martínez',
-        time: 'Hace 5 horas',
+        topic: 'Programacion',
         title: 'Recursos para aprender programación',
         content: 'Comparto este documento con una recopilación de los mejores sitios web para aprender a programar desde cero.',
         type: 'document'

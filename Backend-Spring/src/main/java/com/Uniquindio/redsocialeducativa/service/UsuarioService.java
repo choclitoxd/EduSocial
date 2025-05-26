@@ -87,7 +87,7 @@ public class UsuarioService {
         ListaUsuarios conexiones = grafoAfinidad.obtenerConexiones(usuarioReal);
         return conexiones != null ? conexiones.listarUsuarios() : new ArrayList<>();
     }
-
+    
 
     public void crearRelacion(String correo1, String correo2) {
 

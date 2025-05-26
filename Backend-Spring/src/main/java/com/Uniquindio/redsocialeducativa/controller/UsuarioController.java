@@ -38,8 +38,8 @@ public class UsuarioController {
                             "message", "Login exitoso",
                             "token", token,
                             "user", user
-                    ));
-        } else {
+                        ));
+            } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Credenciales incorrectas"));
         }
     }
@@ -66,7 +66,7 @@ public class UsuarioController {
         List<Usuario> sugerencias = usuarioService.obtenerSugerencias(usuario);
 
         if (sugerencias.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontraron sugerencias para este usuario");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(" ");
         }
 
         return ResponseEntity.ok(sugerencias);
