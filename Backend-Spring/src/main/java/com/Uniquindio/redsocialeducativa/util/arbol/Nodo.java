@@ -1,14 +1,46 @@
 package com.Uniquindio.redsocialeducativa.util.arbol;
 
-public class Nodo<T> {
+import com.Uniquindio.redsocialeducativa.model.Contenido;
+import java.util.ArrayList;
+import java.util.List;
 
-    T dato;
-    Nodo<T> izquierda;
-    Nodo<T> derecha;
+public class Nodo {
 
-    public Nodo(T dato) {
-        this.dato = dato;
+    String topic;
+    List<Contenido> contenidos;
+    Nodo izquierda;
+    Nodo derecha;
+
+    public Nodo(String topic) {
+        this.topic = topic;
+        this.contenidos = new ArrayList<>();
         this.izquierda = null;
         this.derecha = null;
     }
+
+    public void agregarContenido(Contenido contenido) {
+        contenidos.add(contenido);
+    }
+
+    public List<Contenido> getContenidos() {
+        return contenidos;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void eliminarContenido(String id) {
+        for (int i = 0; i < contenidos.size(); i++) {
+            Contenido contenido = contenidos.get(i);
+
+            //System.out.println(id + " - " + contenido.getId());
+            if (contenido.getId().equals(id)) {
+                contenidos.remove(i);
+                break;
+            }
+        }
+    }
+
+
 }

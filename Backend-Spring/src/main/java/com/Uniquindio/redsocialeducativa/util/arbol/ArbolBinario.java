@@ -1,105 +1,111 @@
 package com.Uniquindio.redsocialeducativa.util.arbol;
 
 import com.Uniquindio.redsocialeducativa.model.Contenido;
-
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Queue;
 
-public class ArbolBinario<T extends Comparable<T>> {
+public class ArbolBinario {
 
-    private class Nodo<T> {
-        T dato;
-        Nodo<T> izquierda, derecha;
+    private Nodo raiz;
 
-        Nodo(T dato) {
-            this.dato = dato;
-        }
+    public void agregarDato(Contenido contenido) {
+        raiz = agregarRecursivo(raiz, contenido);
     }
 
-    private Nodo<T> raiz;
-
-    public void agregarDato(T dato) {
-        raiz = agregarRecursivo(raiz, dato);
-    }
-
-    private Nodo<T> agregarRecursivo(Nodo<T> actual, T dato) {
+    private Nodo agregarRecursivo(Nodo actual, Contenido contenido) {
         if (actual == null) {
-            return new Nodo<>(dato);
+            Nodo nuevoNodo = new Nodo(contenido.getTopic());
+            nuevoNodo.agregarContenido(contenido);
+            return nuevoNodo;
         }
 
-        if (dato.compareTo(actual.dato) < 0) {
-            actual.izquierda = agregarRecursivo(actual.izquierda, dato);
-        } else if (dato.compareTo(actual.dato) > 0) {
-            actual.derecha = agregarRecursivo(actual.derecha, dato);
+        int comparacion = contenido.getTopic().compareToIgnoreCase(actual.getTopic());
+
+        if (comparacion < 0) {
+            actual.izquierda = agregarRecursivo(actual.izquierda, contenido);
+        } else if (comparacion > 0) {
+            actual.derecha = agregarRecursivo(actual.derecha, contenido);
+        } else {
+            actual.agregarContenido(contenido);
         }
-        // Si es igual, no se agrega (evita duplicados)
         return actual;
     }
 
-    public T buscarPorTitulo(String titulo) {
-        return buscarPorTituloRecursivo(raiz, titulo);
-    }
-
-    private T buscarPorTituloRecursivo(Nodo<T> nodo, String titulo) {
-        if (nodo == null) {
-            return null;
-        }
-
-        Contenido contenido = (Contenido) nodo.dato;
-        int comparacion = titulo.compareToIgnoreCase(contenido.getTitulo());
-
-        if (comparacion < 0) {
-            return buscarPorTituloRecursivo(nodo.izquierda, titulo);
-        } else if (comparacion > 0) {
-            return buscarPorTituloRecursivo(nodo.derecha, titulo);
-        } else {
-            return nodo.dato;
-        }
-    }
-
-    public List<T> listarArbolInorden() {
-        List<T> lista = new ArrayList<>();
+    public List<Contenido> listarTodos() {
+        List<Contenido> lista = new ArrayList<>();
         inorden(raiz, lista);
         return lista;
     }
 
-    private void inorden(Nodo<T> nodo, List<T> lista) {
+    private void inorden(Nodo nodo, List<Contenido> lista) {
         if (nodo != null) {
             inorden(nodo.izquierda, lista);
-            lista.add(nodo.dato);
+            lista.addAll(nodo.getContenidos());
             inorden(nodo.derecha, lista);
         }
     }
 
-    public void eliminarDato(T dato) {
-        raiz = eliminarRecursivo(raiz, dato);
+    public List<Contenido> buscarPorTopic(String topic) {
+        Nodo nodo = buscarPorTopicRecursivo(raiz, topic);
+        if (nodo != null) {
+            return nodo.getContenidos();
+        } else {
+            return new ArrayList<>();
+        }
     }
 
-    private Nodo<T> eliminarRecursivo(Nodo<T> nodo, T dato) {
+    private Nodo buscarPorTopicRecursivo(Nodo nodo, String topic) {
         if (nodo == null) return null;
 
-        if (dato.compareTo(nodo.dato) < 0) {
-            nodo.izquierda = eliminarRecursivo(nodo.izquierda, dato);
-        } else if (dato.compareTo(nodo.dato) > 0) {
-            nodo.derecha = eliminarRecursivo(nodo.derecha, dato);
+        int comparacion = topic.compareToIgnoreCase(nodo.getTopic());
+
+        if (comparacion < 0) {
+            return buscarPorTopicRecursivo(nodo.izquierda, topic);
+        } else if (comparacion > 0) {
+            return buscarPorTopicRecursivo(nodo.derecha, topic);
         } else {
-            // Nodo con un solo hijo o sin hijos
-            if (nodo.izquierda == null) return nodo.derecha;
-            if (nodo.derecha == null) return nodo.izquierda;
-
-            // Nodo con dos hijos: buscar el menor en la rama derecha
-            nodo.dato = encontrarMin(nodo.derecha).dato;
-            nodo.derecha = eliminarRecursivo(nodo.derecha, nodo.dato);
+            return nodo;
         }
-        return nodo;
     }
 
-    private Nodo<T> encontrarMin(Nodo<T> nodo) {
-        while (nodo.izquierda != null) {
-            nodo = nodo.izquierda;
-        }
-        return nodo;
+
+    public void eliminarContenido(String id) {
+       eliminarContenidoRecursivo(raiz, id);
     }
+
+    private void eliminarContenidoRecursivo(Nodo raiz, String id) {
+        if (raiz == null) return;
+
+        raiz.eliminarContenido(id);
+
+        eliminarContenidoRecursivo(raiz.izquierda, id);
+
+        eliminarContenidoRecursivo(raiz.derecha, id);
+    }
+
+    public Contenido buscarContenidoPorId(String id) {
+        return buscarContenidoPorIdRecursivo(raiz, id);
+    }
+
+    private Contenido buscarContenidoPorIdRecursivo(Nodo nodo, String id) {
+        if (nodo == null) return null;
+
+        // Buscar en la lista de contenidos de este nodo
+        for (Contenido contenido : nodo.getContenidos()) {
+            if (contenido.getId().equals(id)) {
+                return contenido;
+            }
+        }
+
+        // Buscar en subárbol izquierdo
+        Contenido encontrado = buscarContenidoPorIdRecursivo(nodo.izquierda, id);
+        if (encontrado != null) return encontrado;
+
+        // Buscar en subárbol derecho
+        return buscarContenidoPorIdRecursivo(nodo.derecha, id);
+    }
+
+
+
 }

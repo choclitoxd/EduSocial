@@ -21,6 +21,13 @@ public class UsuarioController {
 
     String token = "abc123xyz";
 
+    @PostMapping("/cargarDatosPrueba")
+    public ResponseEntity<?> cargarDatosPrueba() {
+        usuarioService.cargarUsuariosDePrueba();
+        return ResponseEntity.ok("Usuarios de prueba cargados.");
+    }
+
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Usuario usuario) {
         if (usuarioService.verificarCredenciales(usuario.getCorreo(), usuario.getContrasena())) {

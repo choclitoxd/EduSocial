@@ -4,51 +4,42 @@ import com.Uniquindio.redsocialeducativa.model.Contenido;
 import com.Uniquindio.redsocialeducativa.util.arbol.ArbolBinario;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ContenidoService {
 
-    private ArbolBinario<Contenido> arbolContenidos;
+    private ArbolBinario arbolContenidos;
 
     public ContenidoService() {
-        arbolContenidos = new ArbolBinario<>();
-        cargarContenidosDeArranque();
+        arbolContenidos = new ArbolBinario();
+    }
+
+    public void cargarContenidosDeArranque() {
+        arbolContenidos.agregarDato(new Contenido( "1","Tutorial sobre ecuaciones diferenciales", "Este video explica cómo resolver ecuaciones diferenciales de primer orden.", "ana@uq.com", "Matemáticas", "video", "https://www.youtube.com/watch?v=PMQPya2ofyU"));
+        arbolContenidos.agregarDato(new Contenido("2", "Recursos para aprender programación", "Comparto este documento con una recopilación de los mejores sitios web para aprender a programar desde cero.", "luis@uq.com", "Tecnología", "document", ""));
     }
 
     public void registrarContenido(Contenido contenido) {
         arbolContenidos.agregarDato(contenido);
     }
 
-    private void cargarContenidosDeArranque() {
-        arbolContenidos.agregarDato(new Contenido("Álgebra Lineal", "Apuntes sobre espacios vectoriales, bases y dimensión.", "ana01", 1, "Matemáticas"));
-        arbolContenidos.agregarDato(new Contenido("Estructuras de Datos", "Ejercicios resueltos de listas enlazadas y pilas.", "luis12", 1, "Tecnología"));
-        arbolContenidos.agregarDato(new Contenido("POO en Java", "Resumen práctico de herencia, polimorfismo y encapsulamiento.", "carlos09", 0, "Tecnología"));
-        arbolContenidos.agregarDato(new Contenido("Cálculo Integral", "Formulario de integrales básicas, métodos de integración.", "maria33", 0, "Matemáticas"));
-        arbolContenidos.agregarDato(new Contenido("Bases de Datos", "Apuntes sobre modelado relacional, claves primarias y foráneas.", "laura27", 1, "Tecnología"));
-    }
-    
     public List<Contenido> listarContenidos() {
-        return arbolContenidos.listarArbolInorden();
+        return arbolContenidos.listarTodos();
     }
 
-    public Contenido buscarPorTitulo(String titulo) {
-        return arbolContenidos.buscarPorTitulo(titulo);
+    public List<Contenido> buscarPorTopic(String titulo) {
+        return arbolContenidos.buscarPorTopic(titulo);
     }
 
+    public void eliminarContenido(String id) {
+        arbolContenidos.eliminarContenido(id);
+    }
 
-    public List<Contenido> filtrarPorAutor(String autor) {
-        List<Contenido> todos = listarContenidos();
-        List<Contenido> filtrados = new ArrayList<>();
-
-        for (Contenido c : todos) {
-            if (c.getAutor().equalsIgnoreCase(autor)) {
-                filtrados.add(c);
-            }
+    public void like(String id, String correo) {
+        Contenido contenido = arbolContenidos.buscarContenidoPorId(id);
+        if (contenido != null) {
+            contenido.like(correo);
         }
-
-        return filtrados;
     }
 }
