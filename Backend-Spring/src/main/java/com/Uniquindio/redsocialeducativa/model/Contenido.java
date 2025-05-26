@@ -16,8 +16,8 @@ public class Contenido {
     private String Url;
     private List<String> likes;
 
-    public Contenido(String id, String titulo, String descripcion, String autor, String topic, String type, String Url) {
-        this.id = id;
+    public Contenido(String titulo, String descripcion, String autor, String topic, String type, String Url) {
+
         this.topic = topic;
         this.titulo = titulo;
         this.descripcion = descripcion;

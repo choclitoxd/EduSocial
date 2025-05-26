@@ -47,6 +47,7 @@ public class UsuarioController {
     @PostMapping("/registrar")
     public ResponseEntity<?> registrar(@RequestBody Usuario nuevo) {
 
+        //Devolver usuario creado
         if (usuarioService.validarCorreo(nuevo.getCorreo())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Correo ya registrado"));
         } else {
@@ -69,6 +70,12 @@ public class UsuarioController {
         }
 
         return ResponseEntity.ok(sugerencias);
+    }
+
+    @PostMapping("/crearRelacion")
+    public ResponseEntity<?> crearRelacion(@RequestParam String correo1, @RequestParam String correo2) {
+        usuarioService.crearRelacion(correo1, correo2);
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message","Relacion creada"));
     }
 
 

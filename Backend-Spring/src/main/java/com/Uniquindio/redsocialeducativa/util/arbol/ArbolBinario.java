@@ -1,8 +1,11 @@
 package com.Uniquindio.redsocialeducativa.util.arbol;
 
 import com.Uniquindio.redsocialeducativa.model.Contenido;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 public class ArbolBinario {
@@ -10,7 +13,15 @@ public class ArbolBinario {
     private Nodo raiz;
 
     public void agregarDato(Contenido contenido) {
+        String id = generarIdUnico();
+        contenido.setId(id);
         raiz = agregarRecursivo(raiz, contenido);
+    }
+
+    public static String generarIdUnico() {
+        LocalDateTime ahora = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
+        return ahora.format(formatter);
     }
 
     private Nodo agregarRecursivo(Nodo actual, Contenido contenido) {

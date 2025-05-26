@@ -43,7 +43,7 @@ public class UsuarioService {
         grafoAfinidad.agregarUsuario(maria);
         grafoAfinidad.agregarUsuario(juan);
 
-        // Crear conexiones (afinidades)
+        // Simular afinidades entre usuarios
         grafoAfinidad.agregarRelacion(admin, test);
         grafoAfinidad.agregarRelacion(admin, ana);
         grafoAfinidad.agregarRelacion(test, juan);
@@ -89,5 +89,7 @@ public class UsuarioService {
     }
 
 
+    public void crearRelacion(String correo1, String correo2) {
 
+    }
 }

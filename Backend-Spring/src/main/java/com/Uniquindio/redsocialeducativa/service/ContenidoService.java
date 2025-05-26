@@ -16,9 +16,20 @@ public class ContenidoService {
     }
 
     public void cargarContenidosDeArranque() {
-        arbolContenidos.agregarDato(new Contenido( "1","Tutorial sobre ecuaciones diferenciales", "Este video explica cómo resolver ecuaciones diferenciales de primer orden.", "ana@uq.com", "Matemáticas", "video", "https://www.youtube.com/watch?v=PMQPya2ofyU"));
-        arbolContenidos.agregarDato(new Contenido("2", "Recursos para aprender programación", "Comparto este documento con una recopilación de los mejores sitios web para aprender a programar desde cero.", "luis@uq.com", "Tecnología", "document", ""));
+        arbolContenidos.agregarDato(new Contenido( "Tutorial sobre ecuaciones diferenciales", "Este video explica cómo resolver ecuaciones diferenciales de primer orden.", "ana@uq.com", "Matemáticas", "video", "https://www.youtube.com/watch?v=PMQPya2ofyU"));
+        esperar();
+        arbolContenidos.agregarDato(new Contenido("Recursos para aprender programación", "Comparto este documento con una recopilación de los mejores sitios web para aprender a programar desde cero.", "luis@uq.com", "Tecnología", "document", ""));
     }
+
+    public void esperar() {
+        //Esperamos una fraccion de segundo para que se carguen los contenidos con id diferente
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void registrarContenido(Contenido contenido) {
         arbolContenidos.agregarDato(contenido);
