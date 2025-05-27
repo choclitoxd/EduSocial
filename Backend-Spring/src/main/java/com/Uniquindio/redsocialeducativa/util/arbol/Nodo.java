@@ -42,5 +42,13 @@ public class Nodo {
         }
     }
 
-
+    public void editarContenido(Contenido contenido) {
+        for (int i = 0; i < contenidos.size(); i++) {
+            Contenido contenidoActual = contenidos.get(i);
+            if (contenidoActual.getId().equals(contenido.getId())) {
+                contenidos.set(i, contenido);
+                break;
+            }
+        }
+    }
 }

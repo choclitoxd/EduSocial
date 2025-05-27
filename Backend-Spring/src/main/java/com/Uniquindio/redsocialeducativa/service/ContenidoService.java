@@ -54,4 +54,7 @@ public class ContenidoService {
         }
     }
 
+    public void editarContenido(Contenido contenido) {
+        arbolContenidos.editarContenido(contenido);
+    }
 }

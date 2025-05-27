@@ -66,6 +66,27 @@ public class UsuarioController {
         }
     }
 
+    @PostMapping("/registrar")
+    public ResponseEntity<?> registrar(@RequestBody Usuario nuevo) {
+
+        //Devolver usuario creado
+        if (usuarioService.validarCorreo(nuevo.getCorreo())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Correo ya registrado"));
+        } else {
+            usuarioService.agregar(nuevo);
+
+            Usuario user = usuarioService.obtenerUsuario(nuevo.getCorreo());
+            return ResponseEntity.ok()
+                    .header("Authorization", "Bearer " + token)
+                    .body(Map.of(
+                            "message", "Registro exitoso",
+                            "token", token,
+                            "user", user
+                    ));
+        }
+    }
+
+
     @PostMapping("/eliminar")
     public ResponseEntity<?> eliminarUsuario(@RequestParam String correo) {
 

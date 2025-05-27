@@ -90,7 +90,12 @@ public class UsuarioService {
     
 
     public void crearRelacion(String correo1, String correo2) {
+        Usuario usuario1 = listaUsuarios.buscarPorCorreo(correo1);
+        Usuario usuario2 = listaUsuarios.buscarPorCorreo(correo2);
 
+        grafoAfinidad.agregarUsuario(usuario1);
+        grafoAfinidad.agregarUsuario(usuario2);
+        grafoAfinidad.agregarRelacion(usuario1, usuario2);
     }
 
     public Object dataGrafo() {
