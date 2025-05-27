@@ -51,7 +51,7 @@ public class GrafoAfinidad {
                 for (Usuario u : componente) {
                     Map<String, String> nodo = new HashMap<>();
                     nodo.put("id", u.getCorreo());
-                    nodo.put("text", u.getNombre());
+                    nodo.put("label", u.getNombre());
                     nodos.add(nodo);
                 }
 
@@ -72,9 +72,8 @@ public class GrafoAfinidad {
 
                 // GRAFO
                 Map<String, Object> grafo = new HashMap<>();
-                grafo.put("rootId", usuario.getCorreo());
                 grafo.put("nodes", nodos);
-                grafo.put("lines", lineas);
+                grafo.put("edges", lineas);
                 grafos.add(grafo);
             }
         }
