@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {EducationalPostUserPanel} from "./EducationalPostUserPanel"
-export const EducationalUserPanel = ({userPosts, user}    ) => {
+export const EducationalUserPanel = ({ userPosts, user, onPostDelete }) => {
   const [posts, setPosts] = useState(userPosts);
   
   // Función para actualizar un post
@@ -19,24 +19,17 @@ export const EducationalUserPanel = ({userPosts, user}    ) => {
 
   return (
     <div className="container-user">
-      <h2>Mis Recursos Educativos</h2>
-      {posts.length === 0 ? (
-        <div className="empty-posts">
-          <p>Aún no has compartido ningún recurso educativo.</p>
-        </div>
-      ) : (
-        <div className="posts-container">
-          {posts.map((post, index) => (
-            <EducationalPostUserPanel 
-              key={index} 
-              post={post} 
-              user={user}
-              onUpdate={handleUpdatePost}
-              onDelete={handleDeletePost}
-            />
-          ))}
-        </div>
-      )}
+      <h2>Mis Contenidos Educativos</h2>
+      <div className="posts-container">
+        {userPosts.map(post => (
+          <EducationalPostUserPanel
+            key={post.id}
+            post={post}
+            user={user}
+            onDelete={onPostDelete}
+          />
+        ))}
+      </div>
     </div>
-  );        
+  );
 };      

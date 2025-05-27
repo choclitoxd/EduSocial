@@ -1,13 +1,21 @@
-import React from "react";
+import React,{useContext} from "react";
 import { Header } from "./header";
 import { StudyGroupsManager} from '../ui/SuggestedGroupsPage';
+import { AuthContext } from "../../context/AuthContext";
 import "../ui/css/Navbar.css"
 export const UserGroup = () =>{
-    const user = {
-    isLoggedIn: true,
-    name: "Vector Ramirez",
-    username: "VictorR45687000"
-  };
+   const { user } = useContext(AuthContext);
+   
+     // Configurar el objeto de usuario basado en si hay un usuario autenticado o no
+     const userData = user ? {
+       isLoggedIn: true,
+       name: user.nombre,
+       username: user.correo
+     } : {
+       isLoggedIn: false,
+       name: "Invitado",
+       username: ""
+     };
   const groups = [
   {
     id: 1,
@@ -44,8 +52,8 @@ export const UserGroup = () =>{
     }];
     return(
         <div className="main-div">
-            <Header user={user} />
-            <StudyGroupsManager dataSuggestedGroups={groups} user={user} dataMyGroups={myGroups}/>
+            <Header user={userData} />
+            <StudyGroupsManager dataSuggestedGroups={groups} user={userData} dataMyGroups={myGroups}/>
         </div>
     );
 }

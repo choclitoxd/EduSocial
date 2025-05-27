@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Header } from "./header";
 import { EducationalFeed } from "../ui/EducationalFeed";
 import { Search } from "../ui/Search";
@@ -7,7 +7,10 @@ import "../ui/css/ResourceComponents.css"
 import "../ui/css/Navbar.css";
 
 export const User = () => {
-  const { user } = useContext(AuthContext);
+  const { user, getContenidos } = useContext(AuthContext);
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Configurar el objeto de usuario basado en si hay un usuario autenticado o no
   const userData = user ? {
@@ -20,33 +23,37 @@ export const User = () => {
     username: ""
   };
 
-  const samplePosts = [
-    {
-      avatarText: 'L',
-      avatarColor: 'purple',
-      userName: 'Leo Gallego',
-      topic: 'Ecuaciones Diferenciales',
-      title: 'Tutorial sobre ecuaciones diferenciales',
-      content: 'Este video explica cómo resolver ecuaciones diferenciales de primer orden.',
-      type: 'video',
-      videoUrl:'https://www.youtube.com/watch?v=PMQPya2ofyU',
-    },
-    {
-      avatarText: 'A',
-      avatarColor: 'blue',
-      userName: 'Ana Martínez',
-      topic: 'Programacion',
-      title: 'Recursos para aprender programación',
-      content: 'Comparto este documento con una recopilación de los mejores sitios web para aprender a programar desde cero.',
-      type: 'document'
+  const refreshPosts = async () => {
+    try {
+      setLoading(true);
+      const data = await getContenidos();
+      setPosts(data);
+      setError(null);
+    } catch (err) {
+      console.error('Error al cargar los posts:', err);
+      setError('Error al cargar los contenidos educativos.');
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  useEffect(() => {
+    refreshPosts();
+  }, [getContenidos]);
     
   return (
     <div className="main-div">
       <Header user={userData} />
-      <EducationalFeed samplePosts={samplePosts} user={userData} />
-      <Search />
+      {loading ? (
+        <div className="loading-message">Cargando contenidos...</div>
+      ) : error ? (
+        <div className="error-message">{error}</div>
+      ) : (
+        <>
+          <EducationalFeed samplePosts={posts} user={userData} onPostsUpdate={refreshPosts} />
+          <Search />
+        </>
+      )}
     </div>
   );
 };

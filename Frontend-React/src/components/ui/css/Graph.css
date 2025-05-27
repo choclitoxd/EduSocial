@@ -1,0 +1,83 @@
+.graph-container {
+  background-color: #f8fafc;
+  border-radius: 12px;
+  height: 90%;
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  margin: 24px;
+}
+
+.graph-title {
+  color: #1e293b;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.graph-visualization {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  height: 90%;
+  overflow: hidden;
+  background-color: white;
+}
+
+/* Estilos para los nodos */
+.vis-network .vis-node {
+  border-color: #3b82f6;
+  background-color: #60a5fa;
+  border-radius: 50%;
+  font-weight: 500;
+}
+
+.vis-network .vis-node:hover {
+  background-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
+}
+
+/* Estilos para las aristas */
+.vis-network .vis-edge {
+  stroke: #94a3b8;
+  stroke-width: 2px;
+}
+
+.vis-network .vis-edge:hover {
+  stroke: #3b82f6;
+  stroke-width: 3px;
+}
+
+/* Estilos para las etiquetas de los nodos */
+.vis-network .vis-label {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #1e293b;
+  font-size: 14px;
+}
+
+/* Estilos para la manipulación del grafo */
+.vis-network:focus {
+  outline: none;
+}
+
+.vis-manipulation {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px;
+  margin-top: 16px;
+  background-color: white;
+}
+
+.vis-manipulation button {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.vis-manipulation button:hover {
+  background-color: #2563eb;
+} 

@@ -3,7 +3,7 @@ import { ShareResourceCard } from './ShareResourceCard';
 import { LoginPrompt } from './LoginPrompt';
 import { EducationalPost } from './EducationalPost';
 
-export const EducationalFeed = ({samplePosts, user}) => {
+export const EducationalFeed = ({samplePosts, user, onPostsUpdate}) => {
   // Estado para controlar si el usuario está autenticado
   const [isAuthenticated, setIsAuthenticated] = useState(user.isLoggedIn);
 
@@ -16,7 +16,7 @@ export const EducationalFeed = ({samplePosts, user}) => {
 
   return (
     <div className="container-user">
-      <ShareResourceCard isAuthenticated={isAuthenticated} user={user} />
+      <ShareResourceCard isAuthenticated={isAuthenticated} user={user} onPostsUpdate={onPostsUpdate} />
       
       {/* Mostrar un mensaje para iniciar sesión si no está autenticado */}
       {!isAuthenticated && <LoginPrompt />}

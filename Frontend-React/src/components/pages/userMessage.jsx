@@ -1,13 +1,21 @@
-import React from "react";
+import React,{useContext} from "react";
 import { Header } from "./header";
 import { StudentMessaging } from "../ui/StudentMessaging";
+import { AuthContext } from "../../context/AuthContext";
 
 export const UserMessage = () =>{
-    const user = {
-        isLoggedIn: true,
-        name: "Vector Ramirez",
-        username: "VictorR45687000"
-    };
+  const { user } = useContext(AuthContext);
+
+  // Configurar el objeto de usuario basado en si hay un usuario autenticado o no
+  const userData = user ? {
+    isLoggedIn: true,
+    name: user.nombre,
+    username: user.correo
+  } : {
+    isLoggedIn: false,
+    name: "Invitado",
+    username: ""
+  };
 
     const friends = ([{
       id: 1,
@@ -76,7 +84,7 @@ export const UserMessage = () =>{
 
   return(
     <div className="main-div">
-        <Header user={user} />
+        <Header user={userData} />
         <StudentMessaging  friends={friends} myConversation={myConversations} />
     </div>
   )
