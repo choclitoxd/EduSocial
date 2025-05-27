@@ -52,7 +52,15 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Correo ya registrado"));
         } else {
             usuarioService.agregar(nuevo);
-            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message","Registro exitoso"));
+
+            Usuario user = usuarioService.obtenerUsuario(nuevo.getCorreo());
+            return ResponseEntity.ok()
+                    .header("Authorization", "Bearer " + token)
+                    .body(Map.of(
+                            "message", "Registro exitoso",
+                            "token", token,
+                            "user", user
+                    ));
         }
     }
 
@@ -78,7 +86,10 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message","Relacion creada"));
     }
 
-
+    @GetMapping("/dataGrafo")
+    public ResponseEntity<?> dataGrafo() {
+        return ResponseEntity.ok(usuarioService.dataGrafo());
+    }
 
 
 

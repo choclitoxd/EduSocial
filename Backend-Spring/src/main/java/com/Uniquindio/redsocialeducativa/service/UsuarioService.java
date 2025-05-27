@@ -92,4 +92,8 @@ public class UsuarioService {
     public void crearRelacion(String correo1, String correo2) {
 
     }
+
+    public Object dataGrafo() {
+        return grafoAfinidad.dataGrafo();
+    }
 }
