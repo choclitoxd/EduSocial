@@ -61,7 +61,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.obtenerTodosLosUsuarios());
     }
 
-    @GetMapping("/sugerencias")
+    @PostMapping("/sugerencias")
     public ResponseEntity<?> obtenerSugerencias(@RequestBody Usuario usuario) {
         List<Usuario> sugerencias = usuarioService.obtenerSugerencias(usuario);
 

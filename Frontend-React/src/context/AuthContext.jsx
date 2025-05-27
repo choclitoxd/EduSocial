@@ -7,31 +7,6 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      fetch(`${API_BASE}/usuarios/perfil`, {
-        headers: { 
-          Authorization: `Bearer ${token}`,
-          "Accept": "application/json"
-        }
-      })
-        .then(res => res.json())
-        .then(data => {
-          if (data.user) {
-            setUser(data.user);
-          }
-        })
-        .catch(() => {
-          localStorage.removeItem("token");
-          setUser(null);
-        })
-        .finally(() => setLoading(false));
-    } else {
-      setLoading(false);
-    }
-  }, []);
-
   const loginUser = async (correo, contrasena) => {
     try {
       const res = await fetch(`${API_BASE}/usuarios/login`, {
@@ -153,7 +128,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const getSuggestedUsers = async () => {
+  const postSuggestedUsers = async () => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(`${API_BASE}/usuarios/sugerencias`, {
@@ -313,6 +288,68 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const updateContent = async (contenido) => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_BASE}/contenidos/actualizar`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "text/plain",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          id: contenido.id,
+          titulo: contenido.titulo,
+          descripcion: contenido.descripcion,
+          autor: contenido.autor,
+          topic: contenido.topic,
+          type: contenido.type,
+          url: contenido.url
+        })
+      });
+
+      if (!res.ok) {
+        throw new Error("Error al actualizar el contenido");
+      }
+
+      const message = await res.text();
+      return message;
+    } catch (error) {
+      if (error.message === "Failed to fetch") {
+        throw new Error("No se pudo conectar con el servidor. Verifica tu conexión a internet o que el servidor esté funcionando.");
+      }
+      console.error("Error al actualizar contenido:", error);
+      throw error;
+    }
+  };
+
+  const createRelation = async (correo2) => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_BASE}/usuarios/crearRelacion?correo1=${user.correo}&correo2=${correo2}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Accept": "application/json"
+        }
+      });
+
+      if (!res.ok) {
+        throw new Error("Error al crear la relación");
+      }
+
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      if (error.message === "Failed to fetch") {
+        throw new Error("No se pudo conectar con el servidor. Verifica tu conexión a internet.");
+      }
+      console.error("Error al crear relación:", error);
+      throw error;
+    }
+  };
+
   return (
     <AuthContext.Provider value={{ 
       user, 
@@ -321,12 +358,14 @@ export const AuthProvider = ({ children }) => {
       logout, 
       loading,
       getCursos,
-      getSuggestedUsers,
+      postSuggestedUsers,
       loadTestUsers,
       loadTestPosts,
       getContenidos,
       deleteContent,
-      shareContent
+      shareContent,
+      updateContent,
+      createRelation
     }}>
       {children}
     </AuthContext.Provider>

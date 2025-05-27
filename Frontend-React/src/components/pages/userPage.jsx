@@ -11,6 +11,7 @@ export const User = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [suggestedUsers, setSuggestedUsers] = useState([]);
 
   // Configurar el objeto de usuario basado en si hay un usuario autenticado o no
   const userData = user ? {
@@ -37,20 +38,29 @@ export const User = () => {
     }
   };
 
+  const handleSuggestionsUpdate = (newSuggestions) => {
+    setSuggestedUsers(newSuggestions);
+  };
+
   useEffect(() => {
     refreshPosts();
   }, [getContenidos]);
     
   return (
     <div className="main-div">
-      <Header user={userData} />
+      <Header user={userData} suggestedUsers={suggestedUsers} />
       {loading ? (
         <div className="loading-message">Cargando contenidos...</div>
       ) : error ? (
         <div className="error-message">{error}</div>
       ) : (
         <>
-          <EducationalFeed samplePosts={posts} user={userData} onPostsUpdate={refreshPosts} />
+          <EducationalFeed 
+            samplePosts={posts} 
+            user={userData} 
+            onPostsUpdate={refreshPosts}
+            onSuggestionsUpdate={handleSuggestionsUpdate}
+          />
           <Search />
         </>
       )}

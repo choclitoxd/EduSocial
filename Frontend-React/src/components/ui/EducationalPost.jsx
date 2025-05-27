@@ -1,14 +1,49 @@
-import React, {useState} from 'react'; 
-import {FaPlay, FaHandsHelping,FaThumbsUp, FaYoutube   } from 'react-icons/fa';
+import React, {useState, useContext} from 'react'; 
+import {FaPlay, FaHandsHelping, FaThumbsUp, FaYoutube, FaFileDownload, FaImage} from 'react-icons/fa';
+import { AuthContext } from "../../context/AuthContext";
 
-export const EducationalPost = ({ post, isAuthenticated }) => {
+export const EducationalPost = ({ post, isAuthenticated, onSuggestionsUpdate, onLike }) => {
   const [showVideo, setShowVideo] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const [isLiking, setIsLiking] = useState(false);
+  const { createRelation, postSuggestedUsers } = useContext(AuthContext);
+
+  const getDropboxDirectLink = (url) => {
+  // Reemplaza ?dl=0 por ?raw=1 o dl=1 para forzar la descarga directa o mostrar en <img>
+  return url.replace("?dl=0", "?raw=1")
+            .replace("?dl=1", "?raw=1")
+            .replace("www.dropbox.com", "dl.dropboxusercontent.com");
+  };
   
-  const handleLike = () => {
-    if (isAuthenticated) {
-      alert(`¡Gracias por tu "Me gusta"!`);
-    } else {
+  const handleLike = async () => {
+    if (!isAuthenticated) {
       alert('Necesitas iniciar sesión para calificar un recurso');
+      return;
+    }
+
+    try {
+      setIsLiking(true);
+      console.log('Intentando dar like al post de:', post.autor);
+      
+      await createRelation(post.autor);
+      
+      // Actualizar las sugerencias después de crear la relación
+      const newSuggestions = await postSuggestedUsers();
+      if (onSuggestionsUpdate) {
+        onSuggestionsUpdate(newSuggestions);
+      }
+      
+      // Notificar al componente padre que se ha dado like
+      if (onLike) {
+        onLike();
+      }
+      
+      alert('¡Has dado "Me gusta" al contenido! Se ha creado una conexión con el autor.');
+    } catch (error) {
+      console.error('Error al dar like:', error);
+      alert(error.message || 'Hubo un error al dar me gusta. Por favor, intenta de nuevo.');
+    } finally {
+      setIsLiking(false);
     }
   };
   
@@ -22,6 +57,10 @@ export const EducationalPost = ({ post, isAuthenticated }) => {
 
   const handlePlayVideo = () => {
     setShowVideo(true);
+  };
+
+  const handleImageError = () => {
+    setImageError(true);
   };
 
   // Función para extraer el ID del video de YouTube de diferentes formatos de URL
@@ -47,6 +86,21 @@ export const EducationalPost = ({ post, isAuthenticated }) => {
 
   // Verificar si el post tiene un enlace de YouTube
   const youtubeVideoId = post.type === 'video' ? getYoutubeVideoId(post.url) : null;
+
+  // Función para obtener el nombre del archivo de una URL
+  const getFileNameFromUrl = (url) => {
+    try {
+      const urlParts = url.split('/');
+      let fileName = urlParts[urlParts.length - 1];
+      // Decodificar el nombre del archivo
+      fileName = decodeURIComponent(fileName);
+      // Remover parámetros de consulta si existen
+      fileName = fileName.split('?')[0];
+      return fileName;
+    } catch (error) {
+      return 'archivo';
+    }
+  };
   
   return (
     <div className="post-card">
@@ -60,6 +114,7 @@ export const EducationalPost = ({ post, isAuthenticated }) => {
       <div className="post-title">{post.titulo}</div>
       <div className="post-content">{post.descripcion}</div>
       
+      {/* Renderizado de Video */}
       {post.type === 'video' && (
         <div className="video-container">
           {!showVideo ? (
@@ -80,9 +135,9 @@ export const EducationalPost = ({ post, isAuthenticated }) => {
                   <FaPlay className="play-icon" />
                 </div>
               </div>
-              {post.videoUrl && (
+              {post.url && (
                 <div className="video-source">
-                  <a href={post.videoUrl} target="_blank" rel="noopener noreferrer" className="video-link">
+                  <a href={post.url} target="_blank" rel="noopener noreferrer" className="video-link">
                     Ver en YouTube <FaYoutube />
                   </a>
                 </div>
@@ -103,8 +158,8 @@ export const EducationalPost = ({ post, isAuthenticated }) => {
               ) : (
                 <div className="video-error">
                   <p>Lo sentimos, no se pudo cargar el video.</p>
-                  {post.videoUrl && (
-                    <a href={post.videoUrl} target="_blank" rel="noopener noreferrer">
+                  {post.url && (
+                    <a href={post.url} target="_blank" rel="noopener noreferrer">
                       Ver en YouTube
                     </a>
                   )}
@@ -114,6 +169,48 @@ export const EducationalPost = ({ post, isAuthenticated }) => {
           )}
         </div>
       )}
+
+      {/* Renderizado de Imagen */}
+      {post.type === 'image' && (
+        <div className="image-container">
+          {!imageError ? (
+            <img
+              src={getDropboxDirectLink(post.url)}
+              alt={post.titulo}
+              className="post-image"
+              onError={handleImageError}
+            />
+          ) : (
+            <div className="image-error">
+              <FaImage className="error-icon" />
+              <p>No se pudo cargar la imagen</p>
+              <a href={post.url} target="_blank" rel="noopener noreferrer" className="download-link">
+                Ver imagen original
+              </a>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Renderizado de Documento */}
+      {post.type === 'document' && (
+        <div className="document-container">
+          <a href={post.url} target="_blank" rel="noopener noreferrer" className="download-link">
+            <FaFileDownload className="download-icon" />
+            <span>Descargar {getFileNameFromUrl(post.url)}</span>
+          </a>
+        </div>
+      )}
+
+      {/* Renderizado de Link */}
+      {post.type === 'link' && (
+        <div className="link-container">
+          <a href={post.url} target="_blank" rel="noopener noreferrer" className="external-link">
+            Visitar enlace
+          </a>
+          <h3>{post.url}</h3>
+        </div>
+      )}
       
       <div className="container-reaction">
         <div className="like-container">
@@ -121,7 +218,7 @@ export const EducationalPost = ({ post, isAuthenticated }) => {
           <button 
             onClick={handleLike}
             className="like-button"
-            disabled={!isAuthenticated}
+            disabled={!isAuthenticated || isLiking}
           >
             <FaThumbsUp />
           </button>

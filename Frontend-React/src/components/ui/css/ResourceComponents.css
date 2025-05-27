@@ -404,6 +404,9 @@
     border-radius: 5px;
     cursor: pointer;
   }
+  .like-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
 
   .like-button:disabled {
     background-color: #ccc;
@@ -856,4 +859,88 @@
     color: #ef4444;
     background-color: #fef2f2;
     border: 1px solid #fee2e2;
+  }
+
+  /* Contenedor de imagen */
+  .image-container {
+    width: 100%;
+    margin: 15px 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .post-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .image-error {
+    padding: 20px;
+    text-align: center;
+    color: #666;
+  }
+
+  .image-error .error-icon {
+    font-size: 48px;
+    margin-bottom: 10px;
+    color: #999;
+  }
+
+  /* Contenedor de documento */
+  .document-container {
+    margin: 15px 0;
+    padding: 15px;
+    border-radius: 8px;
+  }
+
+  .download-link {
+    display: flex;
+    align-items: center;
+    color: #FFA500;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+  }
+
+  .download-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .download-icon {
+    margin-right: 10px;
+    font-size: 20px;
+  }
+
+  /* Contenedor de enlace */
+  .link-container {
+    display: flex;
+    margin: 15px 0;
+    padding: 15px;
+    border-radius: 8px;
+    justify-content: space-around;
+  }
+  .link-container h3 {
+    display: flex;
+    color: #FFA500;
+    align-items: center;
+  }
+
+  .external-link {
+    display: inline-block;
+    color: #FFA500;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: background-color 0.2s;
+  }
+
+  .external-link:hover {
+    background-color: rgba(255, 255, 255, 0.2);
   }

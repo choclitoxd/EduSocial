@@ -1,18 +1,24 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { ShareResourceCard } from './ShareResourceCard';
 import { LoginPrompt } from './LoginPrompt';
 import { EducationalPost } from './EducationalPost';
+import { AuthContext } from "../../context/AuthContext";
 
-export const EducationalFeed = ({samplePosts, user, onPostsUpdate}) => {
-  // Estado para controlar si el usuario está autenticado
-  const [isAuthenticated, setIsAuthenticated] = useState(user.isLoggedIn);
+export const EducationalFeed = ({samplePosts, user, onPostsUpdate, onSuggestionsUpdate}) => {
+  const [isAuthenticated] = useState(user.isLoggedIn);
+  const { postSuggestedUsers } = useContext(AuthContext);
 
-  // Simulación de posts de ejemplo
-
-  // Función para cambiar el estado de autenticación (para demostración)
-  // const toggleAuth = () => {
-  //   setIsAuthenticated(!isAuthenticated);
-  // };
+  const handleLike = async () => {
+    try {
+      // Actualizar las sugerencias después de dar like
+      const newSuggestions = await postSuggestedUsers();
+      if (onSuggestionsUpdate) {
+        onSuggestionsUpdate(newSuggestions);
+      }
+    } catch (error) {
+      console.error('Error al actualizar sugerencias:', error);
+    }
+  };
 
   return (
     <div className="container-user">
@@ -28,6 +34,7 @@ export const EducationalFeed = ({samplePosts, user, onPostsUpdate}) => {
             key={index} 
             post={post} 
             isAuthenticated={isAuthenticated}
+            onLike={handleLike}
           />
         ))}
       </div>

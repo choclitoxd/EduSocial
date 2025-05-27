@@ -13,7 +13,7 @@ import { useSimpleDropboxUpload } from '../../hooks/useSimpleDropboxUpload';
 const ACCESS_TOKEN = 'sl.u.AFxt_miHoGT53M-1BQXEDQ3YX1mKkLUMawE5-dlPcRHuZPfsMIR56OpdtgxAEEnyDTRSArXCp5jJKf1e8tkKrGnBY601SRSyg8u3FjWEC7IxyMKK54cpxYUdw-RJLQr-vYjuhUuLTZhJdVnz-U53KQdV4CzkiBdcdxlRYI1M-cr14Dz-vZIkksVOd56kiL50XYcsS7lrH-OUrGeXqF80lqQMGb4Mj4J89SxrjWJlCJxlvDf16B2vpKFKM9bxMVYDa4IP2if7b36V7sM5B4oEYhJ75XNFkwxpBhbs8PVo6vjRabLet52l-9dek1DK2bJVQIbNhe90egcge9jiHb9UZ_6Jnr52LC6pqyGIRzilWikVW-9oVAdCDJtEtO-1bSZzDyz9eCoHwn5h2xTtY0-4ppFU6zpz0xRFRIbWK6FPplTl2sQitpcCdYW8sGgrroigbo-zHsftH1im30OHMKVF85z5yrad99lIQEk8mH6dpW4c1nPW2Fs8Dsxhe3B_yinh2i5tArqN7sftmco0TvyGp68xh3fdBfcUgBDOBmkwTbHvhHQOQZsYlhhqokgElucZTfZiWsKPHOAjzZfJZgBN9t-fUjm0Gs2tPuiPiwq6oBwxSVNB9ep6w3T0xHsWKhfRWcxZl0chAfIPd26QJqsN-bLUMhGEVYh2AmmW1wO3UOOJGRQQluRMBPRoYyluaMEF7Hmgl9RZYVg-m3x4D7pgw-uEsdqwpHDIDTfV4Ob8Kmp4_iq9UAKOkm6n2U8kuf2uqjKPaPYI4vcAk634mkE9LB7OY9WOZ348-bWO2M7nyj1dNdS9tKwFwZVVaIYHu3J2QtzrJ9o0IH-58oXqStsFJn95jlvmW0Z54h8Lbllu8MerWKiZvTZI1alynTfscFAwnYm9pSDjDfv8aOV1blW1pKKtq_PvvyCyy202oGDDTJiA3vkacJPWmGYb9ZuED0lYgYAhNSR10lCswmyYw2jwMIPbnKl--vkQnpsyPbWZ8RmTTd2Fehzs2adGMCD6z9TpXe3lyKUbhV4HnwgPE8RD0bpY-83esKq61ej62rJDDtX81BHWtZTyPKMMQmQkCNBTA1xd8BXA3-rQQpZ4miOD2F97WPVoXCrN075W4vdHrUMbHIZMbOOJdNCz9db_GbKwLn4TARjz7Cy_H8v9PE7sTx4UfhkAVFUkHH_NlCdv71Doa4bdoeRox4beR0iF1LMAOeWkOccpdngI5AlloLLVZUa0pB0YpP006t80C-NYJbtA3spcvbr6OQ8OAx5ry-wBuajqPqDeyvjQHTgxUZgO7YOR';
 
 export const ShareResourceCard = ({ isAuthenticated, user = { name: "Usuario" }, onPostsUpdate }) => {
-  const { shareResource } = useContext(AuthContext);
+  const { shareContent } = useContext(AuthContext);
   const { uploadToDropbox } = useSimpleDropboxUpload(ACCESS_TOKEN);
   const [selectedType, setSelectedType] = useState(null);
   const [formData, setFormData] = useState({
@@ -102,6 +102,37 @@ export const ShareResourceCard = ({ isAuthenticated, user = { name: "Usuario" },
         return;
       }
 
+      if (!finalFormData.title.trim()) {
+        alert('Por favor ingresa un título');
+        setIsUploading(false);
+        return;
+      }
+
+      if (!finalFormData.description.trim()) {
+        alert('Por favor ingresa una descripción');
+        setIsUploading(false);
+        return;
+      }
+
+      // Validar URL según el tipo
+      if (selectedType === 'video' && !finalFormData.youtubeUrl) {
+        alert('Por favor ingresa una URL de YouTube válida');
+        setIsUploading(false);
+        return;
+      }
+
+      if (selectedType === 'link' && !finalFormData.websiteUrl) {
+        alert('Por favor ingresa una URL válida');
+        setIsUploading(false);
+        return;
+      }
+
+      if ((selectedType === 'document' || selectedType === 'image') && !finalFormData.fileUrl) {
+        alert('Por favor sube un archivo');
+        setIsUploading(false);
+        return;
+      }
+
       // Preparar los datos para enviar a la API
       const resourceData = {
         titulo: finalFormData.title,
@@ -114,7 +145,7 @@ export const ShareResourceCard = ({ isAuthenticated, user = { name: "Usuario" },
       };
 
       // Enviar a la API usando el contexto
-      await shareResource(resourceData);
+      await shareContent(resourceData);
       
       alert('¡Recurso compartido exitosamente!');
       resetForm();
@@ -293,11 +324,21 @@ export const ShareResourceCard = ({ isAuthenticated, user = { name: "Usuario" },
           </div>
 
           <div className="form-actions">
-            <button type="button" onClick={resetForm} className="cancel-btn">
+            <button 
+              type="button" 
+              onClick={resetForm} 
+              className="cancel-btn"
+              disabled={isUploading}
+            >
               Cancelar
             </button>
-            <button type="submit" className="submit-btn" onClick={handleSubmit}>
-              Compartir Recurso
+            <button 
+              type="submit" 
+              className="submit-btn" 
+              onClick={handleSubmit}
+              disabled={isUploading}
+            >
+              {isUploading ? 'Compartiendo...' : 'Compartir Recurso'}
             </button>
           </div>
         </div>

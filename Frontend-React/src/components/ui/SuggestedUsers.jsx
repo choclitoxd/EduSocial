@@ -21,10 +21,10 @@ export const SuggestedUsers = ({ users, message }) => {
         <h3 className="suggested-title">A quién seguir</h3>
         {users.map((user, index) => (
           <div className="suggested-user" key={index}>
-            <div className={`avatar ${user.avatarColor}`}>{user.avatarText}</div>
+            <div className={`avatar ${user.avatarColor}`}>{user.nombre[0]}</div>
             <div className="user-info">
-              <span className="name">{user.name}</span>
-              <span className="username">@{user.username}</span>
+              <span className="name">{user.correo}</span>
+              <span className="username">@{user.nombre}</span>
             </div>
             <button className="follow-button">Seguir</button>
           </div>
