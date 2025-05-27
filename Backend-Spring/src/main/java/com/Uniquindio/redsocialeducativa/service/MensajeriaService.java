@@ -16,6 +16,21 @@ public class MensajeriaService {
     public Map<String, List<Mensaje>> conversaciones = new HashMap<>();
     private int globalId = 1; // id único para todos los mensajes (opcional)
 
+    public void cargarMensajesDePrueba() {
+        Mensaje m1 = new Mensaje(1, "ana@uq.com", "Hola Luis, ¿cómo vas con el trabajo final?", false, "10:00");
+        Mensaje m2 = new Mensaje(2, "luis@uq.com", "Hola Ana, ya casi lo termino.",true, "10:03");
+
+        Mensaje m1Ana = new Mensaje(1, "ana@uq.com", "Hola Luis, ¿cómo vas con el trabajo final?", true, "10:00");
+        Mensaje m2Ana = new Mensaje(2, "luis@uq.com", "Hola Ana, ya casi lo termino.", false, "10:03");
+
+        List<Mensaje> mensajesLuis = new ArrayList<>(List.of(m1, m2));
+        List<Mensaje> mensajesAna = new ArrayList<>(List.of(m1Ana, m2Ana));
+
+        conversaciones.put("luis@uq.com", mensajesLuis);
+        conversaciones.put("ana@uq.com", mensajesAna);
+
+    }
+
     public List<Mensaje> guardarMensajes(String usuario1, String usuario2, String contenido, boolean isOwn) {
         // Hora actual
         String hora = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));

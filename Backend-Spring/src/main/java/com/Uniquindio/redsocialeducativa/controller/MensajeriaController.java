@@ -17,6 +17,12 @@ public class MensajeriaController {
     @Autowired
     private MensajeriaService mensajeriaService;
 
+    @PostMapping("/cargarDatosPrueba")
+    public ResponseEntity<?> cargarDatosPrueba() {
+        mensajeriaService.cargarMensajesDePrueba();
+        return ResponseEntity.ok("Mensajes de prueba cargados.");
+    }
+
     @PostMapping("/guardarMensajes")
     public ResponseEntity<?> guardarMensajes(
             @RequestParam String usuario1,
