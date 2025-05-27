@@ -151,6 +151,10 @@ export const GrafoEjemplo = () => {
         hover: '#848484',
         opacity: 0.8
       },
+      arrows: {
+        to: false,
+        from: false
+      },
       smooth: {
         type: "continuous",
         roundness: 0.5

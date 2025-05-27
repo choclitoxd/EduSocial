@@ -3,7 +3,6 @@ import { Header } from "./header";
 import { StudentPanel } from "../ui/StudentPanel";
 import { EducationalUserPanel } from "../ui/EducationalUserPanel";
 import { LoginPrompt } from "../ui/LoginPrompt";
-import { Search } from "../ui/Search";
 import { AuthContext } from "../../context/AuthContext";
 import "../ui/css/Navbar.css"
 
@@ -12,7 +11,6 @@ export const UserPanel = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [filteredUsers, setFilteredUsers] = useState([]);
   const [studentStats, setStudentStats] = useState({
     totalPosts: 0,
     totalLikes: 0
@@ -27,11 +25,6 @@ export const UserPanel = () => {
     isLoggedIn: false,
     name: "Invitado",
     username: ""
-  };
-
-  // Función para manejar los resultados de búsqueda
-  const handleSearchResults = (results) => {
-    setFilteredUsers(results);
   };
 
   // Función para actualizar las estadísticas del estudiante
@@ -98,25 +91,6 @@ export const UserPanel = () => {
           <div className="error-message">{error}</div>
         ) : (
           <>
-            <Search onSearch={handleSearchResults} />
-            
-            {filteredUsers.length > 0 && (
-              <div className="search-results">
-                <h3>Resultados de búsqueda</h3>
-                <div className="users-list">
-                  {filteredUsers.map(user => (
-                    <div key={user.correo} className="user-card">
-                      <div className="user-info">
-                        <h4>{user.nombre}</h4>
-                        <p>{user.correo}</p>
-                        {user.topic && <p>Tema: {user.topic}</p>}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
             {posts.length === 0 ? (
               <div className="empty-posts">
                 <h3>No has publicado ningún contenido aún</h3>

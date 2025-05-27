@@ -6,9 +6,10 @@ import { useNavigate } from "react-router-dom";
 
 const LoginRegister = () =>{
     const [action, setAction] = useState('');
-    const { loginUser, registerUser, loadTestUsers, loadTestPosts } = useContext(AuthContext);
+    const { loginUser, registerUser, loadTestUsers, loadTestPosts, postSuggestedUsers } = useContext(AuthContext);
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
 
     // Estados para login
     const [loginEmail, setLoginEmail] = useState('');
@@ -23,8 +24,16 @@ const LoginRegister = () =>{
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setError('');
         try {
             const response = await loginUser(loginEmail, loginPassword);
+            
+            // Obtener sugerencias después del login exitoso
+            try {
+                await postSuggestedUsers();
+            } catch (suggestionError) {
+                console.error('Error al cargar sugerencias:', suggestionError);
+            }
             
             // Verificar si es el usuario administrador
             if (loginEmail === 'admin@uq.com') {
@@ -33,18 +42,31 @@ const LoginRegister = () =>{
                 navigate("/"); // Redirige al home para usuarios normales
             }
         } catch (error) {
-            alert("Error al iniciar sesión: " + error.message);
+            setError(error.message);
         }
     };
 
     const handleRegister = async (e) => {
         e.preventDefault();
+        setError('');
         try {
-            await registerUser(registerData);
-            alert("Registro exitoso!");
-            navigate("/");
+            const response = await registerUser(registerData);
+            
+            // Obtener sugerencias después del registro exitoso
+            try {
+                await postSuggestedUsers();
+            } catch (suggestionError) {
+                console.error('Error al cargar sugerencias:', suggestionError);
+            }
+            
+            // Si el registro es exitoso, el usuario ya estará autenticado
+            if (registerData.correo === 'admin@uq.com') {
+                navigate("/moderator/reports");
+            } else {
+                navigate("/");
+            }
         } catch (error) {
-            alert("Error al registrar: " + error.message);
+            setError(error.message);
         }
     };
 
@@ -58,6 +80,7 @@ const LoginRegister = () =>{
 
     const loadTestData = async () => {
         setIsLoading(true);
+        setError('');
         try {
             // Cargar usuarios de prueba
             const usersMessage = await loadTestUsers();
@@ -69,7 +92,7 @@ const LoginRegister = () =>{
 
             alert(`${usersMessage}\n${postsMessage}`);
         } catch (error) {
-            alert("Error al cargar datos de prueba: " + error.message);
+            setError(error.message);
         } finally {
             setIsLoading(false);
         }
@@ -83,6 +106,7 @@ const LoginRegister = () =>{
             <div className="form-box login">
                 <form action="" onSubmit={handleLogin}>
                     <h1>Login</h1>
+                    {error && <div className="error-message">{error}</div>}
                     <div className="input-box">
                         <input 
                             type="text" 
@@ -125,6 +149,7 @@ const LoginRegister = () =>{
             <div className="form-box register">
                 <form onSubmit={handleRegister}>
                     <h1>Registration</h1>
+                    {error && <div className="error-message">{error}</div>}
                     <div className="input-box">
                         <input 
                             type="text" 

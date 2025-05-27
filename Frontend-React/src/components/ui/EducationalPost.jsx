@@ -6,13 +6,13 @@ export const EducationalPost = ({ post, isAuthenticated, onSuggestionsUpdate, on
   const [showVideo, setShowVideo] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [isLiking, setIsLiking] = useState(false);
-  const { createRelation, postSuggestedUsers } = useContext(AuthContext);
+  const { likeContent } = useContext(AuthContext);
 
   const getDropboxDirectLink = (url) => {
-  // Reemplaza ?dl=0 por ?raw=1 o dl=1 para forzar la descarga directa o mostrar en <img>
-  return url.replace("?dl=0", "?raw=1")
-            .replace("?dl=1", "?raw=1")
-            .replace("www.dropbox.com", "dl.dropboxusercontent.com");
+    // Reemplaza ?dl=0 por ?raw=1 o dl=1 para forzar la descarga directa o mostrar en <img>
+    return url.replace("?dl=0", "?raw=1")
+              .replace("?dl=1", "?raw=1")
+              .replace("www.dropbox.com", "dl.dropboxusercontent.com");
   };
   
   const handleLike = async () => {
@@ -21,24 +21,25 @@ export const EducationalPost = ({ post, isAuthenticated, onSuggestionsUpdate, on
       return;
     }
 
+    if (!post.id) {
+      console.error('El post no tiene ID');
+      alert('No se puede dar like a este contenido');
+      return;
+    }
+
     try {
       setIsLiking(true);
-      console.log('Intentando dar like al post de:', post.autor);
+      console.log('Intentando dar like al contenido:', post.id);
       
-      await createRelation(post.autor);
-      
-      // Actualizar las sugerencias después de crear la relación
-      const newSuggestions = await postSuggestedUsers();
-      if (onSuggestionsUpdate) {
-        onSuggestionsUpdate(newSuggestions);
-      }
+      const message = await likeContent(post.id);
+      console.log('Respuesta del like:', message);
       
       // Notificar al componente padre que se ha dado like
       if (onLike) {
         onLike();
       }
       
-      alert('¡Has dado "Me gusta" al contenido! Se ha creado una conexión con el autor.');
+      alert('¡Has dado "Me gusta" al contenido!');
     } catch (error) {
       console.error('Error al dar like:', error);
       alert(error.message || 'Hubo un error al dar me gusta. Por favor, intenta de nuevo.');

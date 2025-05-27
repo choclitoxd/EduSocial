@@ -133,6 +133,8 @@
   }
 
   .user-info {
+    width: 40%;
+    overflow: hidden;
     margin-left: 14px;
   }
 

@@ -57,9 +57,10 @@ export const AuthProvider = ({ children }) => {
       console.log("Respuesta registro:", data);
 
       if (res.ok) {
-        // En registro solo recibimos un mensaje de éxito
-        // Después del registro exitoso, hacemos login automáticamente
-        return await loginUser(userData.correo, userData.contrasena);
+        // Ahora el backend devuelve el token y el usuario directamente
+        localStorage.setItem("token", data.token);
+        setUser(data.user);
+        return data;
       } else {
         throw new Error(data.message || "Error en el registro");
       }
@@ -402,6 +403,32 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const likeContent = async (contentId) => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_BASE}/contenidos/darLike?id=${contentId}&correo=${user.correo}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Accept": "text/plain"
+        }
+      });
+
+      if (!res.ok) {
+        throw new Error("Error al dar like al contenido");
+      }
+
+      const message = await res.text();
+      return message;
+    } catch (error) {
+      if (error.message === "Failed to fetch") {
+        throw new Error("No se pudo conectar con el servidor. Verifica tu conexión a internet.");
+      }
+      console.error("Error al dar like:", error);
+      throw error;
+    }
+  };
+
   return (
     <AuthContext.Provider value={{ 
       user, 
@@ -419,7 +446,8 @@ export const AuthProvider = ({ children }) => {
       updateContent,
       createRelation,
       getUsers,
-      getGraphData
+      getGraphData,
+      likeContent
     }}>
       {children}
     </AuthContext.Provider>

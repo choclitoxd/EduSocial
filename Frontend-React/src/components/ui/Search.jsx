@@ -1,88 +1,90 @@
-import React, { useState, useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import React, { useState } from "react";
 import "./css/Search.css"
+import { FaSearch } from 'react-icons/fa';
 
 export const Search = ({ onSearch }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedTopic, setSelectedTopic] = useState('');
-    const { getUsers } = useContext(AuthContext);
 
     const topics = [
         "Matemáticas",
-        "Programación",
         "Física",
         "Química",
         "Biología",
         "Historia",
         "Literatura",
-        "Inglés"
+        "Programación",
+        "Idiomas",
+        "Arte",
+        "Música"
     ];
 
-    const handleSearch = async () => {
-        try {
-            const users = await getUsers();
-            let filteredUsers = users;
-
-            // Filtrar por correo si hay término de búsqueda
-            if (searchTerm) {
-                filteredUsers = filteredUsers.filter(user => 
-                    user.correo.toLowerCase().includes(searchTerm.toLowerCase())
-                );
-            }
-
-            // Filtrar por topic si hay uno seleccionado
-            if (selectedTopic) {
-                filteredUsers = filteredUsers.filter(user => {
-                    // Aquí asumimos que el usuario tiene un array de topics o un topic principal
-                    // Ajusta esto según la estructura de tus datos
-                    return user.topics?.includes(selectedTopic) || user.topic === selectedTopic;
-                });
-            }
-
-            // Enviar los resultados filtrados al componente padre
-            if (onSearch) {
-                onSearch(filteredUsers);
-            }
-        } catch (error) {
-            console.error('Error al buscar usuarios:', error);
-            alert('Error al buscar usuarios. Por favor, intenta de nuevo.');
+    // Función que se ejecuta cada vez que cambia el input o el select
+    const handleInputChange = (e) => {
+        const value = e.target.value;
+        setSearchTerm(value);
+        
+        // Enviar los filtros al componente padre
+        if (onSearch) {
+            onSearch({
+                searchTerm: value,
+                selectedTopic: selectedTopic
+            });
         }
     };
 
-    return(
+    const handleTopicChange = (e) => {
+        const topic = e.target.value;
+        setSelectedTopic(topic);
+        
+        // Enviar los filtros al componente padre
+        if (onSearch) {
+            onSearch({
+                searchTerm: searchTerm,
+                selectedTopic: topic
+            });
+        }
+    };
+
+    const handleSearch = () => {
+        // Enviar los filtros actuales
+        if (onSearch) {
+            onSearch({
+                searchTerm: searchTerm,
+                selectedTopic: selectedTopic
+            });
+        }
+    };
+
+    return (
         <div className="search-card">
-            <h2>Buscar usuarios</h2>
-
-            <input 
-                type="text" 
-                placeholder="Buscar por correo..." 
+            <h2>Buscar Contenido</h2>
+            <input
+                type="text"
                 className="search-input"
+                placeholder="Buscar por autor, título o contenido..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={handleInputChange}
             />
-
             <div className="filter-group">
-                <label>Tema de interés:</label>
+                <label>Filtrar por tema:</label>
                 <select 
                     className="filter-select"
                     value={selectedTopic}
-                    onChange={(e) => setSelectedTopic(e.target.value)}
+                    onChange={handleTopicChange}
                 >
                     <option value="">Todos los temas</option>
                     {topics.map(topic => (
-                        <option key={topic} value={topic}>
-                            {topic}
-                        </option>
+                        <option key={topic} value={topic}>{topic}</option>
                     ))}
                 </select>
             </div>
-
             <button 
                 className="search-button"
                 onClick={handleSearch}
             >
-                Buscar
+                <FaSearch /> Buscar
             </button>
         </div>
     );
-};  
+};

@@ -9,6 +9,7 @@ import "../ui/css/Navbar.css";
 export const User = () => {
   const { user, getContenidos } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [suggestedUsers, setSuggestedUsers] = useState([]);
@@ -29,6 +30,7 @@ export const User = () => {
       setLoading(true);
       const data = await getContenidos();
       setPosts(data);
+      setFilteredPosts(data); // Inicialmente mostrar todos
       setError(null);
     } catch (err) {
       console.error('Error al cargar los posts:', err);
@@ -40,6 +42,32 @@ export const User = () => {
 
   const handleSuggestionsUpdate = (newSuggestions) => {
     setSuggestedUsers(newSuggestions);
+  };
+
+  // Función para manejar la búsqueda
+  const handleSearch = ({ searchTerm, selectedTopic }) => {
+    let filtered = posts;
+
+    // Filtrar por término de búsqueda
+    if (searchTerm && searchTerm.trim()) {
+      const term = searchTerm.toLowerCase().trim();
+      filtered = filtered.filter(post => {
+        const autor = post.autor || '';
+        const titulo = post.titulo || '';
+        const contenido = post.contenido || '';
+        
+        return autor.toLowerCase().includes(term) ||
+               titulo.toLowerCase().includes(term) ||
+               contenido.toLowerCase().includes(term);
+      });
+    }
+
+    // Filtrar por topic
+    if (selectedTopic) {
+      filtered = filtered.filter(post => post.topic === selectedTopic);
+    }
+
+    setFilteredPosts(filtered);
   };
 
   useEffect(() => {
@@ -56,12 +84,12 @@ export const User = () => {
       ) : (
         <>
           <EducationalFeed 
-            samplePosts={posts} 
+            samplePosts={filteredPosts} 
             user={userData} 
             onPostsUpdate={refreshPosts}
             onSuggestionsUpdate={handleSuggestionsUpdate}
           />
-          <Search />
+          <Search onSearch={handleSearch} />
         </>
       )}
     </div>
