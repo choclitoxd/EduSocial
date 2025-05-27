@@ -63,4 +63,5 @@ public class ContenidoController {
         contenidoService.like(id, correo);
         return ResponseEntity.ok("Like registrado");
     }
+
 }

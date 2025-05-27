@@ -50,6 +50,7 @@ public class UsuarioService {
         grafoAfinidad.agregarRelacion(ana, luis);
         grafoAfinidad.agregarRelacion(luis, maria);
         grafoAfinidad.agregarRelacion(maria, juan);
+        grafoAfinidad.agregarRelacion(ana, juan);
         grafoAfinidad.agregarRelacion(juan, ana);
 
     }
