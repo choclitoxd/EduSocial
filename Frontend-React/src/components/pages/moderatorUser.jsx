@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import { ModeratorSidebar } from '../ui/ModeratorSidebar';
 import { ModeratorSearch } from '../ui/ModeratorSearch';
 import { ModeratorStudentList } from '../ui/ModeratorStudentList';
+import { EditUserModal } from '../ui/EditUserModal';
+import { DeleteConfirmationModal } from '../ui/DeleteConfirmationModal';
 import { AuthContext } from '../../context/AuthContext';
 import '../ui/css/ModeratorPanel.css';
 
@@ -10,7 +12,10 @@ export const ModeratorUser = () => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { getUsers } = useContext(AuthContext);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const { getUsers, editUser, deleteUser } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -22,7 +27,6 @@ export const ModeratorUser = () => {
           id: user.id || user.correo, // Usar correo como ID si no hay ID
           name: user.nombre,
           email: user.correo,
-          registrationDate: user.fechaRegistro || 'N/A',
           avatar: user.nombre.split(' ').map(n => n[0]).join('').toUpperCase()
         }));
         setStudents(formattedUsers);
@@ -43,8 +47,65 @@ export const ModeratorUser = () => {
     student.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleDeleteStudent = (id) => {
-    setStudents(students.filter(student => student.id !== id));
+  const handleDeleteClick = (user) => {
+    // Asegurarnos de que el usuario tenga el formato correcto
+    const formattedUser = {
+      name: user.name,
+      email: user.email,
+      id: user.id
+    };
+    setSelectedUser(formattedUser);
+    setShowDeleteModal(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      await deleteUser(selectedUser.email);
+      setStudents(students.filter(student => student.id !== selectedUser.id));
+      setShowDeleteModal(false);
+      setSelectedUser(null);
+    } catch (error) {
+      console.error('Error al eliminar usuario:', error);
+      throw error;
+    }
+  };
+
+  const handleEditClick = (user) => {
+    // Asegurarnos de que el usuario tenga el formato correcto
+    const formattedUser = {
+      name: user.name,
+      email: user.email,
+      id: user.id
+    };
+    setSelectedUser(formattedUser);
+      setShowEditModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedUser(null);
+    setShowEditModal(false);
+    setShowDeleteModal(false);
+  };
+
+  const handleSaveEdit = async (userData) => {
+    try {
+      await editUser(userData);
+      // Actualizar la lista de usuarios después de la edición
+      const updatedStudents = students.map(student => {
+        if (student.email === userData.correo) {
+          return {
+            ...student,
+            name: userData.nombre
+          };
+        }
+        return student;
+      });
+      setStudents(updatedStudents);
+      handleCloseModal();
+    } catch (error) {
+      console.error('Error al editar usuario:', error);
+      throw error;
+    }
   };
 
   const getAvatarColor = (name) => {
@@ -87,8 +148,25 @@ export const ModeratorUser = () => {
         ) : (
           <ModeratorStudentList
             students={filteredStudents}
-            onDelete={handleDeleteStudent}
+            onDelete={handleDeleteClick}
+            onEdit={handleEditClick}
             getAvatarColor={getAvatarColor}
+          />
+        )}
+
+        {showEditModal && selectedUser && (
+          <EditUserModal
+            user={selectedUser}
+            onClose={handleCloseModal}
+            onSave={handleSaveEdit}
+          />
+        )}
+
+        {showDeleteModal && selectedUser && (
+          <DeleteConfirmationModal
+            user={selectedUser}
+            onClose={handleCloseModal}
+            onConfirm={handleConfirmDelete}
           />
         )}
       </div>

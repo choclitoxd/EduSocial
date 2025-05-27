@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from "react";
+import React, {useContext, useState, useEffect, useCallback} from "react";
 import { Header } from "./header";
 import { StudentPanel } from "../ui/StudentPanel";
 import { EducationalUserPanel } from "../ui/EducationalUserPanel";
@@ -39,36 +39,48 @@ export const UserPanel = () => {
     });
   };
 
+  // Función para recargar los posts
+  const refreshPosts = useCallback(async () => {
+    if (!user) return;
+    
+    try {
+      setLoading(true);
+      const allPosts = await getContenidos();
+      const userPosts = allPosts.filter(post => post.autor === user.correo);
+      setPosts(userPosts);
+      updateStudentStats(userPosts);
+      setError(null);
+    } catch (err) {
+      console.error('Error al recargar los posts:', err);
+      setError('Error al actualizar los contenidos educativos.');
+    } finally {
+      setLoading(false);
+    }
+  }, [user, getContenidos]);
+
   // Función para manejar la eliminación de un post
-  const handlePostDelete = (deletedPostId) => {
-    const updatedPosts = posts.filter(post => post.id !== deletedPostId);
-    setPosts(updatedPosts);
-    updateStudentStats(updatedPosts);
+  const handlePostDelete = async (deletedPostId) => {
+    try {
+      // Primero actualizamos el estado local
+      const updatedPosts = posts.filter(post => post.id !== deletedPostId);
+      setPosts(updatedPosts);
+      updateStudentStats(updatedPosts);
+      
+      // Luego recargamos los posts del servidor para asegurar sincronización
+      await refreshPosts();
+    } catch (error) {
+      console.error('Error al eliminar el post:', error);
+      setError('Error al eliminar el contenido.');
+    }
   };
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const allPosts = await getContenidos();
-        // Filtrar solo los posts del usuario actual
-        const userPosts = allPosts.filter(post => post.autor === user?.correo);
-        setPosts(userPosts);
-        updateStudentStats(userPosts);
-        setError(null);
-      } catch (err) {
-        console.error('Error al cargar los posts:', err);
-        setError('Error al cargar los contenidos educativos.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     if (user) {
-      fetchPosts();
+      refreshPosts();
     } else {
       setLoading(false);
     }
-  }, [getContenidos, user]);
+  }, [user, refreshPosts]);
 
   if (!user) {
     return (
@@ -88,7 +100,12 @@ export const UserPanel = () => {
         {loading ? (
           <div className="loading-message">Cargando tus contenidos...</div>
         ) : error ? (
-          <div className="error-message">{error}</div>
+          <div className="error-message">
+            {error}
+            <button onClick={refreshPosts} className="retry-button">
+              Intentar de nuevo
+            </button>
+          </div>
         ) : (
           <>
             {posts.length === 0 ? (
@@ -102,6 +119,7 @@ export const UserPanel = () => {
                   userPosts={posts} 
                   user={userData} 
                   onPostDelete={handlePostDelete}
+                  onPostUpdate={refreshPosts}
                 />
                 <StudentPanel 
                   contents={studentStats.totalPosts} 

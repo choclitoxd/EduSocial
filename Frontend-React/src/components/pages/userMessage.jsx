@@ -1,10 +1,16 @@
-import React,{useContext} from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Header } from "./header";
 import { StudentMessaging } from "../ui/StudentMessaging";
 import { AuthContext } from "../../context/AuthContext";
+import { LoginPrompt } from "../ui/LoginPrompt";
 
-export const UserMessage = () =>{
-  const { user } = useContext(AuthContext);
+export const UserMessage = () => {
+  const { user, getConversations, saveMessage } = useContext(AuthContext);
+  const [conversations, setConversations] = useState({});
+  const [friends, setFriends] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [sendingMessage, setSendingMessage] = useState(false);
 
   // Configurar el objeto de usuario basado en si hay un usuario autenticado o no
   const userData = user ? {
@@ -17,75 +23,130 @@ export const UserMessage = () =>{
     username: ""
   };
 
-    const friends = ([{
-      id: 1,
-      name: 'Ana García',
-      avatar: 'A',
-      status: 'online',
-      lastMessage: 'Perfecto, nos vemos mañana para estudiar',
-      lastMessageTime: '10:30',
-      unreadCount: 2,
-      subject: 'Matemáticas'
-    },
-    {
-      id: 2,
-      name: 'Carlos Rodríguez',
-      avatar: 'C',
-      status: 'away',
-      lastMessage: '¿Tienes los apuntes de la clase de ayer?',
-      lastMessageTime: '09:15',
-      unreadCount: 0,
-    },
-    {
-      id: 3,
-      name: 'Elena Martínez',
-      avatar: 'E',
-      status: 'online',
-      lastMessage: 'Gracias por la ayuda con el proyecto',
-      lastMessageTime: 'Ayer',
-      unreadCount: 1,
-    },
-    {
-      id: 4,
-      name: 'José López',
-      avatar: 'J',
-      status: 'offline',
-      lastMessage: 'Enviado',
-      lastMessageTime: '2 días',
-      unreadCount: 0,
-    },
-    {
-      id: 5,
-      name: 'María Fernández',
-      avatar: 'M',
-      status: 'online',
-      lastMessage: 'El código que me pasaste funciona perfecto',
-      lastMessageTime: '14:22',
-      unreadCount: 3,
-    }]
-  );
+  // Procesar las conversaciones recibidas
+  const processConversations = (conversationsData) => {
+    const processedFriends = [];
 
-  const myConversations = ({
-     1: [
-      { id: 1, senderId: 1, text: 'Hola! ¿Cómo vas con los ejercicios de cálculo?', time: '10:00', isOwn: false },
-      { id: 2, senderId: 'me', text: 'Bien, aunque tengo dudas con las derivadas parciales', time: '10:05', isOwn: true },
-      { id: 3, senderId: 1, text: 'Te puedo ayudar, ¿nos vemos mañana en la biblioteca?', time: '10:15', isOwn: false },
-      { id: 4, senderId: 'me', text: 'Perfecto, ¿a las 3 PM te parece bien?', time: '10:20', isOwn: true },
-      { id: 5, senderId: 1, text: 'Perfecto, nos vemos mañana para estudiar', time: '10:30', isOwn: false }
-    ],
-    2: [
-      { id: 6, senderId: 2, text: '¿Tienes los apuntes de la clase de ayer?', time: '09:15', isOwn: false },
-      { id: 7, senderId: 'me', text: 'Sí, te los paso por aquí', time: '09:20', isOwn: true }
-    ],
-    3: [
-      { id: 8, senderId: 3, text: 'Gracias por la ayuda con el proyecto', time: 'Ayer', isOwn: false }
-    ]
-  });
+    Object.entries(conversationsData).forEach(([friendEmail, messages]) => {
+      if (messages && messages.length > 0) {
+        const lastMessage = messages[messages.length - 1];
+        
+        processedFriends.push({
+          id: friendEmail,
+          name: lastMessage.nombreEmisor || friendEmail,
+          avatar: lastMessage.nombreEmisor?.[0]?.toUpperCase() || 'U',
+          status: 'online',
+          lastMessage: lastMessage.contenido,
+          lastMessageTime: new Date(lastMessage.fecha).toLocaleTimeString(),
+          unreadCount: messages.filter(msg => !msg.leido).length
+        });
+      }
+    });
 
-  return(
-    <div className="main-div">
+    return processedFriends;
+  };
+
+  // Enviar un mensaje
+  const handleSendMessage = async (recipientId, content) => {
+    if (!content.trim() || sendingMessage) return;
+
+    try {
+      setSendingMessage(true);
+      setError(null);
+
+      const updatedMessages = await saveMessage(recipientId, content, true);
+
+      // Actualizar conversaciones
+      setConversations(prevConversations => ({
+        ...prevConversations,
+        [recipientId]: updatedMessages
+      }));
+
+      // Actualizar lista de amigos
+      const updatedFriends = processConversations({
+        [recipientId]: updatedMessages
+      });
+
+      if (updatedFriends.length > 0) {
+        setFriends(prevFriends => {
+          const newFriends = [...prevFriends];
+          const index = newFriends.findIndex(f => f.id === recipientId);
+          if (index !== -1) {
+            newFriends[index] = updatedFriends[0];
+          }
+          return newFriends;
+        });
+      }
+
+      return true;
+    } catch (err) {
+      console.error('Error al enviar mensaje:', err);
+      setError('No se pudo enviar el mensaje. Por favor, intenta de nuevo.');
+      return false;
+    } finally {
+      setSendingMessage(false);
+    }
+  };
+
+  // Cargar conversaciones
+  useEffect(() => {
+    const loadConversations = async () => {
+      if (!user) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const conversationsData = await getConversations();
+        setConversations(conversationsData);
+        setFriends(processConversations(conversationsData));
+      } catch (err) {
+        console.error('Error al cargar conversaciones:', err);
+        setError('No se pudieron cargar las conversaciones. Por favor, intenta de nuevo.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadConversations();
+  }, [user, getConversations]);
+
+  // Si no hay usuario autenticado, mostrar prompt de login
+  if (!user) {
+    return (
+      <div className="main-div">
         <Header user={userData} />
-        <StudentMessaging  friends={friends} myConversation={myConversations} />
+        <LoginPrompt />
+      </div>
+    );
+  }
+
+  return (
+    <div className="main-div">
+      <Header user={userData} />
+      {loading ? (
+        <div className="loading-container">
+          <p>Cargando conversaciones...</p>
+        </div>
+      ) : error ? (
+        <div className="error-container">
+          <p>{error}</p>
+          <button onClick={() => window.location.reload()}>
+            Intentar de nuevo
+          </button>
+        </div>
+      ) : (
+        <StudentMessaging 
+          friends={friends} 
+          myConversation={conversations}
+          currentUser={userData}
+          onSendMessage={handleSendMessage}
+          isSending={sendingMessage}
+        />
+      )}
     </div>
-  )
-}
+  );
+};

@@ -6,7 +6,14 @@ import { useNavigate } from "react-router-dom";
 
 const LoginRegister = () =>{
     const [action, setAction] = useState('');
-    const { loginUser, registerUser, loadTestUsers, loadTestPosts, postSuggestedUsers } = useContext(AuthContext);
+    const { 
+        loginUser, 
+        registerUser, 
+        loadTestUsers, 
+        loadTestPosts, 
+        loadTestMessages,
+        postSuggestedUsers 
+    } = useContext(AuthContext);
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
@@ -26,7 +33,7 @@ const LoginRegister = () =>{
         e.preventDefault();
         setError('');
         try {
-            const response = await loginUser(loginEmail, loginPassword);
+            await loginUser(loginEmail, loginPassword);
             
             // Obtener sugerencias después del login exitoso
             try {
@@ -37,9 +44,9 @@ const LoginRegister = () =>{
             
             // Verificar si es el usuario administrador
             if (loginEmail === 'admin@uq.com') {
-                navigate("/moderator/reports"); // Redirige a la vista de moderador
+                navigate("/moderator/reports");
             } else {
-                navigate("/"); // Redirige al home para usuarios normales
+                navigate("/");
             }
         } catch (error) {
             setError(error.message);
@@ -50,7 +57,7 @@ const LoginRegister = () =>{
         e.preventDefault();
         setError('');
         try {
-            const response = await registerUser(registerData);
+            await registerUser(registerData);
             
             // Obtener sugerencias después del registro exitoso
             try {
@@ -59,7 +66,6 @@ const LoginRegister = () =>{
                 console.error('Error al cargar sugerencias:', suggestionError);
             }
             
-            // Si el registro es exitoso, el usuario ya estará autenticado
             if (registerData.correo === 'admin@uq.com') {
                 navigate("/moderator/reports");
             } else {
@@ -82,24 +88,25 @@ const LoginRegister = () =>{
         setIsLoading(true);
         setError('');
         try {
-            // Cargar usuarios de prueba
-            const usersMessage = await loadTestUsers();
-            console.log("Usuarios:", usersMessage);
-            
-            // Cargar posts de prueba
-            const postsMessage = await loadTestPosts();
-            console.log("Posts:", postsMessage);
+            const results = await Promise.all([
+                loadTestUsers().then(msg => ({ type: 'Usuarios', message: msg })),
+                loadTestPosts().then(msg => ({ type: 'Posts', message: msg })),
+                loadTestMessages().then(msg => ({ type: 'Mensajes', message: msg }))
+            ]);
 
-            alert(`${usersMessage}\n${postsMessage}`);
+            const messages = results.map(result => `${result.type}: ${result.message}`).join('\n');
+            alert('Datos de prueba cargados exitosamente:\n' + messages);
+            
         } catch (error) {
-            setError(error.message);
+            console.error('Error al cargar datos de prueba:', error);
+            setError('Error al cargar datos de prueba: ' + error.message);
         } finally {
             setIsLoading(false);
         }
     };
 
-    const registerLink = () => {setAction('active');}
-    const loginLink = () => {setAction('');}
+    const registerLink = () => setAction('active');
+    const loginLink = () => setAction('');
 
     return(
         <div className={`wrapper ${action}`}>
@@ -128,12 +135,12 @@ const LoginRegister = () =>{
                         <FaLock className='icon'/>
                     </div>
                     <div className="remember-forgot">
-                        <label><input type="checkbox"/>Remeber me</label>
-                        <a href="#">Forgot Password</a>
+                        <label><input type="checkbox"/>Recordarme</label>
+                        <a href="#">¿Olvidaste tu contraseña?</a>
                     </div>
                     <button type="submit">Login</button>
                     <div className="register-link">
-                        <p>Don't have an account? <a href="#" onClick={registerLink}>Register</a></p>
+                        <p>¿No tienes una cuenta? <a href="#" onClick={registerLink}>Regístrate</a></p>
                     </div>
                     <button 
                         type="button" 
@@ -148,13 +155,13 @@ const LoginRegister = () =>{
             </div>
             <div className="form-box register">
                 <form onSubmit={handleRegister}>
-                    <h1>Registration</h1>
+                    <h1>Registro</h1>
                     {error && <div className="error-message">{error}</div>}
                     <div className="input-box">
                         <input 
                             type="text" 
                             name="nombre"
-                            placeholder='Name' 
+                            placeholder='Nombre' 
                             required 
                             value={registerData.nombre}
                             onChange={handleRegisterInputChange}
@@ -176,7 +183,7 @@ const LoginRegister = () =>{
                         <input 
                             type="password" 
                             name="contrasena"
-                            placeholder='Password' 
+                            placeholder='Contraseña' 
                             required 
                             value={registerData.contrasena}
                             onChange={handleRegisterInputChange}
@@ -184,11 +191,14 @@ const LoginRegister = () =>{
                         <FaLock className='icon'/>
                     </div>
                     <div className="remember-forgot">
-                        <label><input type="checkbox" required/>I agree to the terms & conditions</label>
+                        <label>
+                            <input type="checkbox" required/>
+                            Acepto los términos y condiciones
+                        </label>
                     </div>
-                    <button type="submit">Register</button>
+                    <button type="submit">Registrarse</button>
                     <div className="register-link">
-                        <p>Already have an account? <a href="#" onClick={loginLink}>Login</a></p>
+                        <p>¿Ya tienes una cuenta? <a href="#" onClick={loginLink}>Inicia sesión</a></p>
                     </div>
                 </form>
             </div>

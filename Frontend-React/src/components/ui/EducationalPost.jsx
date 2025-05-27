@@ -135,6 +135,7 @@ export const EducationalPost = ({ post, isAuthenticated, onSuggestionsUpdate, on
                 <div className="play-button">
                   <FaPlay className="play-icon" />
                 </div>
+
               </div>
               {post.url && (
                 <div className="video-source">

@@ -204,6 +204,29 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const loadTestMessages = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/mensajeria/cargarDatosPrueba`, {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "text/plain"
+        }
+      });
+
+      const message = await res.text();
+      
+      if (!res.ok) {
+        throw new Error(message || "Error al cargar mensajes de prueba");
+      }
+
+      return message;
+    } catch (error) {
+      console.error("Error al cargar mensajes de prueba:", error);
+      throw error;
+    }
+  };
+
   const getContenidos = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -289,41 +312,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const updateContent = async (contenido) => {
-    try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(`${API_BASE}/contenidos/actualizar`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "text/plain",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          id: contenido.id,
-          titulo: contenido.titulo,
-          descripcion: contenido.descripcion,
-          autor: contenido.autor,
-          topic: contenido.topic,
-          type: contenido.type,
-          url: contenido.url
-        })
-      });
-
-      if (!res.ok) {
-        throw new Error("Error al actualizar el contenido");
-      }
-
-      const message = await res.text();
-      return message;
-    } catch (error) {
-      if (error.message === "Failed to fetch") {
-        throw new Error("No se pudo conectar con el servidor. Verifica tu conexión a internet o que el servidor esté funcionando.");
-      }
-      console.error("Error al actualizar contenido:", error);
-      throw error;
-    }
-  };
 
   const createRelation = async (correo2) => {
     try {
@@ -429,6 +417,136 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const editUser = async (userData) => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_BASE}/usuarios/editar`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(userData)
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Error al editar el usuario");
+      }
+
+      return data;
+    } catch (error) {
+      console.error("Error al editar usuario:", error);
+      throw error;
+    }
+  };
+
+  const deleteUser = async (correo) => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_BASE}/usuarios/eliminar?correo=${correo}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Accept": "application/json"
+        }
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Error al eliminar el usuario");
+      }
+
+      return data;
+    } catch (error) {
+      console.error("Error al eliminar usuario:", error);
+      throw error;
+    }
+  };
+
+  const editContent = async (contenido) => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_BASE}/contenidos/editar`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(contenido)
+      });
+
+      if (!res.ok) {
+        throw new Error("Error al editar el contenido");
+      }
+
+      const message = await res.text();
+      return message;
+    } catch (error) {
+      console.error("Error al editar contenido:", error);
+      throw error;
+    }
+  };
+
+  const getConversations = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_BASE}/mensajeria/conversaciones`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (!res.ok) {
+        throw new Error("Error al obtener las conversaciones");
+      }
+
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      console.error("Error al obtener conversaciones:", error);
+      throw error;
+    }
+  };
+
+  const saveMessage = async (usuario2, contenido, isOwn) => {
+    try {
+      const token = localStorage.getItem("token");
+      const usuario1 = user.correo; // usuario actual
+      
+      const url = new URL(`${API_BASE}/mensajeria/guardarMensajes`);
+      url.searchParams.append('usuario1', usuario1);
+      url.searchParams.append('usuario2', usuario2);
+      url.searchParams.append('contenido', contenido);
+      url.searchParams.append('isOwn', isOwn);
+
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (!res.ok) {
+        throw new Error("Error al enviar el mensaje");
+      }
+
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      console.error("Error al guardar mensaje:", error);
+      throw error;
+    }
+  };
+
   return (
     <AuthContext.Provider value={{ 
       user, 
@@ -440,14 +558,19 @@ export const AuthProvider = ({ children }) => {
       postSuggestedUsers,
       loadTestUsers,
       loadTestPosts,
+      loadTestMessages,
+      getConversations,
+      saveMessage,
       getContenidos,
       deleteContent,
       shareContent,
-      updateContent,
       createRelation,
       getUsers,
       getGraphData,
-      likeContent
+      likeContent,
+      editUser,
+      deleteUser,
+      editContent
     }}>
       {children}
     </AuthContext.Provider>
