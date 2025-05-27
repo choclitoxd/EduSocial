@@ -96,4 +96,12 @@ public class UsuarioService {
     public Object dataGrafo() {
         return grafoAfinidad.dataGrafo();
     }
+
+    public boolean actualizarUsuario(Usuario actualizado) {
+        return listaUsuarios.actualizarUsuario(actualizado);
+    }
+
+    public boolean eliminarUsuario(String correo) {
+        return listaUsuarios.eliminarUsuario(correo);
+    }
 }

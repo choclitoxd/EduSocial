@@ -66,4 +66,49 @@ public class ListaUsuarios extends ListaEnlazada<Usuario> {
         return lista;
     }
 
+    public boolean actualizarUsuario(Usuario actualizado) {
+        Nodo<Usuario> actual = cabeza;
+        while (actual != null) {
+            if (actual.elemento.getCorreo().equals(actualizado.getCorreo())) {
+                actual.elemento = actualizado;
+                return true;
+            }
+            actual = actual.siguiente;
+        }
+        return false;
+    }
+
+    public boolean eliminarUsuario(String correo) {
+        if (cabeza == null) {
+            return false;
+        }
+
+        if (cabeza.elemento.getCorreo().equals(correo)) {
+            cabeza = cabeza.siguiente;
+            if (cabeza == null) {
+                cola = null;
+            }
+            return true;
+        }
+
+        // Recorremos desde el segundo nodo para guardar la referencia del anterior
+        Nodo<Usuario> anterior = cabeza;
+        Nodo<Usuario> actual = cabeza.siguiente;
+
+        while (actual != null) {
+            if (actual.elemento.getCorreo().equals(correo)) {
+                anterior.siguiente = actual.siguiente;
+                // Si eliminamos el último nodo, actualizamos cola para que sea el anterior
+                if (actual == cola) {
+                    cola = anterior;
+                }
+                return true;
+            }
+            anterior = actual;
+            actual = actual.siguiente;
+        }
+
+        return false;
+    }
+
 }
