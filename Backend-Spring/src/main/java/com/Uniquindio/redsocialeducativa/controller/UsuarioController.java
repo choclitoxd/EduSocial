@@ -86,7 +86,10 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message","Relacion creada"));
     }
 
-
+    @GetMapping("/dataGrafo")
+    public ResponseEntity<?> dataGrafo() {
+        return ResponseEntity.ok(usuarioService.dataGrafo());
+    }
 
 
 

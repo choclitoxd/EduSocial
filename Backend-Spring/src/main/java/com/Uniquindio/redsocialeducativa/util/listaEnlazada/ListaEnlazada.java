@@ -50,4 +50,6 @@ public class ListaEnlazada<T> {
         return cabeza == null;
     }
 
+
+
 }
