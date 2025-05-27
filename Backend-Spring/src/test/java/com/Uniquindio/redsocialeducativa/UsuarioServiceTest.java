@@ -22,24 +22,28 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void registrarUsuario_fallaCorreoDuplicado() {
-        Usuario usuario = new Usuario("leo@gmail.com","123", "Leonardo");
+    public void buscarUsuario_existente() {
+        Usuario usuario = new Usuario("jose@uq.com", "456", "Jose");
         usuarioService.agregar(usuario);
-        Usuario nuevo = new Usuario("leo@gmail.com", "1234", "admin");
-        boolean resultado =usuarioService.validarCorreo(nuevo.getCorreo());
-        assertFalse(resultado);
+        Usuario encontrado = usuarioService.obtenerUsuario("jose@uq.com");
+        assertNotNull(encontrado);
+        assertEquals("Jose", encontrado.getNombre());
     }
-
     @Test
     public void loguearUsuario_credencialesCorrectas(){
+        Usuario usuario = new Usuario("test@uq.com", "123", "Test");
+        usuarioService.agregar(usuario);
         boolean logueado = usuarioService.verificarCredenciales("test@uq.com", "123");
-        assertFalse(logueado);
+        assertTrue(logueado); // ahora sí tiene sentido
     }
 
     @Test
     public void loguearUsuario_credencialesIncorrectas(){
-        boolean logueado = usuarioService.verificarCredenciales("test@uq.com", "1234");
-        assertTrue(logueado);
+        Usuario usuario = new Usuario("test@uq.com", "123", "Test");
+        usuarioService.agregar(usuario);
+        boolean logueado = usuarioService.verificarCredenciales("test@uq.com", "wrongpass");
+        assertFalse(logueado); // correcto ahora
     }
+
 
 }

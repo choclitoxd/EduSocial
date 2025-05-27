@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 
 public class Mensaje {
-    private int id; // id consecutivo dentro de la conversación
-    private String senderId; // 'me' o el id del otro usuario
+    private int id;
+    private String senderId;
     private String text;
-    private String time; // puede ser String por simplicidad (ej: "10:05"), o usar LocalDateTime si quieres
+    private String time;
     @JsonProperty("isOwn")
     private boolean isOwn;
 

@@ -14,7 +14,7 @@ import java.util.Map;
 public class MensajeriaService {
 
     public Map<String, List<Mensaje>> conversaciones = new HashMap<>();
-    private int globalId = 1; // id único para todos los mensajes (opcional)
+    private int globalId = 1;
 
     public void cargarMensajesDePrueba() {
         Mensaje m1 = new Mensaje(1, "ana@uq.com", "Hola Luis, ¿cómo vas con el trabajo final?", false, "10:00");
@@ -32,14 +32,13 @@ public class MensajeriaService {
     }
 
     public List<Mensaje> guardarMensajes(String usuario1, String usuario2, String contenido, boolean isOwn) {
-        // Hora actual
+
         String hora = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
         int id = globalId++;
         Mensaje mensajeParaRemitente = new Mensaje(id, usuario1, contenido, false, hora);
         Mensaje mensajeParaReceptor = new Mensaje(id, usuario1, contenido, true, hora);
 
 
-        // Obtener o crear listas de conversación para ambos
         List<Mensaje> listaUsuario1 = conversaciones.getOrDefault(usuario2, new ArrayList<>());
         listaUsuario1.add(mensajeParaRemitente);
         conversaciones.put(usuario2, listaUsuario1);
@@ -48,11 +47,9 @@ public class MensajeriaService {
         listaUsuario2.add(mensajeParaReceptor);
         conversaciones.put(usuario1, listaUsuario2);
 
-        // Devolver la lista del remitente (usuario1)
         return listaUsuario1;
     }
 
-    // Obtener todas las conversaciones
     public Map<String, List<Mensaje>> obtenerConversaciones() {
         return conversaciones;
     }
