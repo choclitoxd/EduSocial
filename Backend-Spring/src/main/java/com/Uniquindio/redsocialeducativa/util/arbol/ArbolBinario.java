@@ -89,9 +89,7 @@ public class ArbolBinario {
         if (raiz == null) return;
 
         raiz.eliminarContenido(id);
-
         eliminarContenidoRecursivo(raiz.izquierda, id);
-
         eliminarContenidoRecursivo(raiz.derecha, id);
     }
 
@@ -118,5 +116,15 @@ public class ArbolBinario {
     }
 
 
+    public void editarContenido(Contenido contenido) {
+        editarContenidoRecursivo(raiz, contenido);
+    }
 
+    private void editarContenidoRecursivo(Nodo raiz, Contenido contenido) {
+        if (raiz == null) return;
+
+        raiz.editarContenido(contenido);
+        editarContenidoRecursivo(raiz.izquierda, contenido);
+        editarContenidoRecursivo(raiz.derecha, contenido);
+    }
 }

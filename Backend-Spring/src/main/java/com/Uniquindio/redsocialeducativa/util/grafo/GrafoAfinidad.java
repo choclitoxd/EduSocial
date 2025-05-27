@@ -36,62 +36,42 @@ public class GrafoAfinidad {
         return conexiones.get(usuario);
     }
 
-    public Object dataGrafo() {
-        List<Map<String, Object>> grafos = new ArrayList<>();
-        List<Usuario> todos = new ArrayList<>(conexiones.keySet());
-        Set<Usuario> visitados = new HashSet<>();
+    public Map<String, Object> dataGrafo() {
+        List<Map<String, String>> nodos = new ArrayList<>();
+        List<Map<String, String>> lineas = new ArrayList<>();
+        Set<String> conexionesAgregadas = new HashSet<>();
 
-        for (Usuario usuario : todos) {
-            if (!visitados.contains(usuario)) {
-                Set<Usuario> componente = new HashSet<>();
-                dfs(usuario, componente, visitados);
+        for (Usuario usuario : conexiones.keySet()) {
+            // Agregar nodo
+            Map<String, String> nodo = new HashMap<>();
+            nodo.put("id", usuario.getCorreo());
+            nodo.put("label", usuario.getNombre());
+            nodos.add(nodo);
 
-                // NODOS
-                List<Map<String, String>> nodos = new ArrayList<>();
-                for (Usuario u : componente) {
-                    Map<String, String> nodo = new HashMap<>();
-                    nodo.put("id", u.getCorreo());
-                    nodo.put("label", u.getNombre());
-                    nodos.add(nodo);
-                }
-
-                // LÍNEAS
-                List<Map<String, String>> lineas = new ArrayList<>();
-                for (Usuario u : componente) {
-                    ListaUsuarios vecinos = conexiones.get(u);
-                    for (Usuario v : vecinos.listarUsuarios()) {
-                        // Evitar duplicados (u→v y v→u)
-                        if (componente.contains(v) && u.getCorreo().compareTo(v.getCorreo()) < 0) {
-                            Map<String, String> linea = new HashMap<>();
-                            linea.put("from", u.getCorreo());
-                            linea.put("to", v.getCorreo());
-                            lineas.add(linea);
-                        }
-                    }
-                }
-
-                // GRAFO
-                Map<String, Object> grafo = new HashMap<>();
-                grafo.put("nodes", nodos);
-                grafo.put("edges", lineas);
-                grafos.add(grafo);
-            }
-        }
-
-        return grafos;
-    }
-
-    private void dfs(Usuario actual, Set<Usuario> componente, Set<Usuario> visitados) {
-        if (visitados.contains(actual)) return;
-        visitados.add(actual);
-        componente.add(actual);
-
-        ListaUsuarios vecinos = conexiones.get(actual);
-        if (vecinos != null) {
+            // Agregar conexiones (edges) evitando duplicados
+            ListaUsuarios vecinos = conexiones.get(usuario);
             for (Usuario vecino : vecinos.listarUsuarios()) {
-                dfs(vecino, componente, visitados);
+                String id1 = usuario.getCorreo();
+                String id2 = vecino.getCorreo();
+
+                // Ordenar los ids para evitar duplicados (a→b y b→a)
+                String claveConexion = id1.compareTo(id2) < 0 ? id1 + "-" + id2 : id2 + "-" + id1;
+
+                if (!conexionesAgregadas.contains(claveConexion)) {
+                    Map<String, String> linea = new HashMap<>();
+                    linea.put("from", id1);
+                    linea.put("to", id2);
+                    lineas.add(linea);
+                    conexionesAgregadas.add(claveConexion);
+                }
             }
         }
+
+        Map<String, Object> grafo = new HashMap<>();
+        grafo.put("nodes", nodos);
+        grafo.put("edges", lineas);
+        return grafo;
     }
+
 
 }

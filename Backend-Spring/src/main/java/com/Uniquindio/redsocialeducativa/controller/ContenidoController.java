@@ -1,12 +1,15 @@
 package com.Uniquindio.redsocialeducativa.controller;
 
 import com.Uniquindio.redsocialeducativa.model.Contenido;
+import com.Uniquindio.redsocialeducativa.model.Usuario;
 import com.Uniquindio.redsocialeducativa.service.ContenidoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/contenidos")
@@ -26,6 +29,12 @@ public class ContenidoController {
     public ResponseEntity<String> guardarContenido(@RequestBody Contenido contenido) {
         contenidoService.registrarContenido(contenido);
         return ResponseEntity.status(201).body("Contenido registrado");
+    }
+
+    @PostMapping("/editar")
+    public ResponseEntity<String> editar(@RequestBody Contenido contenido) {
+        contenidoService.editarContenido(contenido);
+        return ResponseEntity.status(201).body("Contenido editado");
     }
 
     @PostMapping("/eliminar")
