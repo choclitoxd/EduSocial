@@ -182,6 +182,137 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const loadTestUsers = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/usuarios/cargarDatosPrueba`, {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "text/plain"
+        }
+      });
+
+      const message = await res.text();
+      
+      if (!res.ok) {
+        throw new Error(message || "Error al cargar usuarios de prueba");
+      }
+
+      return message;
+    } catch (error) {
+      console.error("Error al cargar usuarios de prueba:", error);
+      throw error;
+    }
+  };
+
+  const loadTestPosts = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/contenidos/cargarDatosPrueba`, {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "text/plain"
+        }
+      });
+
+      const message = await res.text();
+      
+      if (!res.ok) {
+        throw new Error(message || "Error al cargar posts de prueba");
+      }
+
+      return message;
+    } catch (error) {
+      console.error("Error al cargar posts de prueba:", error);
+      throw error;
+    }
+  };
+
+  const getContenidos = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_BASE}/contenidos/listar`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (!res.ok) {
+        throw new Error("Error al obtener los contenidos");
+      }
+
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      console.error("Error al obtener contenidos:", error);
+      throw error;
+    }
+  };
+
+  const deleteContent = async (contentId) => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_BASE}/contenidos/eliminar?id=${contentId}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Accept": "text/plain"
+        }
+      });
+
+      if (!res.ok) {
+        throw new Error("Error al eliminar el contenido");
+      }
+
+      const message = await res.text();
+      return message;
+    } catch (error) {
+      if (error.message === "Failed to fetch") {
+        throw new Error("No se pudo conectar con el servidor. Verifica tu conexión a internet o que el servidor esté funcionando.");
+      }
+      console.error("Error al eliminar contenido:", error);
+      throw error;
+    }
+  };
+
+  const shareContent = async (contenido) => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_BASE}/contenidos/guardar`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "text/plain",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          titulo: contenido.titulo,
+          descripcion: contenido.descripcion,
+          autor: user.correo,
+          topic: contenido.topic,
+          type: contenido.type,
+          url: contenido.url
+        })
+      });
+
+      if (!res.ok) {
+        throw new Error("Error al guardar el contenido");
+      }
+
+      const message = await res.text();
+      return message;
+    } catch (error) {
+      if (error.message === "Failed to fetch") {
+        throw new Error("No se pudo conectar con el servidor. Verifica tu conexión a internet o que el servidor esté funcionando.");
+      }
+      console.error("Error al compartir contenido:", error);
+      throw error;
+    }
+  };
+
   return (
     <AuthContext.Provider value={{ 
       user, 
@@ -190,7 +321,12 @@ export const AuthProvider = ({ children }) => {
       logout, 
       loading,
       getCursos,
-      getSuggestedUsers
+      getSuggestedUsers,
+      loadTestUsers,
+      loadTestPosts,
+      getContenidos,
+      deleteContent,
+      shareContent
     }}>
       {children}
     </AuthContext.Provider>

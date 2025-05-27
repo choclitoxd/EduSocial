@@ -139,3 +139,53 @@ form .register-link{
 .register-link p a:hover{
     text-decoration: underline;
 }
+
+/* Test Data Load Button
+------------------------------------------ */
+.load-test-data {
+    width: 100%;
+    height: 45px;
+    background: #fff;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgb(0, 0, 0, .1);
+    font-size: 14px;
+    cursor: pointer;
+    color: #FFA500;
+    font-weight: 600;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.load-test-data:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+.load-test-data:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.test-data-icon {
+    font-size: 16px;
+}
+
+.load-test-data:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.load-test-data:disabled .test-data-icon {
+    animation: spin 1s linear infinite;
+}

@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {FaPlay, FaYoutube, FaEdit, FaTrash, FaSave, FaTimes } from 'react-icons/fa';
-
+import { AuthContext } from "../../context/AuthContext";
 
 export const EducationalPostUserPanel = ({ post, user, onUpdate, onDelete }) => {
   const [showVideo, setShowVideo] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editedPost, setEditedPost] = useState({...post});
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const { deleteContent } = useContext(AuthContext);
   
   // Asumimos que el usuario siempre está autenticado en esta vista
   const isAuthenticated = true;
@@ -56,9 +58,18 @@ export const EducationalPostUserPanel = ({ post, user, onUpdate, onDelete }) => 
   };
   
   // Función para confirmar la eliminación
-  const handleConfirmDelete = () => {
-    onDelete(post.id);
-    setConfirmDelete(false);
+  const handleConfirmDelete = async () => {
+    try {
+      setIsDeleting(true);
+      const message = await deleteContent(post.id);
+      console.log(message); // Muestra el mensaje de éxito
+      onDelete(post.id);
+      setConfirmDelete(false);
+    } catch (error) {
+      alert(error.message || "Error al eliminar el contenido");
+    } finally {
+      setIsDeleting(false);
+    }
   };
   
   // Función para cancelar la eliminación
@@ -88,7 +99,7 @@ export const EducationalPostUserPanel = ({ post, user, onUpdate, onDelete }) => 
   };
 
   // Verificar si el post tiene un enlace de YouTube
-  const youtubeVideoId = post.type === 'video' ? getYoutubeVideoId(post.videoUrl) : null;
+  const youtubeVideoId = post.type === 'video' ? getYoutubeVideoId(post.url) : null;
   
   return (
     <div className="post-card">
@@ -168,12 +179,12 @@ export const EducationalPostUserPanel = ({ post, user, onUpdate, onDelete }) => 
           <div className="post-header">
             <div className={`avatar ${post.avatarColor}`}>{post.avatarText}</div>
             <div className="user-info">
-              <div className="user-name">{post.userName}</div>
+              <div className="user-name">{post.autor}</div>
               <div className="post-time">{post.topic}</div>
             </div>
           </div>
-          <div className="post-title">{post.title}</div>
-          <div className="post-content">{post.content}</div>
+          <div className="post-title">{post.titulo}</div>
+          <div className="post-content">{post.descripcion}</div>
           
           {post.type === 'video' && (
             <div className="video-container">

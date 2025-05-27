@@ -1,6 +1,6 @@
 import React from 'react';
 import './css/StudentPanel.css';
-import { FaStar, FaLightbulb, FaHandsHelping } from 'react-icons/fa';
+import { FaThumbsUp, FaHandsHelping } from 'react-icons/fa';
 import { MdOutlinePostAdd } from 'react-icons/md';
 
 export const StudentPanel = ({contents, rating}) => {
@@ -15,7 +15,7 @@ export const StudentPanel = ({contents, rating}) => {
           Contenidos publicados {contents}
         </li>
         <li>
-          <FaStar className="icon" />
+          <FaThumbsUp className="icon" />
           Valoraciones recibidas {rating}
         </li>
         <li>

@@ -1,0 +1,587 @@
+/* Moderator Layout
+------------------------------------------ */
+.moderator-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f9fafb;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.moderator-main {
+  flex: 1;
+  overflow: hidden;
+  padding: 32px;
+}
+
+/* Moderator Sidebar
+------------------------------------------ */
+.moderator-sidebar {
+  width: 256px;
+  background-color: white;
+  border-right: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.moderator-sidebar-header {
+  padding: 24px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.moderator-logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #111827;
+  margin: 0;
+}
+
+.moderator-nav {
+  margin-top: 24px;
+  padding: 0 12px;
+}
+
+.moderator-nav-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  margin-bottom: 4px;
+  border-radius: 8px;
+  color: #6b7280;
+  transition: all 0.2s;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.moderator-nav-item:hover {
+  background-color: #f3f4f6;
+}
+
+.moderator-nav-item.active {
+  color: #111827;
+  background-color: #f3f4f6;
+  font-weight: 500;
+}
+
+.moderator-nav-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+}
+
+.moderator-profile {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  border-top: 1px solid #e5e7eb;
+  background-color: white;
+}
+
+.moderator-profile-info {
+  display: flex;
+  align-items: center;
+}
+
+.moderator-avatar {
+  width: 32px;
+  height: 32px;
+  background-color: #ef4444;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.moderator-profile-details {
+  margin-left: 12px;
+}
+
+.moderator-profile-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+  margin: 0;
+}
+
+.moderator-profile-email {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Moderator Header
+------------------------------------------ */
+.moderator-breadcrumb {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 24px;
+}
+
+.moderator-breadcrumb-separator {
+  margin: 0 8px;
+}
+
+.moderator-breadcrumb-active {
+  color: #111827;
+}
+
+.moderator-header {
+  margin-bottom: 32px;
+}
+
+.moderator-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #111827;
+  margin: 0;
+}
+
+/* Search Section
+------------------------------------------ */
+.moderator-search {
+  margin-bottom: 32px;
+}
+
+.moderator-search-container {
+  max-width: 500px;
+}
+
+.moderator-input-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.moderator-input-wrapper {
+  position: relative;
+}
+
+.moderator-input {
+  width: 100%;
+  padding: 12px 16px;
+  padding-right: 40px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.moderator-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.moderator-input-icon {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  width: 20px;
+  height: 20px;
+  color: #9ca3af;
+}
+
+/* Student List
+------------------------------------------ */
+.moderator-students {
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.moderator-student-item {
+  padding: 24px;
+  border-bottom: 1px solid #e5e7eb;
+  transition: background-color 0.2s;
+}
+
+.moderator-student-item:last-child {
+  border-bottom: none;
+}
+
+.moderator-student-item:hover {
+  background-color: #f9fafb;
+}
+
+.moderator-student-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.moderator-student-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.moderator-student-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.moderator-student-info {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex: 1;
+}
+
+.moderator-student-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+  min-width: 150px;
+}
+
+.moderator-student-email {
+  font-size: 14px;
+  color: #6b7280;
+  min-width: 200px;
+}
+
+.moderator-student-date {
+  font-size: 14px;
+  color: #6b7280;
+  min-width: 100px;
+}
+
+.moderator-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.moderator-action-btn {
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  background-color: transparent;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.moderator-action-btn:hover.edit {
+  color: #3b82f6;
+  background-color: #eff6ff;
+}
+
+.moderator-action-btn:hover.delete {
+  color: #ef4444;
+  background-color: #fef2f2;
+}
+
+/* Tip Section
+------------------------------------------ */
+.moderator-tip {
+  margin-top: 24px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* Post List
+------------------------------------------ */
+.moderator-posts {
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.moderator-post-item {
+  padding: 24px;
+  border-bottom: 1px solid #e5e7eb;
+  transition: background-color 0.2s;
+}
+
+.moderator-post-item:last-child {
+  border-bottom: none;
+}
+
+.moderator-post-item:hover {
+  background-color: #f9fafb;
+}
+
+.moderator-post-content {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.moderator-post-left {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+}
+
+.moderator-post-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 500;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.moderator-post-info {
+  flex: 1;
+}
+
+.moderator-post-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.moderator-post-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.moderator-post-topic {
+  background-color: #f3f4f6;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.moderator-post-description {
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 8px 0;
+}
+
+.moderator-post-details {
+  display: flex;
+  gap: 24px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.moderator-post-author,
+.moderator-post-type,
+.moderator-post-likes {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.moderator-post-details .label {
+  color: #374151;
+  font-weight: 500;
+}
+
+.moderator-post-type .type-icon {
+  display: flex;
+  align-items: center;
+  margin: 0 4px;
+  color: #6b7280;
+}
+
+/* Statistics Grid
+------------------------------------------ */
+.moderator-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  padding: 16px;
+}
+
+.moderator-stats-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.stats-card-header {
+  padding: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.stats-card-header h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 18px;
+  color: #1e293b;
+}
+
+.stats-icon {
+  width: 20px;
+  height: 20px;
+  color: #3b82f6;
+}
+
+.stats-content {
+  padding: 16px;
+}
+
+/* Stats Items
+------------------------------------------ */
+.stats-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.stats-item:last-child {
+  border-bottom: none;
+}
+
+.stats-rank {
+  font-size: 14px;
+  font-weight: 600;
+  color: #3b82f6;
+  min-width: 32px;
+}
+
+.stats-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stats-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.stats-subtitle {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.stats-student-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+/* Path Visualization
+------------------------------------------ */
+.stats-path {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.path-node {
+  background-color: #3b82f6;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 16px;
+  font-size: 14px;
+}
+
+.path-arrow {
+  color: #64748b;
+}
+
+.stats-path-info {
+  text-align: center;
+  font-size: 14px;
+  color: #64748b;
+  margin-top: 12px;
+}
+
+/* Participation Bars
+------------------------------------------ */
+.stats-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.stats-bar-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stats-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #1e293b;
+}
+
+.stats-bar-container {
+  height: 8px;
+  background-color: #f1f5f9;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.stats-bar-fill {
+  height: 100%;
+  background-color: #3b82f6;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* Loading and Error States
+------------------------------------------ */
+.moderator-loading,
+.moderator-error {
+  text-align: center;
+  padding: 2rem;
+  margin: 1rem;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.moderator-loading {
+  color: #3b82f6;
+  font-weight: 500;
+}
+
+.moderator-error {
+  color: #ef4444;
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+} 

@@ -5,33 +5,16 @@ import {
   FaImage,
   FaYoutube,
   FaTimes,
-  FaUpload,
-  FaPlus
+  FaUpload
 } from 'react-icons/fa';
 import { AuthContext } from "../../context/AuthContext";
+import { useSimpleDropboxUpload } from '../../hooks/useSimpleDropboxUpload';
 
-const Dropbox = {
-  prototype: {
-    filesUpload: async function (options) {
-      // Simulación de subida
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      return { result: { path: options.path } };
-    },
-    sharingCreateSharedLinkWithSettings: async function (options) {
-      // Simulación de creación de enlace
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      return {
-        result: {
-          url: `https://dropbox.com/s/simulado/${options.path.substring(1)}?dl=0`
-        }
-      };
-    }
-  }
-};
-const ACCESS_TOKEN = 'sl.u.AFwIhfnYCMt8_ozmmNZQBGohD7Eisb-FELOzyXsywYQ85QMW8vaH5mZsnJlu33hG_VmoiNNMotXxRqV3yBYWVclUExFJn6J47ItOurkBODvDK1exZLr3dsAp24BjQO29Tt4LHz5nEDy77gQTPyLFI9PyW3-chjNuA19D8hmCwhpImip4C5S7Fr7QJoRAsM3CABjyxUldKFCDJV60ejq5WGM037aEX5X2dcp7jHgJDlrmv6e6rt5-aFjkY_qHMf3EgVf_1R8k8dvBJ3s1Cn3UO-fp6IvGbIfjPbNXUwOa4BgCbynIGfS9tuVP3IrjQqImRtlw8uzzgk8l20EB7scRvLTRn62bdN8-INB9iIzGKu_NQbudhl8XiiOLIp3jwkxDgMvGAO_4aNgjD24wXrXuVhFiTPY3tWdIj6vOm5Z_iD9NmXrjBaZDvW6tePkzmR1vjdqu1syuY3-WGAIEB5F6N-PSRmvH-ZQJiYaOdOCgxPf9ONavXzW9hKgVJrJkpdMx9ZOhE7Ttqwhd6UXAUrFyALPaKMhAWvB6jrnCpSUIH9PKswiHHOaNJJPa6rCQbYAnW2Knefh5UelKZQROHHRTEfY15Bg3jC6fFdwiZc3NwMUgJm8KL-dRzXpChTrVfmHDxVT7nyD-1WgdyrtG2c5bgXNSwJzMY48rYRSGibznmAiPo12Veaoy92vpqbWivgxSDDayEMWaMuyQ1zzYfIWtaf2y7_loWqI98CqPckv7vgFmVf0aDFoJFl4fs0DSh6e7edWKq_hoW1174CSPqXXHfAAiBa2FgIVni2cpENUpNxMOQxUaSx9vIYBW1t2rQS1rWw_4nLV-q9D3Jskp5NZCrNCPeKYORjlk4462oW5ZfwIzXmMo4-3j6war4EgL4iI_lK07-zhRwZDADHvDl7gx4_aZMAzcneJkjVkfXEnEQ5eeYB6zL5mUKpvn1R4ALHbjIe_JgSjFYCp1D-Q5ZbA1QZBtpocLXM_01Kf8ER-H_cmIyHBt98EwCL49hVuBnXI5iGBC8kPsAUKCcgubCsnPiQZCILjFQShAG526pnU0jQ-AfKFkfcRQUkt4L3A5x4I7ibeiKdbvRFQOj1myvSSi5xHTaXH4WytS9muwaf1UfqryrsOT2XoCSSlyVtibamSOCnQjF0LioOrHId7EQTGN3-o4Y6IdQUcpzA0pV_mEMNy94OqL99-a6PvqJgeEQ0QCV6MuLEM7kw3XMCgV97xmIlrvt03kF2sTzls6EpTIctNYcqYHKBhq7Te2ylA-utNNphyqA-N5kZPdtUM3d2DZuwtd';
+const ACCESS_TOKEN = 'sl.u.AFxt_miHoGT53M-1BQXEDQ3YX1mKkLUMawE5-dlPcRHuZPfsMIR56OpdtgxAEEnyDTRSArXCp5jJKf1e8tkKrGnBY601SRSyg8u3FjWEC7IxyMKK54cpxYUdw-RJLQr-vYjuhUuLTZhJdVnz-U53KQdV4CzkiBdcdxlRYI1M-cr14Dz-vZIkksVOd56kiL50XYcsS7lrH-OUrGeXqF80lqQMGb4Mj4J89SxrjWJlCJxlvDf16B2vpKFKM9bxMVYDa4IP2if7b36V7sM5B4oEYhJ75XNFkwxpBhbs8PVo6vjRabLet52l-9dek1DK2bJVQIbNhe90egcge9jiHb9UZ_6Jnr52LC6pqyGIRzilWikVW-9oVAdCDJtEtO-1bSZzDyz9eCoHwn5h2xTtY0-4ppFU6zpz0xRFRIbWK6FPplTl2sQitpcCdYW8sGgrroigbo-zHsftH1im30OHMKVF85z5yrad99lIQEk8mH6dpW4c1nPW2Fs8Dsxhe3B_yinh2i5tArqN7sftmco0TvyGp68xh3fdBfcUgBDOBmkwTbHvhHQOQZsYlhhqokgElucZTfZiWsKPHOAjzZfJZgBN9t-fUjm0Gs2tPuiPiwq6oBwxSVNB9ep6w3T0xHsWKhfRWcxZl0chAfIPd26QJqsN-bLUMhGEVYh2AmmW1wO3UOOJGRQQluRMBPRoYyluaMEF7Hmgl9RZYVg-m3x4D7pgw-uEsdqwpHDIDTfV4Ob8Kmp4_iq9UAKOkm6n2U8kuf2uqjKPaPYI4vcAk634mkE9LB7OY9WOZ348-bWO2M7nyj1dNdS9tKwFwZVVaIYHu3J2QtzrJ9o0IH-58oXqStsFJn95jlvmW0Z54h8Lbllu8MerWKiZvTZI1alynTfscFAwnYm9pSDjDfv8aOV1blW1pKKtq_PvvyCyy202oGDDTJiA3vkacJPWmGYb9ZuED0lYgYAhNSR10lCswmyYw2jwMIPbnKl--vkQnpsyPbWZ8RmTTd2Fehzs2adGMCD6z9TpXe3lyKUbhV4HnwgPE8RD0bpY-83esKq61ej62rJDDtX81BHWtZTyPKMMQmQkCNBTA1xd8BXA3-rQQpZ4miOD2F97WPVoXCrN075W4vdHrUMbHIZMbOOJdNCz9db_GbKwLn4TARjz7Cy_H8v9PE7sTx4UfhkAVFUkHH_NlCdv71Doa4bdoeRox4beR0iF1LMAOeWkOccpdngI5AlloLLVZUa0pB0YpP006t80C-NYJbtA3spcvbr6OQ8OAx5ry-wBuajqPqDeyvjQHTgxUZgO7YOR';
 
-export const ShareResourceCard = ({ isAuthenticated, user = { name: "Usuario" } }) => {
+export const ShareResourceCard = ({ isAuthenticated, user = { name: "Usuario" }, onPostsUpdate }) => {
   const { shareResource } = useContext(AuthContext);
+  const { uploadToDropbox } = useSimpleDropboxUpload(ACCESS_TOKEN);
   const [selectedType, setSelectedType] = useState(null);
   const [formData, setFormData] = useState({
     title: '',
@@ -43,11 +26,10 @@ export const ShareResourceCard = ({ isAuthenticated, user = { name: "Usuario" } 
     fileUrl: ''
   });
 
-  const [topics, setTopics] = useState([]);
-  const [uploadStatus, setUploadStatus] = useState('');
+  const [selectedTopic, setSelectedTopic] = useState('');
   const [isUploading, setIsUploading] = useState(false);
 
-  // Lista de temas predefinidos (puedes personalizar esta lista)
+  // Lista de temas predefinidos
   const predefinedTopics = [
     'Matemáticas',
     'Ciencias',
@@ -73,105 +55,38 @@ export const ShareResourceCard = ({ isAuthenticated, user = { name: "Usuario" } 
     }));
   };
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
+    if (file) {
+      setIsUploading(true);
+      try {
+        console.log('Iniciando subida del archivo:', file.name);
+        const result = await uploadToDropbox(file);
+        console.log('Archivo subido exitosamente:', result);
+        setFormData(prev => ({
+          ...prev,
+          file: file,
+          fileUrl: result.url
+        }));
+      } catch (error) {
+        console.error('Error detallado al subir archivo:', error);
+        let errorMessage = error.message;
+        if (errorMessage.includes('token')) {
+          errorMessage = 'Error de autenticación con Dropbox. Por favor, verifica el token de acceso.';
+        }
+        alert(errorMessage || 'Error al subir el archivo. Por favor, intenta de nuevo.');
+      } finally {
+        setIsUploading(false);
+      }
+    }
+  };
+
+  const handleTopicChange = (topic) => {
+    setSelectedTopic(topic);
     setFormData(prev => ({
       ...prev,
-      file: file,
-      fileUrl: '' // Reset URL when selecting new file
+      topic: topic
     }));
-    setUploadStatus('');
-  };
-
-  const uploadToDropbox = async (file) => {
-    if (!file) return null;
-
-    const dbx = new Dropbox({ accessToken: ACCESS_TOKEN });
-    setIsUploading(true);
-    setUploadStatus('📤 Subiendo archivo...');
-
-    try {
-      const fileReader = new FileReader();
-
-      return new Promise((resolve, reject) => {
-        fileReader.onload = async () => {
-          try {
-            const fileContent = fileReader.result;
-            const timestamp = Date.now();
-            const uniqueFileName = `${timestamp}_${file.name}`;
-
-            // Subir el archivo con nombre único para evitar conflictos
-            const uploadResponse = await dbx.filesUpload({
-              path: `/${uniqueFileName}`,
-              contents: fileContent,
-              mode: 'overwrite',
-            });
-
-            setUploadStatus('🔗 Generando enlace público...');
-
-            // Obtener el enlace público
-            const shareResponse = await dbx.sharingCreateSharedLinkWithSettings({
-              path: uploadResponse.result.path_display,
-              settings: {
-                requested_visibility: 'public',
-                audience: 'public',
-                access: 'viewer'
-              }
-            });
-
-            // Convertir el enlace a descarga directa
-            const downloadUrl = shareResponse.result.url.replace('?dl=0', '?dl=1');
-
-            setUploadStatus('✅ Archivo subido exitosamente');
-            setIsUploading(false);
-            resolve(downloadUrl);
-          } catch (error) {
-            console.error('Error en Dropbox:', error);
-            setUploadStatus('❌ Error al subir archivo');
-            setIsUploading(false);
-            reject(error);
-          }
-        };
-
-        fileReader.onerror = () => {
-          setUploadStatus('❌ Error al leer archivo');
-          setIsUploading(false);
-          reject(new Error('Error reading file'));
-        };
-
-        fileReader.readAsArrayBuffer(file);
-      });
-    } catch (error) {
-      setUploadStatus('❌ Error al procesar archivo');
-      setIsUploading(false);
-      throw error;
-    }
-  };
-
-  const handleFileUpload = async () => {
-    if (!formData.file) return;
-
-    try {
-      const fileUrl = await uploadToDropbox(formData.file);
-      setFormData(prev => ({
-        ...prev,
-        fileUrl: fileUrl
-      }));
-    } catch (error) {
-      console.error('Error uploading file:', error);
-    }
-  };
-
-  const addTopic = (topic) => {
-    if (topic && !topics.includes(topic)) {
-      setTopics(prev => [...prev, topic]);
-      setFormData(prev => ({ ...prev, topic: '' }));
-    }
-  };
-
-
-  const removeTopic = (topicToRemove) => {
-    setTopics(prev => prev.filter(topic => topic !== topicToRemove));
   };
 
   const handleSubmit = async (e) => {
@@ -181,36 +96,33 @@ export const ShareResourceCard = ({ isAuthenticated, user = { name: "Usuario" } 
     try {
       let finalFormData = { ...formData };
 
-      // Si hay un archivo y no se ha subido aún, subirlo a Dropbox
-      if (formData.file && !formData.fileUrl && (selectedType === 'document' || selectedType === 'image')) {
-        try {
-          const fileUrl = await uploadToDropbox(formData.file);
-          if (!fileUrl) {
-            throw new Error('No se pudo obtener la URL del archivo');
-          }
-          finalFormData.fileUrl = fileUrl;
-        } catch (error) {
-          console.error('Error al subir archivo a Dropbox:', error);
-          alert('Error al subir el archivo. Por favor, intenta de nuevo.');
-          setIsUploading(false);
-          return;
-        }
+      if (!finalFormData.topic) {
+        alert('Por favor selecciona un tema');
+        setIsUploading(false);
+        return;
       }
 
       // Preparar los datos para enviar a la API
       const resourceData = {
-        ...finalFormData,
-        topics: topics,
+        titulo: finalFormData.title,
+        descripcion: finalFormData.description,
+        topic: finalFormData.topic,
         type: selectedType,
-        uploadedBy: user.name,
-        uploadDate: new Date().toISOString()
+        url: selectedType === 'video' ? finalFormData.youtubeUrl :
+             selectedType === 'link' ? finalFormData.websiteUrl :
+             finalFormData.fileUrl
       };
 
       // Enviar a la API usando el contexto
       await shareResource(resourceData);
       
-      alert('Recurso compartido exitosamente!');
+      alert('¡Recurso compartido exitosamente!');
       resetForm();
+      
+      // Actualizar los posts después de compartir exitosamente
+      if (onPostsUpdate) {
+        await onPostsUpdate();
+      }
     } catch (error) {
       console.error('Error al procesar el recurso:', error);
       alert(error.message || 'Ocurrió un error al compartir el recurso. Por favor, intenta de nuevo.');
@@ -227,13 +139,11 @@ export const ShareResourceCard = ({ isAuthenticated, user = { name: "Usuario" } 
       topic: '',
       youtubeUrl: '',
       websiteUrl: '',
-      file: null
+      file: null,
+      fileUrl: ''
     });
-    setTopics([]);
-    setTopics([]);
-    setUploadStatus('');
+    setSelectedTopic('');
     setIsUploading(false);
-
   };
 
   const extractYouTubeId = (url) => {
@@ -350,7 +260,7 @@ export const ShareResourceCard = ({ isAuthenticated, user = { name: "Usuario" } 
 
           {/* Temas */}
           <div className="form-group">
-            <label>Temas</label>
+            <label>Tema *</label>
             <div className="topic-input">
               <input
                 type="text"
@@ -360,13 +270,6 @@ export const ShareResourceCard = ({ isAuthenticated, user = { name: "Usuario" } 
                 placeholder="Escribe un tema o selecciona uno"
                 list="topic-suggestions"
               />
-              <button
-                type="button"
-                onClick={() => addTopic(formData.topic)}
-                className="add-topic-btn"
-              >
-                <FaPlus />
-              </button>
             </div>
 
             <datalist id="topic-suggestions">
@@ -376,34 +279,17 @@ export const ShareResourceCard = ({ isAuthenticated, user = { name: "Usuario" } 
             </datalist>
 
             <div className="predefined-topics">
-              {predefinedTopics.slice(0, 5).map(topic => (
+              {predefinedTopics.map(topic => (
                 <button
                   key={topic}
                   type="button"
-                  className="topic-suggestion"
-                  onClick={() => addTopic(topic)}
+                  className={`topic-suggestion ${formData.topic === topic ? 'selected' : ''}`}
+                  onClick={() => handleTopicChange(topic)}
                 >
                   {topic}
                 </button>
               ))}
             </div>
-
-            {topics.length > 0 && (
-              <div className="selected-topics">
-                {topics.map(topic => (
-                  <span key={topic} className="topic-tag">
-                    {topic}
-                    <button
-                      type="button"
-                      onClick={() => removeTopic(topic)}
-                      className="remove-topic"
-                    >
-                      <FaTimes />
-                    </button>
-                  </span>
-                ))}
-              </div>
-            )}
           </div>
 
           <div className="form-actions">

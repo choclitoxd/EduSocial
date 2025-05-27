@@ -46,19 +46,19 @@ export const EducationalPost = ({ post, isAuthenticated }) => {
   };
 
   // Verificar si el post tiene un enlace de YouTube
-  const youtubeVideoId = post.type === 'video' ? getYoutubeVideoId(post.videoUrl) : null;
+  const youtubeVideoId = post.type === 'video' ? getYoutubeVideoId(post.url) : null;
   
   return (
     <div className="post-card">
       <div className="post-header">
         <div className={`avatar ${post.avatarColor}`}>{post.avatarText}</div>
         <div className="user-info">
-          <div className="user-name">{post.userName}</div>
+          <div className="user-name">{post.autor}</div>
           <div className="post-time">{post.topic}</div>
         </div>
       </div>
-      <div className="post-title">{post.title}</div>
-      <div className="post-content">{post.content}</div>
+      <div className="post-title">{post.titulo}</div>
+      <div className="post-content">{post.descripcion}</div>
       
       {post.type === 'video' && (
         <div className="video-container">
