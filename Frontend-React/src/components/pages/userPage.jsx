@@ -50,9 +50,9 @@ export const User = () => {
     <div className="main-div">
       <Header user={userData} suggestedUsers={suggestedUsers} />
       {loading ? (
-        <div className="loading-message">Cargando contenidos...</div>
+          <div className="loading-message">Cargando contenidos...</div>
       ) : error ? (
-        <div className="error-message">{error}</div>
+          <div className="error-message">{error}</div>
       ) : (
         <>
           <EducationalFeed 

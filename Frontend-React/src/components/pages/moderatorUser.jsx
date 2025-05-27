@@ -1,34 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { ModeratorSidebar } from '../ui/ModeratorSidebar';
 import { ModeratorSearch } from '../ui/ModeratorSearch';
 import { ModeratorStudentList } from '../ui/ModeratorStudentList';
+import { AuthContext } from '../../context/AuthContext';
 import '../ui/css/ModeratorPanel.css';
 
 export const ModeratorUser = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [students, setStudents] = useState([
-    {
-      id: 1,
-      name: 'Alice Johnson',
-      email: 'alice.johnson@email.com',
-      registrationDate: '2024-03-12',
-      avatar: 'AJ'
-    },
-    {
-      id: 2,
-      name: 'Brian Lee',
-      email: 'brian.lee@email.com',
-      registrationDate: '2024-02-28',
-      avatar: 'BL'
-    },
-    {
-      id: 3,
-      name: 'Carmen Diaz',
-      email: 'carmen.diaz@email.com',
-      registrationDate: '2024-01-15',
-      avatar: 'CD'
-    }
-  ]);
+  const [students, setStudents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { getUsers } = useContext(AuthContext);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        setLoading(true);
+        const data = await getUsers();
+        // Transformar los datos al formato esperado por el componente
+        const formattedUsers = data.map(user => ({
+          id: user.id || user.correo, // Usar correo como ID si no hay ID
+          name: user.nombre,
+          email: user.correo,
+          registrationDate: user.fechaRegistro || 'N/A',
+          avatar: user.nombre.split(' ').map(n => n[0]).join('').toUpperCase()
+        }));
+        setStudents(formattedUsers);
+        setError(null);
+      } catch (err) {
+        console.error('Error al cargar usuarios:', err);
+        setError('Error al cargar la lista de usuarios.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, [getUsers]);
 
   const filteredStudents = students.filter(student =>
     student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -72,11 +80,17 @@ export const ModeratorUser = () => {
           setSearchTerm={setSearchTerm}
         />
 
-        <ModeratorStudentList
-          students={filteredStudents}
-          onDelete={handleDeleteStudent}
-          getAvatarColor={getAvatarColor}
-        />
+        {loading ? (
+          <div className="moderator-loading">Cargando usuarios...</div>
+        ) : error ? (
+          <div className="moderator-error">{error}</div>
+        ) : (
+          <ModeratorStudentList
+            students={filteredStudents}
+            onDelete={handleDeleteStudent}
+            getAvatarColor={getAvatarColor}
+          />
+        )}
       </div>
     </div>
   );

@@ -23,7 +23,6 @@ export const ModeratorStudentList = ({ students, onDelete, getAvatarColor }) => 
                 <div className="moderator-student-info">
                   <div className="moderator-student-name">{student.name}</div>
                   <div className="moderator-student-email">{student.email}</div>
-                  <div className="moderator-student-date">{student.registrationDate}</div>
                 </div>
               </div>
               

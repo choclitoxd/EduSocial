@@ -350,6 +350,58 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const getUsers = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_BASE}/usuarios/listarUsuarios`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Accept": "application/json"
+        }
+      });
+
+      if (!res.ok) {
+        throw new Error("Error al obtener la lista de usuarios");
+      }
+
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      if (error.message === "Failed to fetch") {
+        throw new Error("No se pudo conectar con el servidor. Verifica tu conexión a internet.");
+      }
+      console.error("Error al obtener usuarios:", error);
+      throw error;
+    }
+  };
+
+  const getGraphData = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_BASE}/usuarios/dataGrafo`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Accept": "application/json"
+        }
+      });
+
+      if (!res.ok) {
+        throw new Error("Error al obtener los datos del grafo");
+      }
+
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      if (error.message === "Failed to fetch") {
+        throw new Error("No se pudo conectar con el servidor. Verifica tu conexión a internet.");
+      }
+      console.error("Error al obtener datos del grafo:", error);
+      throw error;
+    }
+  };
+
   return (
     <AuthContext.Provider value={{ 
       user, 
@@ -365,7 +417,9 @@ export const AuthProvider = ({ children }) => {
       deleteContent,
       shareContent,
       updateContent,
-      createRelation
+      createRelation,
+      getUsers,
+      getGraphData
     }}>
       {children}
     </AuthContext.Provider>
